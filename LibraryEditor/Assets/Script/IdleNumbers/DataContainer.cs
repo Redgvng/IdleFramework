@@ -5,7 +5,7 @@ using UnityEngine;
 //Singleton
 public class DataContainer<T> 
 {
-    Dictionary<string, T> dictionary;
+    public static Dictionary<string, T> dictionary = new Dictionary<string, T>();
     static DataContainer<T> instance;
     private DataContainer() { }
     //Public
