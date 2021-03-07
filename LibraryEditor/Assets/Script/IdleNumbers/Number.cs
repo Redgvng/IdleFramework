@@ -43,21 +43,25 @@ public interface IMultiplier
     Multiplier multiplier { get; }
 }
 //こいつら一旦統計量持てない
-public class NUMBER : IComparable<NUMBER>
+public class NUMBER : IComparable<NUMBER>, IMultiplier
 {
     public int NumberAsInt => (int)Number;
     public virtual double Number { get; set; }
     public virtual double TotalNumber { get; set; }
 
     public Multiplier multiplier { get; }
-    public NUMBER()
-    {
-        multiplier = new Multiplier();
-    }
-    public NUMBER(double initialNumber)
+    public NUMBER(double initialNumber = 0)
     {
         multiplier = new Multiplier();
         this.Number = initialNumber;
+    }
+    //基本的にはこのコンストラクタを使うこと。
+    public NUMBER(string Name, double initialNumber = 0)
+    {
+        multiplier = new Multiplier();
+        this.Number = initialNumber;
+        DataContainer<IMultiplier>.GetInstance().SetDataByName(this, Name);
+        DataContainer<NUMBER>.GetInstance().SetDataByName(this, Name);
     }
     public virtual void IncrementNumber(double increment = 1)
     {

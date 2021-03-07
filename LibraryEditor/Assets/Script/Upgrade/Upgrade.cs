@@ -7,9 +7,9 @@ namespace UpgradeLibrary {
     //外部からは買った時の処理と、買えるかどうかが必要(ITransactionでアップグレードも表現しよう。)
     public class Upgrade : ITransaction
     {
-        NUMBER level;
+        ILevel level;
         ITransaction transaction;
-        public Upgrade(NUMBER level, ITransaction transaction)
+        public Upgrade(ILevel level, ITransaction transaction)
         {
             this.level = level;
             this.transaction = transaction;
@@ -25,7 +25,7 @@ namespace UpgradeLibrary {
             if (!transaction.CanBuy())
                 return;
             transaction.Pay();
-            level.IncrementNumber();
+            level.level++;
         }
     }
     public class MaxUpgrade : ITransaction

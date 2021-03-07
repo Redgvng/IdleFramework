@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Upgrade_Mono : MonoBehaviour
+public class Upgrade_Mono : MonoBehaviour, ILevel
 {
-    // Start is called before the first frame update
-    void Start()
+    public long level { get; set; }
+    [SerializeField]
+    CostKind costkind;
+    [SerializeField]
+    double linear_initialValue, linear_steep;
+    // アップグレードを作成します。
+    void Awake()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

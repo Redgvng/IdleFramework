@@ -12,30 +12,30 @@ namespace Tests
         [Test]
         public void ShouldLevelUp()
         {
-            var level = new NUMBER();
+            var level = new MockLevel();
             var gold = new NUMBER();
             ITransaction upgrade = new Upgrade(level, new NullTransaction());
             upgrade.Pay();
-            Assert.AreEqual(1, level.Number);
+            Assert.AreEqual(1, level.level);
         }
 
         [Test]
         public void ShouldCost()
         {
-            var level = new NUMBER();
+            var level = new MockLevel();
             var gold = new NUMBER();
             ITransaction simpleTransaction = new Transaction(gold, new LinearCost(1, 2, level));
             ITransaction upgrade = new Upgrade(level, simpleTransaction);
             gold.Number = 10;
             upgrade.Pay();
             Assert.AreEqual(9, gold.Number);
-            Assert.AreEqual(1, level.Number);
+            Assert.AreEqual(1, level.level);
         }
 
         [Test]
         public void ShouldCostEachResources()
         {
-            var level = new NUMBER();
+            var level = new MockLevel();
             var stone = new NUMBER(10);
             var crystal = new NUMBER(20);
             var leaf = new NUMBER(30);
@@ -57,7 +57,7 @@ namespace Tests
         [Test]
         public void ShouldDoMaxCost()
         {
-            var level = new NUMBER();
+            var level = new MockLevel();
             var gold = new NUMBER();
             ITransaction simpleTransaction = new Transaction(gold, new LinearCost(1, 2, level));
             ITransaction upgrade = new Upgrade(level, simpleTransaction);
@@ -66,12 +66,12 @@ namespace Tests
             gold.Number = 10;
             upgrade.Pay();
             Assert.AreEqual(1, gold.Number);
-            Assert.AreEqual(3, level.Number);
+            Assert.AreEqual(3, level.level);
         }
         [Test]
         public void ShouldDoMaxCostWithVeryBigNumber()
         {
-            var level = new NUMBER();
+            var level = new MockLevel();
             var gold = new NUMBER();
             ITransaction simpleTransaction = new Transaction(gold, new LinearCost(1, 2, level));
             ITransaction upgrade = new Upgrade(level, simpleTransaction);
@@ -80,7 +80,7 @@ namespace Tests
             gold.Number = 1000;
             upgrade.Pay();
             Assert.AreEqual(39, gold.Number);
-            Assert.AreEqual(31, level.Number);
+            Assert.AreEqual(31, level.level);
         }
     }
 }

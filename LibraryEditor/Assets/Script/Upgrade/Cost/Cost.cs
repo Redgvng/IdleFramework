@@ -23,12 +23,12 @@ namespace UpgradeLibrary
         readonly double initialValue;
         readonly double steep;
         public Cal Cost { get; }
-        public LinearCost(double initialValue, double steep, NUMBER level)
+        public LinearCost(double initialValue, double steep, ILevel level)
         {
             this.initialValue = initialValue;
             this.steep = steep;
             Cost = new Cal(initialValue);
-            Cost.multiplier.AddAddtiveMultiplier(() => level.Number * steep);
+            Cost.multiplier.AddAddtiveMultiplier(() => level.level * steep);
         }
         public LinearCost(double initialValue, double steep, int level)
         {
