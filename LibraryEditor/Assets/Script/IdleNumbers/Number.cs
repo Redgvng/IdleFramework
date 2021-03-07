@@ -43,26 +43,30 @@ public interface IMultiplier
     Multiplier multiplier { get; }
 }
 //こいつら一旦統計量持てない
-public class NUMBER : IComparable<NUMBER>
+public class NUMBER : IComparable<NUMBER>, IMultiplier
 {
     public int NumberAsInt => (int)Number;
     public virtual double Number { get; set; }
     public virtual double TotalNumber { get; set; }
 
+    public Multiplier multiplier { get; }
     public NUMBER(double initialNumber = 0)
     {
+        multiplier = new Multiplier();
         this.Number = initialNumber;
     }
     //基本的にはこのコンストラクタを使うこと。
-    public NUMBER(string Name, double initialNumber = 0)
+    public NUMBER(NumbersName Name, double initialNumber = 0)
     {
+        multiplier = new Multiplier();
         this.Number = initialNumber;
+        DataContainer<IMultiplier>.GetInstance().SetDataByName(this, Name);
         DataContainer<NUMBER>.GetInstance().SetDataByName(this, Name);
     }
-    public virtual void IncrementNumber(double increment = 1)
+    public virtual void IncrementNumber(double increment = 1, bool isNetValue = false)
     {
-        Number += increment;
-        TotalNumber += increment;
+        Number += !isNetValue ? multiplier.CaluculatedNumber(increment) : increment;
+        TotalNumber += !isNetValue ? multiplier.CaluculatedNumber(increment) : increment;
     }
     public virtual void DecrementNumber(double decrement = 1)
     {
@@ -95,10 +99,10 @@ public class CappedNumber : NUMBER
     }
 
     //増やすときにチェック？
-    public override void IncrementNumber(double increment)
+    public override void IncrementNumber(double increment, bool isNetValue = false)
     {
-        Number += increment;
-        TotalNumber += increment;
+        Number += multiplier.CaluculatedNumber(increment);
+        TotalNumber += multiplier.CaluculatedNumber(increment);
         cap.Check(this);
     }
 }

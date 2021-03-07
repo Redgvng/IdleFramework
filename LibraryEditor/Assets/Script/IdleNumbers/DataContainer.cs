@@ -1,19 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 //Singleton
 public class DataContainer<T> 
 {
-    public static Dictionary<string, T> dictionary = new Dictionary<string, T>();
+    public static Dictionary<Enum, T> dictionary = new Dictionary<Enum, T>();
     static DataContainer<T> instance;
     private DataContainer() { }
     //Public
-    public T GetDataByName(string name)
+    public T GetDataByName(Enum name)
     {
         return dictionary[name];
     }
-    public void SetDataByName(T instance, string name)
+    public void SetDataByName(T instance, Enum name)
     {
         dictionary[name] = instance;
     }

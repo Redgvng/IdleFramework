@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum Resourse
+public enum NumbersName
 {
     gold,
-    stone
+    stone,
+    exp
 }
+
+public enum CalsName
+{
+
+}
+
 
 public class DataInitialize : MonoBehaviour
 {
@@ -15,15 +22,15 @@ public class DataInitialize : MonoBehaviour
     void Awake()
     {
         //ゲームで使われるリソースを宣言します。
-        var gold = new NUMBER("Gold");
-        var stone = new NUMBER("Stone");
-        var exp = new NUMBER("Exp");
+        var gold = new NUMBER(NumbersName.gold);
+        var stone = new NUMBER(NumbersName.stone);
+        var exp = new NUMBER(NumbersName.exp);
 
         //クリックで得られるものを宣言します。
-        new ClickProduce("Stone", stone, StoneButton);
+        new ClickProduce(NumbersName.stone, stone, StoneButton);
 
         //自動的に生産されるものを宣言します。
-        new IdleProduce("Gold IdleProduce", DataContainer<NUMBER>.GetInstance().GetDataByName("Gold"));
-        new IdleProduce("Stone IdleProduce", DataContainer<NUMBER>.GetInstance().GetDataByName("Stone"));
+        new IdleProduce(NumbersName.gold, gold);
+        new IdleProduce(NumbersName.stone, stone);
     }
 }

@@ -8,15 +8,15 @@ public class IdleProduce : IMultiplier
 {
     public Multiplier multiplier { get; }
     NUMBER targetResourse { get; }
-    public IdleProduce(string Name, NUMBER targetResourse)
+    public IdleProduce(NumbersName Name, NUMBER targetResourse)
     {
         multiplier = new Multiplier();
         this.targetResourse = targetResourse;
-        DataContainer<IMultiplier>.GetInstance().SetDataByName(this, Name);
+        DataContainer<IdleProduce>.GetInstance().SetDataByName(this, Name);
         Observable.EveryUpdate().Subscribe(_ => ProducePerMinute());
     }
     void ProducePerMinute()
     {
-        targetResourse.IncrementNumber(multiplier.CaluculatedNumber(0));
+        targetResourse.IncrementNumber(multiplier.CaluculatedNumber(0), true);
     }
 }
