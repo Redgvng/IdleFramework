@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,8 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 28a1bab4e9314f44280367258d053140,
+    type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,6 +119,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -430,7 +433,6 @@ GameObject:
   - component: {fileID: 1900040068}
   - component: {fileID: 1900040067}
   - component: {fileID: 1900040066}
-  - component: {fileID: 1900040065}
   - component: {fileID: 1900040064}
   - component: {fileID: 1900040063}
   - component: {fileID: 1900040062}
@@ -479,32 +481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e87674be22c625e4f85c47cbbd19eabd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1900040065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900040061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e76f16023cc07429c9050a8862fa2c04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BGMSource: {fileID: 0}
-  positiveClip: {fileID: 0}
-  negativeClip: {fileID: 0}
-  craftClip1: {fileID: 8300000, guid: 8ebdf1a4d7df58a4394492c91f61da97, type: 3}
-  craftClip2: {fileID: 8300000, guid: 8d192f59975233a49937318350f15fb8, type: 3}
-  saleClip: {fileID: 8300000, guid: 5d910b6b55051474abd58e82f26e5726, type: 3}
-  undoClip: {fileID: 8300000, guid: 32545e8c6efab1f42be933c2e720803a, type: 3}
-  click1Clip: {fileID: 8300000, guid: 4f8801ecb8c01af4192aecd758f93c89, type: 3}
-  click3Clip: {fileID: 8300000, guid: eb295f79aa05198479732ed65ee60f7b, type: 3}
-  upClip: {fileID: 8300000, guid: 80a66ddc644d66b4da1afde1654c3053, type: 3}
-  endClip: {fileID: 8300000, guid: 9db10f0011b9e324abf02a4f0af9ce5d, type: 3}
-  levelUpClip: {fileID: 8300000, guid: dfb1d6398b417bc4ead2e37593c83b7f, type: 3}
-  jemDropClip: {fileID: 8300000, guid: ee6c1f23034025d40b8d28f782348db1, type: 3}
-  rareEnemyClip: {fileID: 8300000, guid: f07874c3eeb2a1046a119647eaf0d9ff, type: 3}
 --- !u!114 &1900040066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -520,28 +496,6 @@ MonoBehaviour:
   tick: 1
   SR:
     ascendTime: 
-    chip: 0
-    money: 0
-    tiar1Upgrade_Level: 0
-    AutoSpeedUpLevel: 0
-    IsGetFullOpen: 0
-    IsGetAutoOpen: 0
-    IsGetAutoReload: 0
-    IsOnAutoOpenToggle: 0
-    IsOnAutoReloadToggle: 0
-    IsAutoGetDouble: 0
-    IsOnAutoGetDoubleToggle: 0
-    IsAutoGetFullOpen: 0
-    IsOnAutoGetFullOpenToggle: 0
-    IsAutoGetAutoOpen: 0
-    IsOnAutoGetAutoOpenToggle: 0
-    IsAutoGetAutoReload: 0
-    IsOnAutoGetAutoReloadToggle: 0
-    IsAutoGetAutoSpeedUp: 0
-    IsOnAutoGetAutoSpeedUpToggle: 0
-    tiar2Upgrade_Level: 
-    tiar2Upgrade_SharedLevel: 0
-    role_stats_num: []
   S:
     lastTime: 
     birthDate: 
@@ -557,9 +511,11 @@ MonoBehaviour:
     isMissionCleared: 
     isStoryMissionCleared: 
     UpgradeLevels: 
+    item:
+      id: 0
+      quality: 0
   SD: {fileID: 1900040062}
   SoundEffectSource: {fileID: 0}
-  sound: {fileID: 1900040065}
   plainPopText: {fileID: 1922323526390994, guid: 6c0a0fff670f549aca4780217a00e11f,
     type: 3}
 --- !u!82 &1900040067
