@@ -9,10 +9,17 @@ using TMPro;
 
 namespace InventoryLibrary
 {
-	public class Inventory_Mono : MonoBehaviour
+	public enum Id
+    {
+		item1,
+		item2,
+		item3,
+		item4,
+		item5
+    }
+	public class Inventory_Mono : MonoBehaviour, IItemController
 	{
-
-		static readonly int maxSize = 100;
+		public int MaxSize { get => 100; }
 		Cal slotNum;
 	    public Item_Mono[] items;
 

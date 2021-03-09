@@ -11,11 +11,13 @@ using UniRx.Triggers;
 
 namespace InventoryLibrary
 {
-	public class Item_Mono : MonoBehaviour
+	public class Item_Mono : MonoBehaviour, IItem
 	{
-		IItem item;
-		// Use this for initialization
-		void Awake()
+		//idでアイテムを識別します。
+        public int id { get; set; }
+
+        // Use this for initialization
+        void Awake()
 		{
 
 		}
