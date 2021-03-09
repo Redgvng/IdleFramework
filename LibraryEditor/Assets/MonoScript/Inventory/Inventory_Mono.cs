@@ -8,7 +8,7 @@ using static Main;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
-
+//
 namespace InventoryLibrary
 {
 	public enum Id
