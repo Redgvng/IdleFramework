@@ -51,4 +51,19 @@ namespace InventoryLibrary
             Debug.Log("アイテムがいっぱいです");
         }
     }
+
+    public class SwapItemClass
+    {
+        public void SwapItem(IItem[] items, int swapping, int swapped)
+        {
+            if(items.Length < swapping || items.Length < swapped)
+            {
+                throw new System.Exception("インデックスがアイテムの長さよりも長いです");
+            }
+
+            var tempItem = items[swapped];
+            items[swapped] = items[swapping];
+            items[swapping] = tempItem;
+        }
+    }
 }
