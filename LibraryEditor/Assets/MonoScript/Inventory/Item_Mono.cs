@@ -15,6 +15,7 @@ namespace InventoryLibrary
 	{
 		//idでアイテムを識別します。
         public int id { get; set; }
+        int index => transform.GetSiblingIndex();
         public void Attach(IObserver observer)
         {
             observers.Add(observer);
@@ -25,28 +26,12 @@ namespace InventoryLibrary
         }
         public void Notify()
         {
+            if (observers.Count == 0) return;
             foreach (var item in observers)
             {
                 item.Update(this);
             }
         }
         List<IObserver> observers = new List<IObserver>();
-        // Use this for initialization
-        void Awake()
-		{
-
-		}
-
-		// Use this for initialization
-		void Start()
-		{
-
-		}
-
-		// Update is called once per frame
-		void Update()
-		{
-
-		}
 	}
 }
