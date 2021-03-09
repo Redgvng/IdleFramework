@@ -40,15 +40,16 @@ namespace InventoryLibrary
         public void Notify()
         {
             if (observers.Count == 0) return;
-            foreach (var _item in observers)
-            {   
-                Debug.Log(item.id);
-                _item._Update(this);
+            foreach (var item in observers)
+            {
+                Debug.Log("通知してます");
+                item._Update(this);
             }
         }
         void Start()
         {
-            this.ObserveEveryValueChanged(x => x._item.id).Subscribe(_ => Notify());
+            //this.ObserveEveryValueChanged(x => x._item.id).Subscribe(_ => Notify());
+            this.UpdateAsObservable().Subscribe(_ => Notify());
             Notify();
         }
         List<IObserver> observers = new List<IObserver>();
