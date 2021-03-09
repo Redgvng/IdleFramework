@@ -53,6 +53,16 @@ namespace InventoryLibrary
             Debug.Log("アイテムがいっぱいです");
         }
     }
+    public class SetItem
+    {
+        public void Set(ref IItem original, IItem item)
+        {
+            if (!original.isSet)
+                original = item;
+            else
+                Debug.Log("setできません");
+        }
+    }
 
     public class SwapItemClass : IItemStack
     {

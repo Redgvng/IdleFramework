@@ -18,8 +18,8 @@ namespace Tests
             {
                 items[i] = new Item(-1);
             }
-            SetItemClass set = new SetItemClass(items, new InventoryCtrl());
-            set.SetItem(new Item(0), 3);
+            var set = new SetItem();
+            set.Set(ref items[3], new Item(0));
             Assert.IsTrue(items[3].isSet);
         }
         [Test]
@@ -30,8 +30,8 @@ namespace Tests
             {
                 items[i] = new Item(i);
             }
-            SetItemClass set = new SetItemClass(items, new InventoryCtrl());
-            set.SetItem(new Item(20), 3);
+            var set = new SetItem();
+            set.Set(ref items[3], new Item(20));
             Assert.IsFalse(items[3].id == 20);
         }
         [Test]

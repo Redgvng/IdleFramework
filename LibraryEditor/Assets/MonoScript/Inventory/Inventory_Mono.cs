@@ -22,7 +22,7 @@ namespace InventoryLibrary
 	public class Inventory_Mono : MonoBehaviour, IItemController, IObserver
 	{
 		Cal slotNum;
-	    IItem[] items;
+	    Item_Mono[] items;
 		SetItemClass setItem;
 
 		public int MaxSize { get => 100; }
@@ -35,19 +35,15 @@ namespace InventoryLibrary
 		// Use this for initialization
 		void Awake()
 		{
-			var getitems = gameObject.GetComponentsInChildren<IGetItem>();
-			items = new IItem[getitems.Length];
-			Debug.Log(getitems.Length);
+			items = gameObject.GetComponentsInChildren<Item_Mono>();
             for (int i = 0; i < items.Length; i++)
             {
-				items[i] = getitems[i].item;
-				if (getitems[i] is ISubject)
+				if (items[i] is ISubject)
 				{
-					var subject = getitems[i] as ISubject;
+					var subject = items[i] as ISubject;
 					subject.Attach(this);
 				}
 			}
-			setItem = new SetItemClass(items, this);
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => GenerateItem());
 		}
 
@@ -62,10 +58,18 @@ namespace InventoryLibrary
 			 }
         }
 
+		//test用のメソッドです。
 		void GenerateItem()
         {
 			var item = new Item(UnityEngine.Random.Range(0, 5));
-			setItem.SetItem(item, 0);
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (!items[i].item.isSet)
+                {
+					items[i].Set(item);
+					return;
+                }
+            }
         }
 
     }
