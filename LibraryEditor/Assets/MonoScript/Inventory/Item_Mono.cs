@@ -13,7 +13,7 @@ namespace InventoryLibrary
 {
 	public class Item_Mono : MonoBehaviour
 	{
-
+		IItem item;
 		// Use this for initialization
 		void Awake()
 		{

@@ -14,14 +14,14 @@ namespace InventoryLibrary
 
 		static readonly int maxSize = 100;
 		Cal slotNum;
-		public Item_Mono[] items;
+	    public Item_Mono[] items;
 
 		[SerializeField]
 		Button GenerateItemButton;
 		// Use this for initialization
 		void Awake()
 		{
-
+			items = gameObject.GetComponentsInChildren<Item_Mono>();
 		}
 
 		// Use this for initialization

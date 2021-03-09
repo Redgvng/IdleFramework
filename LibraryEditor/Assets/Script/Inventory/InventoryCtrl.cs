@@ -5,25 +5,27 @@ using static Main;
 
 namespace InventoryLibrary
 {
-    public class InventoryCtrl
+    public class InventoryCtrl : IItemController
     {
-        public static readonly int maxSize = 100;
+        public int MaxSize { get => 100; }
         Cal slotNum;
         IItem[] items;
         SetItemClass setItem;
         public InventoryCtrl()
         {
             slotNum = new Cal(10);
-            items = new IItem[maxSize];
-            setItem = new SetItemClass(items);
+            items = new IItem[MaxSize];
+            setItem = new SetItemClass(items, this);
         }
     }
     public class SetItemClass
     {
         IItem[] items;
-        public SetItemClass(IItem[] items)
+        IItemController itemController;
+        public SetItemClass(IItem[] items, IItemController itemController)
         {
             this.items = items;
+            this.itemController = itemController;
         }
         //SetMethod 指定した番号にitemを入れる。番号を指定しない場合は順番に入れる。
         public void SetItem(Item item, int index)
@@ -35,7 +37,7 @@ namespace InventoryLibrary
         }
         void SetItemInOrder(Item item)
         {
-            for (int i = 0; i < InventoryCtrl.maxSize; i++)
+            for (int i = 0; i < itemController.MaxSize; i++)
             {
                 if (i >= items.Length)
                 {

@@ -3,4 +3,8 @@
     {
         void Stack(IItem[] items, int original, int stacked);
     }
+    public interface IItemController
+    {
+        int MaxSize { get; }
+    }
 }

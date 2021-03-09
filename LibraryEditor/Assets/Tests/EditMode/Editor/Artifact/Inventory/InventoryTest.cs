@@ -18,7 +18,7 @@ namespace Tests
             {
                 items[i] = new NullItem();
             }
-            SetItemClass set = new SetItemClass(items);
+            SetItemClass set = new SetItemClass(items, new InventoryCtrl());
             set.SetItem(new Item(), 3);
             Assert.IsFalse(items[3] is NullItem || items[3] == null);
         }
@@ -31,7 +31,7 @@ namespace Tests
                 items[i] = new NullItem();
             }
             items[3] = new Item();
-            SetItemClass set = new SetItemClass(items);
+            SetItemClass set = new SetItemClass(items, new InventoryCtrl());
             set.SetItem(new Item(), 3);
             Assert.IsFalse(items[0] is NullItem);
             Assert.IsTrue(items[1] is NullItem);
