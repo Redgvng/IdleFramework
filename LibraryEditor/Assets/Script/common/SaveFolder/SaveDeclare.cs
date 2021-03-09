@@ -25,6 +25,7 @@ public class SaveDeclare :MonoBehaviour {
 
 		//Upgrade 
 		//InitializeArray(ref main.S.UpgradeLevels, Enum.GetValues(typeof(Upgrade.ID)).Length);
+		InitializeArray(ref main.S.items, 100);
 	}
 
 	// Use this for initialization

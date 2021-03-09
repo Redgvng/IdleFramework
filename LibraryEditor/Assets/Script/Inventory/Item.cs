@@ -13,9 +13,10 @@ namespace InventoryLibrary
     [System.Serializable]
     public class Item : IItem
     {
-        public int id { get; set; }
+        [SerializeField]
+        int _id;
+        public int id { get => _id; set => _id = value; }
         public bool isSet => id >= 0;
-        public int quality;
         public Item(int id)
         {
             this.id = id;

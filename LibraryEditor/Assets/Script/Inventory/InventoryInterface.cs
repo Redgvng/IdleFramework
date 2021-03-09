@@ -7,4 +7,8 @@
     {
         int MaxSize { get; }
     }
+    public interface IGetItem
+    {
+        IItem item { get; }
+    }
 }
