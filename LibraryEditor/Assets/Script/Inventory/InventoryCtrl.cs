@@ -28,14 +28,14 @@ namespace InventoryLibrary
             this.itemController = itemController;
         }
         //SetMethod 指定した番号にitemを入れる。番号を指定しない場合は順番に入れる。
-        public void SetItem(Item item, int index)
+        public void SetItem(IItem item, int index)
         {
-            if (items[index] is NullItem)
+            if (!items[index].isSet)
                 items[index] = item;
             else
                 SetItemInOrder(item);
         }
-        void SetItemInOrder(Item item)
+        void SetItemInOrder(IItem item)
         {
             for (int i = 0; i < itemController.MaxSize; i++)
             {
@@ -44,7 +44,7 @@ namespace InventoryLibrary
                     Debug.Log("アイテムがいっぱいです");
                     return;
                 }
-                if (items[i] is NullItem)
+                if (!items[i].isSet)
                 {
                     items[i] = item;
                     return;
@@ -78,7 +78,7 @@ namespace InventoryLibrary
                 throw new System.Exception("インデックスがアイテムの長さよりも長いです");
             }
 
-            items[deleted] = new NullItem();
+            items[deleted].id = -1;
             return;
         }
     }

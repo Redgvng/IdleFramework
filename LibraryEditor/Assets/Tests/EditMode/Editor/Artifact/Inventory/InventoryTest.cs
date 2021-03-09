@@ -16,11 +16,11 @@ namespace Tests
             IItem[] items = new IItem[10];
             for (int i = 0; i < items.Length; i++)
             {
-                items[i] = new NullItem();
+                items[i] = new Item(-1);
             }
             SetItemClass set = new SetItemClass(items, new InventoryCtrl());
-            set.SetItem(new Item(), 3);
-            Assert.IsFalse(items[3] is NullItem || items[3] == null);
+            set.SetItem(new Item(0), 3);
+            Assert.IsTrue(items[3].isSet);
         }
         [Test]
         public void CannotSetItemIfAlreadyHave()
@@ -28,13 +28,11 @@ namespace Tests
             IItem[] items = new IItem[10];
             for (int i = 0; i < items.Length; i++)
             {
-                items[i] = new NullItem();
+                items[i] = new Item(i);
             }
-            items[3] = new Item();
             SetItemClass set = new SetItemClass(items, new InventoryCtrl());
-            set.SetItem(new Item(), 3);
-            Assert.IsFalse(items[0] is NullItem);
-            Assert.IsTrue(items[1] is NullItem);
+            set.SetItem(new Item(20), 3);
+            Assert.IsFalse(items[3].id == 20);
         }
         [Test]
         public void CanSwapItem()
@@ -42,8 +40,7 @@ namespace Tests
             IItem[] items = new IItem[10];
             for (int i = 0; i < items.Length; i++)
             {
-                items[i] = new Item();
-                items[i].id = i;
+                items[i] = new Item(i);
             }
             var arrangeItemClass = new SwapItemClass();
             arrangeItemClass.Stack(items, 3, 5);
@@ -56,10 +53,9 @@ namespace Tests
             IItem[] items = new IItem[10];
             for (int i = 0; i < items.Length; i++)
             {
-                items[i] = new Item();
-                items[i].id = i;
+                items[i] = new Item(i);
             }
-            items[7] = new NullItem();
+            items[7].id = -1;
             var arrangeItemClass = new SwapItemClass();
             arrangeItemClass.Stack(items, 3, 7);
             Assert.AreEqual(items[3].id, -1);
@@ -72,12 +68,11 @@ namespace Tests
             IItem[] items = new IItem[10];
             for (int i = 0; i < items.Length; i++)
             {
-                items[i] = new Item();
-                items[i].id = i;
+                items[i] = new Item(i);
             }
             var deleteItem = new DeleteItem();
             deleteItem.Delete(items, 3);
-            Assert.IsTrue(items[3] is NullItem);
+            Assert.IsTrue(items[3].id == -1);
         }
     }
 }

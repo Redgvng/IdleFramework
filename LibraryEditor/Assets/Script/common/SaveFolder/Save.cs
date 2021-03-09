@@ -28,6 +28,4 @@ public class Save
     /* libraryここまで */
     /* ここから永久に保存したい変数をpublicで宣言していく */
     /* 初期化はSave */
-
-    public Item item = new Item();
 }

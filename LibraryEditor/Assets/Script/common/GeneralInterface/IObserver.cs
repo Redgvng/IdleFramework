@@ -1,6 +1,6 @@
 ﻿public interface IObserver
 {
-    void Update(ISubject subject);
+    void _Update(ISubject subject);
 }
 public interface ISubject
 {

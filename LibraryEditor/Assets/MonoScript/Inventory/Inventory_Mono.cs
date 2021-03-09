@@ -41,7 +41,7 @@ namespace InventoryLibrary
 		}
 
 		//itemの状態を更新します。
-        public void Update(ISubject subject)
+        public void _Update(ISubject subject)
         {
             for (int i = 0; i < items.Length; i++)
             {

@@ -15,6 +15,7 @@ namespace InventoryLibrary
 	{
 		//idでアイテムを識別します。
         public int id { get; set; }
+        public bool isSet => id >= 0;
         int index => transform.GetSiblingIndex();
         public void Attach(IObserver observer)
         {
@@ -29,7 +30,7 @@ namespace InventoryLibrary
             if (observers.Count == 0) return;
             foreach (var item in observers)
             {
-                item.Update(this);
+                item._Update(this);
             }
         }
         List<IObserver> observers = new List<IObserver>();

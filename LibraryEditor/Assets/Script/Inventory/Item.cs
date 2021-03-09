@@ -8,16 +8,18 @@ namespace InventoryLibrary
     public interface IItem
     {
         int id { get; set; }
+        bool isSet { get; }
     }
     [System.Serializable]
     public class Item : IItem
     {
         public int id { get; set; }
+        public bool isSet => id >= 0;
         public int quality;
+        public Item(int id)
+        {
+            this.id = id;
+        }
     }
 
-    public class NullItem : IItem
-    {
-        public int id { get => -1; set { } }
-    }
 }
