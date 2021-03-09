@@ -53,6 +53,7 @@ namespace InventoryLibrary
 			 if(subject is Item_Mono)
 			 {
 		   		var item = subject as Item_Mono;
+				Debug.Log(item.item.isSet);
 				if (!item.item.isSet) item.gameObject.GetComponent<Image>().sprite = defaultSprite;
 				else item.gameObject.GetComponent<Image>().sprite = sprites[item.item.id];
 			 }
