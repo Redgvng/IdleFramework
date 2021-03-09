@@ -1018,8 +1018,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   costkind: 0
-  linear_initialValue: 0
-  linear_steep: 0
+  resourseNames: 0000000001000000
+  linear_initialValue: 3
+  linear_steep: 5
+  calway: 0
+  targetNumber: 0
+  targetCal: 0
+  effectKind: 3
 --- !u!1 &1633969574
 GameObject:
   m_ObjectHideFlags: 0
