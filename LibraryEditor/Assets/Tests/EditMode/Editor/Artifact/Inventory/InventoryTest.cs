@@ -46,7 +46,7 @@ namespace Tests
                 items[i].id = i;
             }
             var arrangeItemClass = new SwapItemClass();
-            arrangeItemClass.SwapItem(items, 3, 5);
+            arrangeItemClass.Stack(items, 3, 5);
             Assert.AreEqual(items[3].id, 5);
             Assert.AreEqual(items[5].id, 3);
         }
@@ -61,7 +61,7 @@ namespace Tests
             }
             items[7] = new NullItem();
             var arrangeItemClass = new SwapItemClass();
-            arrangeItemClass.SwapItem(items, 3, 7);
+            arrangeItemClass.Stack(items, 3, 7);
             Assert.AreEqual(items[3].id, -1);
             Assert.AreEqual(items[7].id, 3);
         }

@@ -52,9 +52,9 @@ namespace InventoryLibrary
         }
     }
 
-    public class SwapItemClass
+    public class SwapItemClass : IItemStack
     {
-        public void SwapItem(IItem[] items, int swapping, int swapped)
+        public void Stack(IItem[] items, int swapping, int swapped)
         {
             if(items.Length < swapping || items.Length < swapped)
             {
