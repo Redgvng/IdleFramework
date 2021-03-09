@@ -66,4 +66,18 @@ namespace InventoryLibrary
             items[swapping] = tempItem;
         }
     }
+
+    public class DeleteItem
+    {
+        public void Delete(IItem[] items, int deleted) 
+        {
+            if(items.Length < deleted)
+            {
+                throw new System.Exception("インデックスがアイテムの長さよりも長いです");
+            }
+
+            items[deleted] = new NullItem();
+            return;
+        }
+    }
 }
