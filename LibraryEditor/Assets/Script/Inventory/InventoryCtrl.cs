@@ -20,37 +20,36 @@ namespace InventoryLibrary
     }
     */
     //このクラスの役割は？アイテムの操作ができること。
-    public class ItemContollerTest : ISetItem<ItemTest>, ICreateitem<ItemTest>, IDeleteItem<ItemTest>
+    //これで再利用できないか・・・？
+    public class ItemContollerTest<T> : ISetItem<T>, ICreateitem<T>, IDeleteItem<T>
     {
-        ItemTest _item { get; set; }
-        public ItemTest GetItem() => _item;
-        public void SetItem(ItemTest item) => _item = item;
-        public bool IsItemSet { get => _item.id >= 0; }
+        public T GetItem() => setItem.GetItem();
+        public void SetItem(T item) => setItem.SetItem(item);
+        public bool IsItemSet { get;  }
         //constructor
         public ItemContollerTest()
         {
-            if (_item == null) _item = new ItemTest(-1);
-            createItem = new CreateItem<ItemTest>(this);
+            //if (_item == null) _item = new ItemTest(-1);
+            createItem = new CreateItem<T>(this);
         }
-        public ItemContollerTest(ICreateitem<ItemTest> createItem, IDeleteItem<ItemTest> deleteItem = null)
+        public ItemContollerTest(ISetItem<T> setItem, ICreateitem<T> createItem, IDeleteItem<T> deleteItem = null)
         {
+            this.setItem = setItem;
             this.createItem = createItem;
             this.deleteItem = deleteItem;
         }
 
         //PrivateMember
-        readonly ICreateitem<ItemTest> createItem;
-        readonly IDeleteItem<ItemTest> deleteItem;
-        public void Create(ItemTest item)
+        readonly ISetItem<T> setItem; 
+        readonly ICreateitem<T> createItem;
+        readonly IDeleteItem<T> deleteItem;
+        public void Create(T item)
         {
             createItem.Create(item);
         }
         public void Delete()
         {
-            if (deleteItem == null)
-                _item.id = -1;
-            else
-                deleteItem.Delete();
+            deleteItem.Delete();
         }
     }
     public class ItemTest
@@ -71,8 +70,6 @@ namespace InventoryLibrary
         }
         public void Create(T item)
         {
-            if (set.IsItemSet)
-                return;
             set.SetItem(item);
         }
     }

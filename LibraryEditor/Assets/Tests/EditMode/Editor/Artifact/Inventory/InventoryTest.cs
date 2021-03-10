@@ -13,7 +13,7 @@ namespace Tests
         [Test]
         public void CanSetItem()
         {
-            var itemCtrl = new ItemContollerTest();
+            var itemCtrl = new ItemContollerTest<ItemTest>();
             var item = new ItemTest(1);
             itemCtrl.SetItem(item);
             Assert.IsTrue(itemCtrl.GetItem().id == 1);
@@ -22,7 +22,7 @@ namespace Tests
         [Test]
         public void CannotSetItemIfAlreadyHave()
         {
-            var itemCtrl = new ItemContollerTest();
+            var itemCtrl = new ItemContollerTest<ItemTest>();
             var item = new ItemTest(1);
             itemCtrl.SetItem(item);
             var item2 = new ItemTest(2);

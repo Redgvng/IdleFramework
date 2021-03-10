@@ -11,7 +11,6 @@ using UniRx.Triggers;
 
 namespace InventoryLibrary
 {
-    //Save.Sに、自作のIItemクラスを宣言してください。ここではサンプルとしてItemクラスになっています。
 	public class Item_Mono : MonoBehaviour, ISubject
 	{
         IItem _item { 
@@ -59,6 +58,25 @@ namespace InventoryLibrary
                 _item = item;
             else
                 Debug.Log("setできません");
+        }
+    }
+    public class SetItemToSave<T> : ISetItem<T>
+    {
+        readonly int index;
+        readonly T[] saveArray;
+        public SetItemToSave(int index, T[] saveArray)
+        {
+            this.index = index;
+            this.saveArray = saveArray;
+        }
+        public T GetItem()
+        {
+            return saveArray[index];
+        }
+
+        public void SetItem(T item)
+        {
+            saveArray[index] = item;
         }
     }
 }

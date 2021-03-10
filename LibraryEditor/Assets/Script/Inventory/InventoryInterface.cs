@@ -10,7 +10,6 @@
     public interface ISetItem<T> : IGetItem<T>
     {
         void SetItem(T item);
-        bool IsItemSet { get; }
     }
     public interface ICreateitem<T>
     {
