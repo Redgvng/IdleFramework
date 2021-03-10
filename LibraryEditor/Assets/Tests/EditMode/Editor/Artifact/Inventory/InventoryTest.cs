@@ -13,14 +13,11 @@ namespace Tests
         [Test]
         public void CanSetItem()
         {
-            IItem[] items = new IItem[10];
-            for (int i = 0; i < items.Length; i++)
-            {
-                items[i] = new Item(-1);
-            }
-            var set = new SetItem();
-            set.Set(ref items[3], new Item(0));
-            Assert.IsTrue(items[3].isSet);
+            var itemCtrl = new ItemContollerTest();
+            var item = new ItemTest(0);
+            itemCtrl.SetItem(item);
+            Assert.IsTrue(itemCtrl.item.id == 0);
+            Assert.IsTrue(itemCtrl.IsItemSet);
         }
         [Test]
         public void CannotSetItemIfAlreadyHave()
@@ -31,6 +28,7 @@ namespace Tests
                 items[i] = new Item(i);
             }
             var set = new SetItem();
+
             set.Set(ref items[3], new Item(20));
             Assert.IsFalse(items[3].id == 20);
         }

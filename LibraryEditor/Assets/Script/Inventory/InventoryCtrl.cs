@@ -5,19 +5,37 @@ using static Main;
 
 namespace InventoryLibrary
 {
-    public class InventoryCtrl : IItemController
+    public class InventoryCtrl : IINventoryController
     {
         public int MaxSize { get => 100; }
         Cal slotNum;
-        IItem[] items;
-        SetItemClass setItem;
+        IItemContoroller<Item>[] items;
         public InventoryCtrl()
         {
             slotNum = new Cal(10);
-            items = new IItem[MaxSize];
-            setItem = new SetItemClass(items, this);
+            items = new IItemContoroller<Item>[MaxSize];
         }
     }
+    public class ItemContollerTest : IItemContoroller<ItemTest>
+    {
+        ItemTest _item { get; set; }
+        public bool IsItemSet { get => item.id >= 0; }
+        public ItemTest item { get => _item; }
+        public void SetItem(ItemTest item)
+        {
+            if (!IsItemSet)
+                _item = item;
+        }
+    }
+    public class ItemTest
+    {
+        public int id { get; set; }
+        public ItemTest(int id)
+        {
+            this.id = id;
+        }
+    }
+    /*
     public class SetItemClass
     {
         IItem[] items;
@@ -53,6 +71,7 @@ namespace InventoryLibrary
             Debug.Log("アイテムがいっぱいです");
         }
     }
+    */
     //refを使わないような設計にしたい
     public class SetItem
     {
