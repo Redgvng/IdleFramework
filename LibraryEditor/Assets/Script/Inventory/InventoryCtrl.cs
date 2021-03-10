@@ -5,9 +5,10 @@ using static Main;
 
 namespace InventoryLibrary
 {
-    //このクラスの役割は何？
+    //このクラスの役割は何？リポジトリの役割をする？いらんくね？
+    /*
     public class InventoryCtrl : IInventoryController
-    {
+    {   
         public int MaxSize { get => 100; }
         Cal slotNum;
         IItemContoroller<Item>[] items;
@@ -17,6 +18,7 @@ namespace InventoryLibrary
             items = new IItemContoroller<Item>[MaxSize];
         }
     }
+    */
     //このクラスの役割は？アイテムの操作ができること。
     public class ItemContollerTest : ISetItem<ItemTest>
     {

@@ -16,7 +16,7 @@ namespace Tests
             var itemCtrl = new ItemContollerTest();
             var item = new ItemTest(1);
             itemCtrl.SetItem(item);
-            Assert.IsTrue(itemCtrl.item.id == 1);
+            Assert.IsTrue(itemCtrl.GetItem().id == 1);
             Assert.IsTrue(itemCtrl.IsItemSet);
         }
         [Test]
@@ -27,7 +27,7 @@ namespace Tests
             itemCtrl.SetItem(item);
             var item2 = new ItemTest(2);
             itemCtrl.SetItem(item2);
-            Assert.IsFalse(itemCtrl.item.id == 2);
+            Assert.IsFalse(itemCtrl.GetItem().id == 2);
         }
         [Test]
         public void CanSwapItem()

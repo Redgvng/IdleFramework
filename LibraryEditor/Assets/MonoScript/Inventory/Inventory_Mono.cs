@@ -19,11 +19,11 @@ namespace InventoryLibrary
 		item4,
 		item5
     }
+	//状態の更新のみに使うべき・・・？
 	public class Inventory_Mono : MonoBehaviour, IInventoryController, IObserver
 	{
 		Cal slotNum;
 	    Item_Mono[] items;
-		SetItemClass setItem;
 
 		public int MaxSize { get => 100; }
 		public Sprite[] sprites;
