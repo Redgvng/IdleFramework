@@ -46,6 +46,13 @@ namespace InventoryLibrary
                 item._Update(this);
             }
         }
+        void Start()
+        {
+            this.ObserveEveryValueChanged(x => x._item.id).Subscribe(_ => Notify());
+            //this.UpdateAsObservable().Subscribe(_ => Notify());
+            Notify();
+        }
+        List<IObserver> observers = new List<IObserver>();
         public void Set(IItem item)
         {
             if (!_item.isSet)
@@ -53,12 +60,5 @@ namespace InventoryLibrary
             else
                 Debug.Log("setできません");
         }
-        void Start()
-        {
-            //this.ObserveEveryValueChanged(x => x._item.id).Subscribe(_ => Notify());
-            this.UpdateAsObservable().Subscribe(_ => Notify());
-            Notify();
-        }
-        List<IObserver> observers = new List<IObserver>();
-	}
+    }
 }

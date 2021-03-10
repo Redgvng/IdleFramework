@@ -53,6 +53,7 @@ namespace InventoryLibrary
             Debug.Log("アイテムがいっぱいです");
         }
     }
+    //refを使わないような設計にしたい
     public class SetItem
     {
         public void Set(ref IItem original, IItem item)
@@ -90,6 +91,10 @@ namespace InventoryLibrary
 
             items[deleted].id = -1;
             return;
+        }
+        public void DeleteThis(IItem item)
+        {
+            item.id = -1;
         }
     }
 }
