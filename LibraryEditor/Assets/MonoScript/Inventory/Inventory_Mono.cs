@@ -20,7 +20,7 @@ namespace InventoryLibrary
 		item5
     }
 	//状態の更新のみに使うべき・・・？
-	public class Inventory_Mono : MonoBehaviour, IInventoryController, IObserver
+	public class Inventory_Mono : MonoBehaviour, IObserver
 	{
 		Cal slotNum;
 	    Item_Mono[] items;

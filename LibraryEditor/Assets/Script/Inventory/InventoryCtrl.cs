@@ -20,21 +20,37 @@ namespace InventoryLibrary
     }
     */
     //このクラスの役割は？アイテムの操作ができること。
-    public class ItemContollerTest : ISetItem<ItemTest>
+    public class ItemContollerTest : ISetItem<ItemTest>, ICreateitem<ItemTest>, IDeleteItem<ItemTest>
     {
         ItemTest _item { get; set; }
         public ItemTest GetItem() => _item;
         public void SetItem(ItemTest item) => _item = item;
+        public bool IsItemSet { get => _item.id >= 0; }
         //constructor
         public ItemContollerTest()
         {
-            if (_item == null) _item = new ItemTest(-1); 
+            if (_item == null) _item = new ItemTest(-1);
+            createItem = new CreateItem<ItemTest>(this);
         }
-        public bool IsItemSet { get => _item.id >= 0; }
-        public void CreateItem(ItemTest item)
+        public ItemContollerTest(ICreateitem<ItemTest> createItem, IDeleteItem<ItemTest> deleteItem = null)
         {
-            if (!IsItemSet)
-                _item = item;
+            this.createItem = createItem;
+            this.deleteItem = deleteItem;
+        }
+
+        //PrivateMember
+        readonly ICreateitem<ItemTest> createItem;
+        readonly IDeleteItem<ItemTest> deleteItem;
+        public void Create(ItemTest item)
+        {
+            createItem.Create(item);
+        }
+        public void Delete()
+        {
+            if (deleteItem == null)
+                _item.id = -1;
+            else
+                deleteItem.Delete();
         }
     }
     public class ItemTest
@@ -46,7 +62,7 @@ namespace InventoryLibrary
         }
     }
 
-    public class CreateItem<T>
+    public class CreateItem<T> : ICreateitem<T>
     {
         ISetItem<T> set;
         public CreateItem(ISetItem<T> set)

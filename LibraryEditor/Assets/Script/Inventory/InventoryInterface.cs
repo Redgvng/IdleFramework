@@ -3,10 +3,6 @@
     {
         void Stack(IItem[] items, int original, int stacked);
     }
-    public interface IInventoryController
-    {
-        int MaxSize { get; }
-    }
     public interface IGetItem<T>
     {
         T GetItem();
@@ -15,5 +11,13 @@
     {
         void SetItem(T item);
         bool IsItemSet { get; }
+    }
+    public interface ICreateitem<T>
+    {
+        void Create(T item);
+    }
+    public interface IDeleteItem<T>
+    {
+        void Delete();
     }
 }
