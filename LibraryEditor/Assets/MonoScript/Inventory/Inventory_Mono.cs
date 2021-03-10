@@ -19,7 +19,7 @@ namespace InventoryLibrary
 		item4,
 		item5
     }
-	public class Inventory_Mono : MonoBehaviour, IINventoryController, IObserver
+	public class Inventory_Mono : MonoBehaviour, IInventoryController, IObserver
 	{
 		Cal slotNum;
 	    Item_Mono[] items;

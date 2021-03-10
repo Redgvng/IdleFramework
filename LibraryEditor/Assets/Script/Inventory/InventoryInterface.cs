@@ -3,14 +3,17 @@
     {
         void Stack(IItem[] items, int original, int stacked);
     }
-    public interface IINventoryController
+    public interface IInventoryController
     {
         int MaxSize { get; }
     }
-    public interface IItemContoroller<T>
+    public interface IGetItem<T>
     {
-        T item { get; }
-        bool IsItemSet { get; }
+        T GetItem();
+    }
+    public interface ISetItem<T> : IGetItem<T>
+    {
         void SetItem(T item);
+        bool IsItemSet { get; }
     }
 }

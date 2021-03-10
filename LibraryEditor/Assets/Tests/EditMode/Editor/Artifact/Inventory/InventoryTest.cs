@@ -14,23 +14,20 @@ namespace Tests
         public void CanSetItem()
         {
             var itemCtrl = new ItemContollerTest();
-            var item = new ItemTest(0);
+            var item = new ItemTest(1);
             itemCtrl.SetItem(item);
-            Assert.IsTrue(itemCtrl.item.id == 0);
+            Assert.IsTrue(itemCtrl.item.id == 1);
             Assert.IsTrue(itemCtrl.IsItemSet);
         }
         [Test]
         public void CannotSetItemIfAlreadyHave()
         {
-            IItem[] items = new IItem[10];
-            for (int i = 0; i < items.Length; i++)
-            {
-                items[i] = new Item(i);
-            }
-            var set = new SetItem();
-
-            set.Set(ref items[3], new Item(20));
-            Assert.IsFalse(items[3].id == 20);
+            var itemCtrl = new ItemContollerTest();
+            var item = new ItemTest(1);
+            itemCtrl.SetItem(item);
+            var item2 = new ItemTest(2);
+            itemCtrl.SetItem(item2);
+            Assert.IsFalse(itemCtrl.item.id == 2);
         }
         [Test]
         public void CanSwapItem()

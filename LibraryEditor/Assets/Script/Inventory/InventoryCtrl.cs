@@ -5,7 +5,8 @@ using static Main;
 
 namespace InventoryLibrary
 {
-    public class InventoryCtrl : IINventoryController
+    //このクラスの役割は何？
+    public class InventoryCtrl : IInventoryController
     {
         public int MaxSize { get => 100; }
         Cal slotNum;
@@ -16,12 +17,19 @@ namespace InventoryLibrary
             items = new IItemContoroller<Item>[MaxSize];
         }
     }
-    public class ItemContollerTest : IItemContoroller<ItemTest>
+    //このクラスの役割は？アイテムの操作ができること。
+    public class ItemContollerTest : ISetItem<ItemTest>
     {
         ItemTest _item { get; set; }
-        public bool IsItemSet { get => item.id >= 0; }
-        public ItemTest item { get => _item; }
-        public void SetItem(ItemTest item)
+        public ItemTest GetItem() => _item;
+        public void SetItem(ItemTest item) => _item = item;
+        //constructor
+        public ItemContollerTest()
+        {
+            if (_item == null) _item = new ItemTest(-1); 
+        }
+        public bool IsItemSet { get => _item.id >= 0; }
+        public void CreateItem(ItemTest item)
         {
             if (!IsItemSet)
                 _item = item;
@@ -35,52 +43,19 @@ namespace InventoryLibrary
             this.id = id;
         }
     }
-    /*
-    public class SetItemClass
+
+    public class CreateItem<T>
     {
-        IItem[] items;
-        IItemController itemController;
-        public SetItemClass(IItem[] items, IItemController itemController)
+        ISetItem<T> set;
+        public CreateItem(ISetItem<T> set)
         {
-            this.items = items;
-            this.itemController = itemController;
+            this.set = set;
         }
-        //SetMethod 指定した番号にitemを入れる。番号を指定しない場合は順番に入れる。
-        public void SetItem(IItem item, int index)
+        public void Create(T item)
         {
-            if (!items[index].isSet)
-                items[index] = item;
-            else
-                SetItemInOrder(item);
-        }
-        void SetItemInOrder(IItem item)
-        {
-            for (int i = 0; i < itemController.MaxSize; i++)
-            {
-                if (i >= items.Length)
-                {
-                    Debug.Log("アイテムがいっぱいです");
-                    return;
-                }
-                if (!items[i].isSet)
-                {
-                    items[i] = item;
-                    return;
-                }
-            }
-            Debug.Log("アイテムがいっぱいです");
-        }
-    }
-    */
-    //refを使わないような設計にしたい
-    public class SetItem
-    {
-        public void Set(ref IItem original, IItem item)
-        {
-            if (!original.isSet)
-                original = item;
-            else
-                Debug.Log("setできません");
+            if (set.IsItemSet)
+                return;
+            set.SetItem(item);
         }
     }
 
