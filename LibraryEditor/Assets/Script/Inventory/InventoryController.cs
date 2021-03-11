@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace InventoryLibrary
 {
-    public class CreateItemByOrder<T> : ICreateItem<T> where T : Item
+    public class CreateItemByOrder<T> : ICreateItem<T> where T : IItem
     {
         readonly ICreateItem<T>[] createItems;
         public CreateItemByOrder(ICreateItem<T>[] createItems)

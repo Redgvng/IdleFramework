@@ -87,4 +87,16 @@ namespace InventoryLibrary
             saveArray[index] = item;
         }
     }
+    public class NullSetItem<T> : ISetItem<T>
+    {
+        T item { get; set; }
+        public T GetItem()
+        {
+            return item;
+        }
+        public void SetItem(T item)
+        {
+            this.item = item;
+        }
+    }
 }

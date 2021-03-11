@@ -4,11 +4,25 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using InventoryLibrary;
+using System.Linq;
 
 namespace Tests
 {
     public class InventoryTest
     {
+        [Test]
+        public void CanCreateItemFromInventoryByOrder()
+        {
+            //ICreateItem<ItemTest>[] creates = new CreateItem<ItemTest>[100];
+            var creates  = Enumerable.Range(0, 100).Select(_ => new CreateItem<ItemTest>(new NullSetItem<ItemTest>())).ToArray();
+            creates.Select(x => new CreateItem<ItemTest>(new NullSetItem<ItemTest>()));
+            var create = new CreateItemByOrder<ItemTest>(creates);
+            creates[0].Create(new ItemTest(1));
+            creates[1].Create(new ItemTest(1));
+            create.Create(new ItemTest(2));
+            Assert.IsTrue(creates[2] != null);
+            Assert.IsFalse(creates[2].CanSet);
+        }
         [Test]
         public void CanSwapItem()
         {
