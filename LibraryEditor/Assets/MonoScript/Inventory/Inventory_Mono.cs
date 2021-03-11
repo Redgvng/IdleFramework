@@ -36,6 +36,7 @@ namespace InventoryLibrary
 		void Awake()
 		{
 			items = gameObject.GetComponentsInChildren<Item_Mono>();
+			var create = new CreateItemByOrder<Item>(items);
             for (int i = 0; i < items.Length; i++)
             {
 				if (items[i] is ISubject)
@@ -44,7 +45,7 @@ namespace InventoryLibrary
 					subject.Attach(this);
 				}
 			}
-			GenerateItemButton.OnClickAsObservable().Subscribe(_ => GenerateItem());
+			GenerateItemButton.OnClickAsObservable().Subscribe(_ => create.Create(new Item(UnityEngine.Random.Range(0,5))));
 		}
 
 		//itemの状態を更新します。
@@ -57,16 +58,5 @@ namespace InventoryLibrary
 				else item.gameObject.GetComponent<Image>().sprite = sprites[item.GetItem().id];
 			 }
         }
-
-		//test用のメソッドです。
-		void GenerateItem()
-        {
-			var item = new Item(UnityEngine.Random.Range(0, 5));
-            for (int i = 0; i < items.Length; i++)
-            {
-			    items[i].Create(item);
-            }
-        }
-
     }
 }

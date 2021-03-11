@@ -14,8 +14,7 @@ namespace Tests
         public void CanCreateItemFromInventoryByOrder()
         {
             //ICreateItem<ItemTest>[] creates = new CreateItem<ItemTest>[100];
-            var creates  = Enumerable.Range(0, 100).Select(_ => new CreateItem<ItemTest>(new NullSetItem<ItemTest>())).ToArray();
-            creates.Select(x => new CreateItem<ItemTest>(new NullSetItem<ItemTest>()));
+            var creates  = Enumerable.Range(0, 100).Select(_ => new CreateItem<ItemTest>(new NullSetItem<ItemTest>(new ItemTest(-1)))).ToArray();
             var create = new CreateItemByOrder<ItemTest>(creates);
             creates[0].Create(new ItemTest(1));
             creates[1].Create(new ItemTest(1));

@@ -90,6 +90,10 @@ namespace InventoryLibrary
     public class NullSetItem<T> : ISetItem<T>
     {
         T item { get; set; }
+        public NullSetItem(T nullItem)
+        {
+            item = nullItem;
+        }
         public T GetItem()
         {
             return item;
