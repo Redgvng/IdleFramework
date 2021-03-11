@@ -37,17 +37,5 @@ namespace Tests
             Assert.AreEqual(items[7].id, 3);
         }
 
-        [Test]
-        public void CanItemDeleted()
-        {
-            IItem[] items = new IItem[10];
-            for (int i = 0; i < items.Length; i++)
-            {
-                items[i] = new Item(i);
-            }
-            var deleteItem = new DeleteItem();
-            deleteItem.Delete(items, 3);
-            Assert.IsTrue(items[3].id == -1);
-        }
     }
 }

@@ -30,10 +30,10 @@ namespace InventoryLibrary
             if (observers.Count == 0) return;
             foreach (var item in observers)
             {
-                Debug.Log("通知してます");
                 item._Update(this);
             }
         }
+        List<IObserver> observers = new List<IObserver>();
         void Start()
         {
             var nullItem = new Item(-1);
@@ -41,7 +41,7 @@ namespace InventoryLibrary
             this.ObserveEveryValueChanged(x => GetItem().id).Subscribe(_ => Notify());
             Notify();
         }
-        List<IObserver> observers = new List<IObserver>();
+
         public void Create(Item item)
         {
             controller.Create(item);
