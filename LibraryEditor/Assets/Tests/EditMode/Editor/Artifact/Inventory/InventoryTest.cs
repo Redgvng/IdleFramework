@@ -9,26 +9,6 @@ namespace Tests
 {
     public class InventoryTest
     {
-        //class DummyItem : IItem { }
-        [Test]
-        public void CanSetItem()
-        {
-            var itemCtrl = new ItemContollerTest<ItemTest>();
-            var item = new ItemTest(1);
-            itemCtrl.SetItem(item);
-            Assert.IsTrue(itemCtrl.GetItem().id == 1);
-            Assert.IsTrue(itemCtrl.IsItemSet);
-        }
-        [Test]
-        public void CannotSetItemIfAlreadyHave()
-        {
-            var itemCtrl = new ItemContollerTest<ItemTest>();
-            var item = new ItemTest(1);
-            itemCtrl.SetItem(item);
-            var item2 = new ItemTest(2);
-            itemCtrl.SetItem(item2);
-            Assert.IsFalse(itemCtrl.GetItem().id == 2);
-        }
         [Test]
         public void CanSwapItem()
         {

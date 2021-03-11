@@ -11,23 +11,12 @@ using UniRx.Triggers;
 
 namespace InventoryLibrary
 {
-	public class Item_Mono : MonoBehaviour, ISubject
+	public class Item_Mono : MonoBehaviour, ISubject, ISetItem<Item>, ICreateItem<Item>,IDeleteItem<Item>
 	{
-        IItem _item { 
-            get 
-            {
-                if (main.S.items[index] == null)
-                {
-                    main.S.items[index] = new Item(-1);
-                    return main.S.items[index];
-                }
-                else 
-                return main.S.items[index];
-            } 
-            set => main.S.items[index] = (Item)value; 
-        }
-        public IItem item => _item;
+
         int index => transform.GetSiblingIndex();
+
+        ItemContollerTestForMono<Item> controller;
         public void Attach(IObserver observer)
         {
             observers.Add(observer);
@@ -47,30 +36,49 @@ namespace InventoryLibrary
         }
         void Start()
         {
-            this.ObserveEveryValueChanged(x => x._item.id).Subscribe(_ => Notify());
-            //this.UpdateAsObservable().Subscribe(_ => Notify());
+            var nullItem = new Item(-1);
+            controller = new ItemContollerTestForMono<Item>(index, main.S.items, nullItem);
+            this.ObserveEveryValueChanged(x => GetItem().id).Subscribe(_ => Notify());
             Notify();
         }
         List<IObserver> observers = new List<IObserver>();
-        public void Set(IItem item)
+        public void Create(Item item)
         {
-            if (!_item.isSet)
-                _item = item;
-            else
-                Debug.Log("setできません");
+            controller.Create(item);
         }
+        public void Delete()
+        {
+            controller.Delete();
+        }
+        public void SetItem(Item item)
+        {
+            controller.SetItem(item);
+        }
+        public Item GetItem()
+        {
+            return controller.GetItem();
+        }
+        public bool CanSet => controller.CanSet;
     }
     public class SetItemToSave<T> : ISetItem<T>
     {
         readonly int index;
         readonly T[] saveArray;
-        public SetItemToSave(int index, T[] saveArray)
+        readonly T nullItem;
+        public SetItemToSave(int index, T[] saveArray, T nullItem)
         {
             this.index = index;
             this.saveArray = saveArray;
+            this.nullItem = nullItem;
+            if (saveArray[index] == null)
+                saveArray[index] = nullItem;
         }
         public T GetItem()
         {
+            if(saveArray[index] == null)
+            {
+                return nullItem;
+            }
             return saveArray[index];
         }
 

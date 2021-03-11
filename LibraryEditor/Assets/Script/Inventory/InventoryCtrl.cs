@@ -5,43 +5,20 @@ using static Main;
 
 namespace InventoryLibrary
 {
-    //このクラスの役割は何？リポジトリの役割をする？いらんくね？
-    /*
-    public class InventoryCtrl : IInventoryController
-    {   
-        public int MaxSize { get => 100; }
-        Cal slotNum;
-        IItemContoroller<Item>[] items;
-        public InventoryCtrl()
-        {
-            slotNum = new Cal(10);
-            items = new IItemContoroller<Item>[MaxSize];
-        }
-    }
-    */
-    //このクラスの役割は？アイテムの操作ができること。
-    //これで再利用できないか・・・？
-    public class ItemContollerTest<T> : ISetItem<T>, ICreateitem<T>, IDeleteItem<T>
+    public class ItemContollerTestForMono<T> : ISetItem<T>, ICreateItem<T>, IDeleteItem<T> where T : IItem
     {
         public T GetItem() => setItem.GetItem();
         public void SetItem(T item) => setItem.SetItem(item);
-        public bool IsItemSet { get;  }
+        public bool CanSet { get => GetItem().id == -1; }
         //constructor
-        public ItemContollerTest()
+        public ItemContollerTestForMono(int index, T[] saveArray, T nullItem)
         {
-            //if (_item == null) _item = new ItemTest(-1);
+            setItem = new SetItemToSave<T>(index, saveArray, nullItem);
             createItem = new CreateItem<T>(this);
         }
-        public ItemContollerTest(ISetItem<T> setItem, ICreateitem<T> createItem, IDeleteItem<T> deleteItem = null)
-        {
-            this.setItem = setItem;
-            this.createItem = createItem;
-            this.deleteItem = deleteItem;
-        }
-
         //PrivateMember
-        readonly ISetItem<T> setItem; 
-        readonly ICreateitem<T> createItem;
+        readonly ISetItem<T> setItem;
+        readonly ICreateItem<T> createItem;
         readonly IDeleteItem<T> deleteItem;
         public void Create(T item)
         {
@@ -52,7 +29,7 @@ namespace InventoryLibrary
             deleteItem.Delete();
         }
     }
-    public class ItemTest
+    public class ItemTest : IItem
     {
         public int id { get; set; }
         public ItemTest(int id)
@@ -61,16 +38,35 @@ namespace InventoryLibrary
         }
     }
 
-    public class CreateItem<T> : ICreateitem<T>
+    public class CreateItem<T> : ICreateItem<T> where T : IItem
     {
         ISetItem<T> set;
+
+        public bool CanSet => set.GetItem().id < 0;
+
         public CreateItem(ISetItem<T> set)
         {
             this.set = set;
         }
         public void Create(T item)
         {
-            set.SetItem(item);
+            if(set.GetItem() == null || set.GetItem().id < 0)
+                set.SetItem(item);
+        }
+    }
+
+    public class DeleteItem<T> : IDeleteItem<T> where T : IItem
+    {
+        ISetItem<T> set;
+        T nullItem;
+        public DeleteItem(ISetItem<T> set, T nullItem)
+        {
+            this.set = set;
+            this.nullItem = nullItem;
+        }
+        public void Delete()
+        {
+            set.SetItem(nullItem);
         }
     }
 

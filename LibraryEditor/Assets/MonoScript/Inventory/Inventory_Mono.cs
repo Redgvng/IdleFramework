@@ -53,9 +53,8 @@ namespace InventoryLibrary
 			 if(subject is Item_Mono)
 			 {
 		   		var item = subject as Item_Mono;
-				Debug.Log(item.item.isSet);
-				if (!item.item.isSet) item.gameObject.GetComponent<Image>().sprite = defaultSprite;
-				else item.gameObject.GetComponent<Image>().sprite = sprites[item.item.id];
+				if (item.CanSet) item.gameObject.GetComponent<Image>().sprite = defaultSprite;
+				else item.gameObject.GetComponent<Image>().sprite = sprites[item.GetItem().id];
 			 }
         }
 
@@ -65,11 +64,7 @@ namespace InventoryLibrary
 			var item = new Item(UnityEngine.Random.Range(0, 5));
             for (int i = 0; i < items.Length; i++)
             {
-                if (!items[i].item.isSet)
-                {
-					items[i].Set(item);
-					return;
-                }
+			    items[i].Create(item);
             }
         }
 

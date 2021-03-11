@@ -8,7 +8,6 @@ namespace InventoryLibrary
     public interface IItem
     {
         int id { get; set; }
-        bool isSet { get; }
     }
     [System.Serializable]
     public class Item : IItem
@@ -22,5 +21,4 @@ namespace InventoryLibrary
             this.id = id;
         }
     }
-
 }

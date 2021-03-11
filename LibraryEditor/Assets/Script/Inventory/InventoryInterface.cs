@@ -7,15 +7,16 @@
     {
         T GetItem();
     }
-    public interface ISetItem<T> : IGetItem<T>
+    public interface ISetItem<T> : IGetItem<T> 
     {
         void SetItem(T item);
     }
-    public interface ICreateitem<T>
+    public interface ICreateItem<T> 
     {
         void Create(T item);
+        bool CanSet { get; }
     }
-    public interface IDeleteItem<T>
+    public interface IDeleteItem<T> 
     {
         void Delete();
     }
