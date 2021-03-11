@@ -7,10 +7,10 @@ using InventoryLibrary;
 
 namespace Tests
 {
-    public class InventoryMonoTest : IPrebuildSetup
+    public class ItemMonoTest : IPrebuildSetup
     {
         ItemTest[] saveArray = new ItemTest[itemNum];
-        ItemTest nullItem;
+        ItemTest nullItem = new ItemTest(-1);
         const int itemNum = 100;
 
         public void Setup()
@@ -28,6 +28,16 @@ namespace Tests
             itemController.Create(item);
             Assert.IsTrue(saveArray[3] != null);
             Assert.AreEqual(5, saveArray[3].id);
+        }
+        [Test]
+        public void CanDeleteItem()
+        {
+            int index = 3;
+
+            var itemController = new ItemContollerTestForMono<ItemTest>(index, saveArray, nullItem);
+            itemController.Delete();
+            Debug.Log(itemController.GetItem() == null);
+            Assert.AreEqual(-1, itemController.GetItem().id);
         }
     }
 }
