@@ -8,6 +8,7 @@ using static Main;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
+using System.Linq;
 //
 namespace InventoryLibrary
 {
@@ -29,7 +30,6 @@ namespace InventoryLibrary
 		public Sprite[] sprites;
 		public Sprite defaultSprite;
 
-
 		[SerializeField]
 		Button GenerateItemButton;
 		// Use this for initialization
@@ -46,6 +46,9 @@ namespace InventoryLibrary
 				}
 			}
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => create.Create(new Item(UnityEngine.Random.Range(0,5))));
+			items.ToList()
+                .ForEach(x => x.gameObject.GetOrAddComponent<ObservableEventTrigger>().OnPointerDownAsObservable()
+			    .Subscribe((UnityEngine.EventSystems.PointerEventData obj) => { if (obj.pointerId == -2) x.Delete(); }));
 		}
 
 		//itemの状態を更新します。
