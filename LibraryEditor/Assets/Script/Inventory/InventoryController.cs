@@ -29,18 +29,18 @@ namespace InventoryLibrary
         }
     }
 
-    public class SwapItemClass : IItemStack
+    public class SwapItem<T> where T : IItem
     {
-        public void Stack(IItem[] items, int swapping, int swapped)
+        readonly ISetItem<T> swappedItem;
+        public SwapItem(ISetItem<T> setItem = null)
         {
-            if (items.Length < swapping || items.Length < swapped)
-            {
-                throw new System.Exception("インデックスがアイテムの長さよりも長いです");
-            }
-
-            var tempItem = items[swapped];
-            items[swapped] = items[swapping];
-            items[swapping] = tempItem;
+            this.swappedItem = setItem == null ? new NullSetItem<T>() : setItem;
+        }
+        public void Stack(ISetItem<T> swapping)
+        {
+            var tempItem = swappedItem.GetItem();
+            swappedItem.SetItem(swapping.GetItem());
+            swapping.SetItem(tempItem);
         }
     }
 }

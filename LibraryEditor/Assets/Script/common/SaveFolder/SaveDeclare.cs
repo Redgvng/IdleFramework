@@ -18,11 +18,6 @@ public class SaveDeclare :MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		InitializeArray(ref main.S.MissionId, 10);
-		InitializeArray(ref main.S.StoryMissionId, 10);
-		InitializeArray(ref main.S.isMissionCleared, 200);
-		InitializeArray(ref main.S.isStoryMissionCleared, 200);
-
 		//Upgrade 
 		//InitializeArray(ref main.S.UpgradeLevels, Enum.GetValues(typeof(Upgrade.ID)).Length);
 		InitializeArray(ref main.S.items, 100);

@@ -57,8 +57,7 @@ namespace InventoryLibrary
 			 if(subject is Item_Mono)
 			 {
 		   		var item = subject as Item_Mono;
-				if (item.CanSet) item.gameObject.GetComponent<Image>().sprite = defaultSprite;
-				else item.gameObject.GetComponent<Image>().sprite = sprites[item.GetItem().id];
+				item.gameObject.GetComponent<Image>().sprite = sprites[item.GetItem().id];
 			 }
         }
     }

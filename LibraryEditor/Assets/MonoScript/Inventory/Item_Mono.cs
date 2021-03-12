@@ -36,8 +36,7 @@ namespace InventoryLibrary
         List<IObserver> observers = new List<IObserver>();
         void Start()
         {
-            var nullItem = new Item(-1);
-            controller = new ItemContollerTestForMono<Item>(index, main.S.items, nullItem);
+            controller = new ItemContollerTestForMono<Item>(index, main.S.items);
             this.ObserveEveryValueChanged(x => GetItem().id).Subscribe(_ => Notify());
             Notify();
         }
@@ -64,21 +63,13 @@ namespace InventoryLibrary
     {
         readonly int index;
         readonly T[] saveArray;
-        readonly T nullItem;
-        public SetItemToSave(int index, T[] saveArray, T nullItem)
+        public SetItemToSave(int index, T[] saveArray)
         {
             this.index = index;
             this.saveArray = saveArray;
-            this.nullItem = nullItem;
-            if (saveArray[index] == null)
-                saveArray[index] = nullItem;
         }
         public T GetItem()
         {
-            if(saveArray[index] == null)
-            {
-                return nullItem;
-            }
             return saveArray[index];
         }
 
@@ -87,13 +78,9 @@ namespace InventoryLibrary
             saveArray[index] = item;
         }
     }
-    public class NullSetItem<T> : ISetItem<T>
+    public class NullSetItem<T> : ISetItem<T> 
     {
         T item { get; set; }
-        public NullSetItem(T nullItem)
-        {
-            item = nullItem;
-        }
         public T GetItem()
         {
             return item;

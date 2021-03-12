@@ -1812,6 +1812,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &875295000
 Canvas:
   m_ObjectHideFlags: 0
@@ -2141,6 +2142,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &952967717
 Canvas:
   m_ObjectHideFlags: 0
@@ -2616,6 +2618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -2761,6 +2764,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &1140845797
 Canvas:
   m_ObjectHideFlags: 0
@@ -3734,6 +3738,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &1496428171
 Canvas:
   m_ObjectHideFlags: 0
@@ -4459,6 +4464,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &1864212067
 Canvas:
   m_ObjectHideFlags: 0
@@ -4531,11 +4537,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: 21300000, guid: 62b428491b51d4641a595567b05a06e6, type: 3}
+  - {fileID: 21300000, guid: cafa65b533064bb41af155578c21d219, type: 3}
   - {fileID: 21300000, guid: 9c953cd75e693324398da736b2e1d67f, type: 3}
   - {fileID: 21300000, guid: d1ed3b7dc4e61994ca9d06a077abe286, type: 3}
   - {fileID: 21300000, guid: bc5ee7049b4d18945ad050c34aca7614, type: 3}
   - {fileID: 21300000, guid: dcff1da5ede4b5a47bc5d59c929fb423, type: 3}
+  - {fileID: 21300000, guid: 71af20111c9a32d4c8af25b9991bf5af, type: 3}
   defaultSprite: {fileID: 21300000, guid: cafa65b533064bb41af155578c21d219, type: 3}
   GenerateItemButton: {fileID: 1094505888}
 --- !u!1001 &1906589265

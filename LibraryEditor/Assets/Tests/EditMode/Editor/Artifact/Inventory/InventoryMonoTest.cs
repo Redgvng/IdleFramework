@@ -7,37 +7,31 @@ using InventoryLibrary;
 
 namespace Tests
 {
-    public class ItemMonoTest : IPrebuildSetup
+    public class ItemMonoTest
     {
         ItemTest[] saveArray = new ItemTest[itemNum];
-        ItemTest nullItem = new ItemTest(-1);
         const int itemNum = 100;
-
-        public void Setup()
-        {
-            nullItem = new ItemTest(-1);
-        }
-
         [Test]
         public void CanSetItem()
         {
             int index = 3;
 
-            var itemController = new ItemContollerTestForMono<ItemTest>(index, saveArray, nullItem);
+            var itemController = new ItemContollerTestForMono<ItemTest>(index, saveArray);
             var item = new ItemTest(5);
             itemController.Create(item);
-            Assert.IsTrue(saveArray[3] != null);
+            Assert.IsTrue(saveArray[3].id != 0);
             Assert.AreEqual(5, saveArray[3].id);
         }
+
         [Test]
         public void CanDeleteItem()
         {
             int index = 3;
 
-            var itemController = new ItemContollerTestForMono<ItemTest>(index, saveArray, nullItem);
+            var itemController = new ItemContollerTestForMono<ItemTest>(index, saveArray);
             itemController.Delete();
-            Debug.Log(itemController.GetItem() == null);
-            Assert.AreEqual(-1, itemController.GetItem().id);
+            Debug.Log(itemController.GetItem().id != 0);
+            Assert.AreEqual(0, itemController.GetItem().id);
         }
     }
 }
