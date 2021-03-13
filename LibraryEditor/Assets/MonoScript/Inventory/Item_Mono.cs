@@ -11,7 +11,7 @@ using UniRx.Triggers;
 
 namespace InventoryLibrary
 {
-	public class Item_Mono : MonoBehaviour, ISubject, ISetItem<Item>, ICreateItem<Item>,IDeleteItem<Item>
+	public class Item_Mono : MonoBehaviour, ISubject, ISetItem<Item>, ICreateItem<Item>,IDeleteItem<Item>,IStackItem<Item>
 	{
 
         int index => transform.GetSiblingIndex();
@@ -34,9 +34,11 @@ namespace InventoryLibrary
             }
         }
         List<IObserver> observers = new List<IObserver>();
+        IStackItem<Item> swapItem;
         void Start()
         {
             controller = new ItemContollerTestForMono<Item>(index, main.S.items);
+            swapItem = new SwapItem<Item>(this);
             this.ObserveEveryValueChanged(x => GetItem().id).Subscribe(_ => Notify());
             Notify();
         }
@@ -56,6 +58,10 @@ namespace InventoryLibrary
         public Item GetItem()
         {
             return controller.GetItem();
+        }
+        public void Stack(ISetItem<Item> stack)
+        {
+            swapItem.Stack(stack);
         }
         public bool CanSet => controller.CanSet;
     }

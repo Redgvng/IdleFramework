@@ -25,6 +25,7 @@ namespace InventoryLibrary
 	{
 		Cal slotNum;
 	    Item_Mono[] items;
+		ISetItem<Item> inputItem = default;
 
 		public int MaxSize { get => 100; }
 		public Sprite[] sprites;
@@ -32,10 +33,14 @@ namespace InventoryLibrary
 
 		[SerializeField]
 		Button GenerateItemButton;
+
+		//クリック関係
+		IClickAction<Item_Mono> clickAction;
 		// Use this for initialization
 		void Awake()
 		{
 			items = gameObject.GetComponentsInChildren<Item_Mono>();
+			clickAction = new SwapItemFromInventory<Item_Mono, Item>();
 			var create = new CreateItemByOrder<Item>(items);
             for (int i = 0; i < items.Length; i++)
             {
@@ -48,7 +53,12 @@ namespace InventoryLibrary
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => create.Create(new Item(UnityEngine.Random.Range(0,5))));
 			items.ToList()
                 .ForEach(x => x.gameObject.GetOrAddComponent<ObservableEventTrigger>().OnPointerDownAsObservable()
-			    .Subscribe((UnityEngine.EventSystems.PointerEventData obj) => { if (obj.pointerId == -2) x.Delete(); }));
+			    .Subscribe((UnityEngine.EventSystems.PointerEventData obj) => {
+                    if(obj.pointerId == -1)
+                    {
+						clickAction.Click(x);
+                    } 
+                    if (obj.pointerId == -2) x.Delete(); }));
 		}
 
 		//itemの状態を更新します。

@@ -28,19 +28,4 @@ namespace InventoryLibrary
             }
         }
     }
-
-    public class SwapItem<T> where T : IItem
-    {
-        readonly ISetItem<T> swappedItem;
-        public SwapItem(ISetItem<T> setItem = null)
-        {
-            this.swappedItem = setItem == null ? new NullSetItem<T>() : setItem;
-        }
-        public void Stack(ISetItem<T> swapping)
-        {
-            var tempItem = swappedItem.GetItem();
-            swappedItem.SetItem(swapping.GetItem());
-            swapping.SetItem(tempItem);
-        }
-    }
 }
