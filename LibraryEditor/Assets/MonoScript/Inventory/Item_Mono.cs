@@ -11,29 +11,13 @@ using UniRx.Triggers;
 
 namespace InventoryLibrary
 {
-	public class Item_Mono : MonoBehaviour, ISubject, ISetItem<Item>, ICreateItem<Item>,IDeleteItem<Item>,IStackItem<Item>
+	public class Item_Mono : Subject, ISetItem<Item>, ICreateItem<Item>,IDeleteItem<Item>,IStackItem<Item>
 	{
 
         int index => transform.GetSiblingIndex();
 
         ItemContollerTestForMono<Item> controller;
-        public void Attach(IObserver observer)
-        {
-            observers.Add(observer);
-        }
-        public void Detach(IObserver observer)
-        {
-            observers.Remove(observer);
-        }
-        public void Notify()
-        {
-            if (observers.Count == 0) return;
-            foreach (var item in observers)
-            {
-                item._Update(this);
-            }
-        }
-        List<IObserver> observers = new List<IObserver>();
+
         IStackItem<Item> swapItem;
         void Start()
         {

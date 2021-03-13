@@ -20,20 +20,14 @@ namespace InventoryLibrary
 		item4,
 		item5
     }
-	//状態の更新のみに使うべき・・・？
-	public class Inventory_Mono : MonoBehaviour, IObserver
+	public class Inventory_Mono : Subject
 	{
 		Cal slotNum;
 	    Item_Mono[] items;
 		ISetItem<Item> inputItem = default;
-
 		public int MaxSize { get => 100; }
-		public Sprite[] sprites;
-		public Sprite defaultSprite;
-
 		[SerializeField]
 		Button GenerateItemButton;
-
 		//クリック関係
 		IClickAction<Item_Mono> clickAction;
 		// Use this for initialization
@@ -42,14 +36,6 @@ namespace InventoryLibrary
 			items = gameObject.GetComponentsInChildren<Item_Mono>();
 			clickAction = new SwapItemFromInventory<Item_Mono, Item>();
 			var create = new CreateItemByOrder<Item>(items);
-            for (int i = 0; i < items.Length; i++)
-            {
-				if (items[i] is ISubject)
-				{
-					var subject = items[i] as ISubject;
-					subject.Attach(this);
-				}
-			}
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => create.Create(new Item(UnityEngine.Random.Range(0,5))));
 			items.ToList()
                 .ForEach(x => x.gameObject.GetOrAddComponent<ObservableEventTrigger>().OnPointerDownAsObservable()
@@ -59,16 +45,8 @@ namespace InventoryLibrary
 						clickAction.Click(x);
                     } 
                     if (obj.pointerId == -2) x.Delete(); }));
+			this.ObserveEveryValueChanged(_ => inputItem.GetItem().id).Subscribe(_ => Notify());
 		}
-
-		//itemの状態を更新します。
-        public void _Update(ISubject subject)
-        {
-			 if(subject is Item_Mono)
-			 {
-		   		var item = subject as Item_Mono;
-				item.gameObject.GetComponent<Image>().sprite = sprites[item.GetItem().id];
-			 }
-        }
+        
     }
 }
