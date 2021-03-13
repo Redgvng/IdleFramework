@@ -98,6 +98,10 @@ namespace Tests
             Assert.AreEqual(1, items[5].GetItem().id);
             Assert.AreEqual(0, items[3].GetItem().id);
         }
+        [Test]
+        public void CanExpandSlot()
+        {
 
+        }
     }
 }
