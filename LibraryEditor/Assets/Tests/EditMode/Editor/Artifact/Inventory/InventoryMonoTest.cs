@@ -16,7 +16,7 @@ namespace Tests
         {
             int index = 3;
 
-            var itemController = new ItemContollerTestForMono<ItemTest>(index, saveArray);
+            var itemController = new ItemContollerTestForMono<ItemTest>(index, saveArray, new Cal(10));
             var item = new ItemTest(5);
             itemController.Create(item);
             Assert.IsTrue(saveArray[3].id != 0);
@@ -28,7 +28,7 @@ namespace Tests
         {
             int index = 3;
 
-            var itemController = new ItemContollerTestForMono<ItemTest>(index, saveArray);
+            var itemController = new ItemContollerTestForMono<ItemTest>(index, saveArray, new Cal(10));
             itemController.Delete();
             Debug.Log(itemController.GetItem().id != 0);
             Assert.AreEqual(0, itemController.GetItem().id);

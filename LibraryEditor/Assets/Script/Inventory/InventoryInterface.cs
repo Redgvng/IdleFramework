@@ -10,7 +10,6 @@
     public interface ICreateItem<T> 
     {
         void Create(T item);
-        bool CanSet { get; }
     }
     public interface IDeleteItem<T> 
     {

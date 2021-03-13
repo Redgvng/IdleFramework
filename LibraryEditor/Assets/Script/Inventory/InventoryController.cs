@@ -12,19 +12,11 @@ namespace InventoryLibrary
         {
             this.createItems = createItems;
         }
-        public bool CanSet => createItems.Any(x => x.CanSet);
         public void Create(T item)
         {
-            if (!CanSet)
-                return;
-
             for (int i = 0; i < createItems.Length; i++)
             {
-                if (createItems[i].CanSet)
-                {
-                    createItems[i].Create(item);
-                    return;
-                }
+                 createItems[i].Create(item);
             }
         }
     }

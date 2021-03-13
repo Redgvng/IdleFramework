@@ -20,6 +20,7 @@ namespace Tests
             create.Create(new ItemTest(2));
             Assert.IsTrue(creates[2] != null);
             Assert.IsFalse(creates[2].CanSet);
+            Assert.IsFalse(creates.ToList().All(x => x != null));
         }
         [Test]
         public void CanCreateItemFromInventoryByOrderWithSaveArray()

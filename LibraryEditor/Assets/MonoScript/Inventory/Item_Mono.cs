@@ -21,7 +21,7 @@ namespace InventoryLibrary
         IStackItem<Item> swapItem;
         void Start()
         {
-            controller = new ItemContollerTestForMono<Item>(index, main.S.items);
+            controller = new ItemContollerTestForMono<Item>(index, main.S.items, new Cal(10));
             swapItem = new SwapItem<Item>(this);
             this.ObserveEveryValueChanged(x => GetItem().id).Subscribe(_ => Notify());
             Notify();
