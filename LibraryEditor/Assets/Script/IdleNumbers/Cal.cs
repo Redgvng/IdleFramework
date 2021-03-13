@@ -46,6 +46,11 @@ public class Cal
     {
         this.initialValue = initialValue;
     }
+    public Cal(double initialValue, CalsName Name)
+    {
+        this.initialValue = initialValue;
+        DataContainer<Cal>.GetInstance().SetDataByName(this, Name);
+    }
 
     public double GetValue()
     {

@@ -4537,6 +4537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe63d50703b97548b54e5dc45979805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  items: []
   GenerateItemButton: {fileID: 1094505888}
 --- !u!114 &1864212071
 MonoBehaviour:
@@ -4557,7 +4558,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 859e3bda274d44a4bbdd40e475344983, type: 3}
   - {fileID: 21300000, guid: 4c725c96947400941b3763ba87c789cc, type: 3}
   - {fileID: 21300000, guid: 0bf032c8f7af85c448c8088e1af4e72d, type: 3}
-  defaultSprite: {fileID: 0}
+  defaultSprite: {fileID: 21300000, guid: cafa65b533064bb41af155578c21d219, type: 3}
+  lockedSprite: {fileID: 21300000, guid: ae6ae6193a9ac4d42bf65cc080e72149, type: 3}
 --- !u!1001 &1906589265
 PrefabInstance:
   m_ObjectHideFlags: 0

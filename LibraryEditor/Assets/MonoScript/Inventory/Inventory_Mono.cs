@@ -22,10 +22,9 @@ namespace InventoryLibrary
     }
 	public class Inventory_Mono : Subject
 	{
-		Cal slotNum;
-	    Item_Mono[] items;
+	    public Item_Mono[] items;
 		ISetItem<Item> inputItem = default;
-		public int MaxSize { get => 100; }
+		public Cal SlotNum = new Cal(10);
 		[SerializeField]
 		Button GenerateItemButton;
 		//クリック関係
@@ -46,7 +45,7 @@ namespace InventoryLibrary
                     } 
                     if (obj.pointerId == -2) x.Delete(); }));
 			this.ObserveEveryValueChanged(_ => inputItem?.GetItem().id).Subscribe(_ => Notify());
-		}
-        
+			this.ObserveEveryValueChanged(_ => SlotNum.GetValue()).Subscribe(_ => Notify());
+		}      
     }
 }
