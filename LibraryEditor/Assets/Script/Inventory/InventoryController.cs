@@ -5,19 +5,34 @@ using System.Linq;
 
 namespace InventoryLibrary
 {
-    public class CreateItemByOrder<T> : ICreateItem<T> where T : IItem
+    public class CreateItemByOrder<T> : ISetItem<T> where T : IItem
     {
-        readonly ICreateItem<T>[] createItems;
-        public CreateItemByOrder(ICreateItem<T>[] createItems)
+        readonly ISetItem<T>[] setItems;
+        readonly Cal SlotNum;
+        public bool CanSet => setItems.Where((item, index) => index < SlotNum.GetValue()).Any(x => x.CanSet);
+        public CreateItemByOrder(ISetItem<T>[] setItems, Cal SlotNum)
         {
-            this.createItems = createItems;
+            this.setItems = setItems;
+            this.SlotNum = SlotNum;
         }
-        public void Create(T item)
+        public void SetItem(T item)
         {
-            for (int i = 0; i < createItems.Length; i++)
+            if (!CanSet)
+                return;
+
+            for (int i = 0; i < setItems.Length; i++)
             {
-                 createItems[i].Create(item);
+                if (setItems[i].CanSet)
+                {
+                    var create = new CreateItem<T>(setItems[i]);
+                    create.SetItem(item);
+                    return;
+                }
             }
+        }
+        public T GetItem()
+        {
+            return setItems[0].GetItem();
         }
     }
 }

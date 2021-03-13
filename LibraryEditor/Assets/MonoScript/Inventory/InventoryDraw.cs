@@ -24,6 +24,7 @@ namespace InventoryLibrary
         //itemの状態を更新します。
         public void _Update(ISubject subject)
         {
+            Debug.Log(subject is Inventory_Mono);
             if (subject is Item_Mono)
             {
                 var item = subject as Item_Mono;

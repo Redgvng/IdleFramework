@@ -5,34 +5,35 @@ using static Main;
 
 namespace InventoryLibrary
 {
-    public class ItemContollerTestForMono<T> : ISetItem<T>, ICreateItem<T>, IDeleteItem<T> where T : struct, IItem
+    public class ItemContollerTestForMono<T> : ISetItem<T>, IDeleteItem<T>, IStackItem<T> where T : struct, IItem
     {
         public T GetItem() => setItem.GetItem();
         public void SetItem(T item) => setItem.SetItem(item);
         public bool CanSet { get => GetItem().id == 0; }
         //constructor
-        public ItemContollerTestForMono(int index, T[] saveArray, Cal SlotNum)
+        public ItemContollerTestForMono(int index, T[] saveArray)
         {
-            setItem = new SetItemToSave<T>(index, saveArray);
-            createItem = new CreateItemWithLimitedSlot<T>(this,SlotNum);
-            deleteItem = new DeleteItem<T>(setItem);
+            var setSave = new SetItemToSave<T>(index, saveArray);
+            setItem = setSave;
+            deleteItem = new DeleteItem<T>(setSave);
+            swapItem = new SwapItem<T>(setSave);
         }
         //PrivateMember
         readonly ISetItem<T> setItem;
-        readonly ICreateItem<T> createItem;
         readonly IDeleteItem<T> deleteItem;
-        public void Create(T item)
-        {
-            createItem.Create(item);
-        }
+        IStackItem<T> swapItem;
         public void Delete()
         {
             deleteItem.Delete();
         }
+        public void Stack(ISetItem<T> item)
+        {
+            swapItem.Stack(item);
+        }
     }
 
 
-    public class CreateItem<T> : ICreateItem<T> where T : IItem
+    public class CreateItem<T> : ISetItem<T> where T : IItem
     {
         ISetItem<T> set;
         public bool CanSet => set.GetItem().id == 0;
@@ -41,31 +42,15 @@ namespace InventoryLibrary
         {
             this.set = set;
         }
-        public void Create(T item)
+        public void SetItem(T item)
         {
-            if (CanSet) 
+            if (CanSet)
                 set.SetItem(item);
         }
-    }
 
-    public class CreateItemWithLimitedSlot<T> : ICreateItem<T> where T : IItem
-    {
-        ISetItem<T> set;
-        Cal SlotNum;
-        public bool CanSet => set.GetItem().id == 0;
-        public CreateItemWithLimitedSlot(ISetItem<T> set, Cal SlotNum)
+        public T GetItem()
         {
-            this.set = set;
-            this.SlotNum = SlotNum;
-        }
-        public void Create(T item)
-        {
-            if(set.GetItem().id > SlotNum.GetValue() || !CanSet)
-            {
-                Debug.Log("スロットがいっぱいです。");
-                return;
-            }
-            set.SetItem(item);
+            return set.GetItem();
         }
     }
 

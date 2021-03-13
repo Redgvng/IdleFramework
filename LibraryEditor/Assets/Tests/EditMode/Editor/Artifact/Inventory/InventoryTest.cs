@@ -14,23 +14,23 @@ namespace Tests
         public void CanCreateItemFromInventoryByOrder()
         {
             var creates  = Enumerable.Range(0, 100).Select(_ => new CreateItem<ItemTest>(new NullSetItem<ItemTest>())).ToArray();
-            var create = new CreateItemByOrder<ItemTest>(creates);
-            creates[0].Create(new ItemTest(1));
-            creates[1].Create(new ItemTest(1));
-            create.Create(new ItemTest(2));
+            var create = new CreateItemByOrder<ItemTest>(creates, new Cal(10));
+            creates[0].SetItem(new ItemTest(1));
+            creates[1].SetItem(new ItemTest(1));
+            create.SetItem(new ItemTest(2));
             Assert.IsTrue(creates[2] != null);
             Assert.IsFalse(creates[2].CanSet);
-            Assert.IsFalse(creates.ToList().All(x => x != null));
+            Assert.IsTrue(creates[3].GetItem().id != 2);
         }
         [Test]
         public void CanCreateItemFromInventoryByOrderWithSaveArray()
         {
             var saveArray = new Item[100];
             var creates = Enumerable.Range(0, 100).Select(id => new CreateItem<Item>(new SetItemToSave<Item>(id,saveArray))).ToArray();
-            var create = new CreateItemByOrder<Item>(creates);
-            creates[0].Create(new Item(1));
-            creates[1].Create(new Item(1));
-            create.Create(new Item(2));
+            var create = new CreateItemByOrder<Item>(creates, new Cal(10));
+            creates[0].SetItem(new Item(1));
+            creates[1].SetItem(new Item(1));
+            create.SetItem(new Item(2));
             Assert.AreEqual(1, saveArray[0].id);
             Assert.AreEqual(1, saveArray[1].id);
             Assert.AreEqual(2, saveArray[2].id);
@@ -51,6 +51,7 @@ namespace Tests
         {
             IStackItem<ItemTest> stack;
             ISetItem<ItemTest> set;
+            public bool CanSet => true;
             public dummy(IStackItem<ItemTest> stack , ISetItem<ItemTest> set)
             {
                 this.stack = stack;
@@ -100,7 +101,7 @@ namespace Tests
             Assert.AreEqual(0, items[3].GetItem().id);
         }
         [Test]
-        public void CanExpandSlot()
+        public void ShouldNotDuplicateWhenSwap()
         {
 
         }

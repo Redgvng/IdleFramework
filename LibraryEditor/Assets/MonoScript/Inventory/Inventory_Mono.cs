@@ -34,8 +34,8 @@ namespace InventoryLibrary
 		{
 			items = gameObject.GetComponentsInChildren<Item_Mono>();
 			clickAction = new SwapItemFromInventory<Item_Mono, Item>();
-			var create = new CreateItemByOrder<Item>(items);
-			GenerateItemButton.OnClickAsObservable().Subscribe(_ => create.Create(new Item(UnityEngine.Random.Range(1,6))));
+			var create = new CreateItemByOrder<Item>(items, SlotNum);
+			GenerateItemButton.OnClickAsObservable().Subscribe(_ => create.SetItem(new Item(UnityEngine.Random.Range(1,6))));
 			items.ToList()
                 .ForEach(x => x.gameObject.GetOrAddComponent<ObservableEventTrigger>().OnPointerDownAsObservable()
 			    .Subscribe((UnityEngine.EventSystems.PointerEventData obj) => {

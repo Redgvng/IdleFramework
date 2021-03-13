@@ -6,11 +6,14 @@
     public interface ISetItem<T> : IGetItem<T> 
     {
         void SetItem(T item);
+        bool CanSet { get; }
     }
+    /*
     public interface ICreateItem<T> 
     {
         void Create(T item);
     }
+    */
     public interface IDeleteItem<T> 
     {
         void Delete();
