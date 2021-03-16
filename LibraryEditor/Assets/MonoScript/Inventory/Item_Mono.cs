@@ -11,41 +11,20 @@ using UniRx.Triggers;
 
 namespace InventoryLibrary
 {
-	public class Item_Mono : MonoBehaviour, ISubject, ISetItem<Item>, ICreateItem<Item>,IDeleteItem<Item>
+	public class Item_Mono : Subject, ISetItem<Item>, IDeleteItem<Item>,IStackItem<Item>
 	{
 
         int index => transform.GetSiblingIndex();
 
         ItemContollerTestForMono<Item> controller;
-        public void Attach(IObserver observer)
-        {
-            observers.Add(observer);
-        }
-        public void Detach(IObserver observer)
-        {
-            observers.Remove(observer);
-        }
-        public void Notify()
-        {
-            if (observers.Count == 0) return;
-            foreach (var item in observers)
-            {
-                item._Update(this);
-            }
-        }
-        List<IObserver> observers = new List<IObserver>();
+
         void Start()
         {
-            var nullItem = new Item(-1);
-            controller = new ItemContollerTestForMono<Item>(index, main.S.items, nullItem);
+            controller = new ItemContollerTestForMono<Item>(index, main.S.items);
             this.ObserveEveryValueChanged(x => GetItem().id).Subscribe(_ => Notify());
             Notify();
         }
 
-        public void Create(Item item)
-        {
-            controller.Create(item);
-        }
         public void Delete()
         {
             controller.Delete();
@@ -58,27 +37,24 @@ namespace InventoryLibrary
         {
             return controller.GetItem();
         }
+        public void Stack(ISetItem<Item> stack)
+        {
+            controller.Stack(stack);
+        }
         public bool CanSet => controller.CanSet;
     }
     public class SetItemToSave<T> : ISetItem<T>
     {
         readonly int index;
         readonly T[] saveArray;
-        readonly T nullItem;
-        public SetItemToSave(int index, T[] saveArray, T nullItem)
+        public bool CanSet => true;
+        public SetItemToSave(int index, T[] saveArray)
         {
             this.index = index;
             this.saveArray = saveArray;
-            this.nullItem = nullItem;
-            if (saveArray[index] == null)
-                saveArray[index] = nullItem;
         }
         public T GetItem()
         {
-            if(saveArray[index] == null)
-            {
-                return nullItem;
-            }
             return saveArray[index];
         }
 
@@ -87,13 +63,10 @@ namespace InventoryLibrary
             saveArray[index] = item;
         }
     }
-    public class NullSetItem<T> : ISetItem<T>
+    public class NullSetItem<T> : ISetItem<T> 
     {
         T item { get; set; }
-        public NullSetItem(T nullItem)
-        {
-            item = nullItem;
-        }
+        public bool CanSet => true;
         public T GetItem()
         {
             return item;

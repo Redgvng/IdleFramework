@@ -16,12 +16,6 @@ public class Save
     public float BGMVolume;
 
     public long ascendPoint;
-    //ミッション
-    public int MissionClearNum;
-    public int StoryMissionClearNum;
-    public int[] MissionId;
-    public int[] StoryMissionId;
-    public bool[] isMissionCleared, isStoryMissionCleared;
 
     //アップグレード
     public int[] UpgradeLevels;

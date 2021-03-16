@@ -1812,6 +1812,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &875295000
 Canvas:
   m_ObjectHideFlags: 0
@@ -2141,6 +2142,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &952967717
 Canvas:
   m_ObjectHideFlags: 0
@@ -2616,6 +2618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -2761,6 +2764,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &1140845797
 Canvas:
   m_ObjectHideFlags: 0
@@ -3734,6 +3738,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &1496428171
 Canvas:
   m_ObjectHideFlags: 0
@@ -4340,6 +4345,7 @@ GameObject:
   - component: {fileID: 1864212069}
   - component: {fileID: 1864212068}
   - component: {fileID: 1864212070}
+  - component: {fileID: 1864212071}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -4459,6 +4465,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &1864212067
 Canvas:
   m_ObjectHideFlags: 0
@@ -4530,14 +4537,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe63d50703b97548b54e5dc45979805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprites:
-  - {fileID: 21300000, guid: 62b428491b51d4641a595567b05a06e6, type: 3}
-  - {fileID: 21300000, guid: 9c953cd75e693324398da736b2e1d67f, type: 3}
-  - {fileID: 21300000, guid: d1ed3b7dc4e61994ca9d06a077abe286, type: 3}
-  - {fileID: 21300000, guid: bc5ee7049b4d18945ad050c34aca7614, type: 3}
-  - {fileID: 21300000, guid: dcff1da5ede4b5a47bc5d59c929fb423, type: 3}
-  defaultSprite: {fileID: 21300000, guid: cafa65b533064bb41af155578c21d219, type: 3}
+  items: []
   GenerateItemButton: {fileID: 1094505888}
+--- !u!114 &1864212071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864212062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ca046cf1de74fd1af6f111abf3e247, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 21300000, guid: cafa65b533064bb41af155578c21d219, type: 3}
+  - {fileID: 21300000, guid: 9c953cd75e693324398da736b2e1d67f, type: 3}
+  - {fileID: 21300000, guid: 250a646201ba8804284745720648a774, type: 3}
+  - {fileID: 21300000, guid: 859e3bda274d44a4bbdd40e475344983, type: 3}
+  - {fileID: 21300000, guid: 4c725c96947400941b3763ba87c789cc, type: 3}
+  - {fileID: 21300000, guid: 0bf032c8f7af85c448c8088e1af4e72d, type: 3}
+  defaultSprite: {fileID: 21300000, guid: cafa65b533064bb41af155578c21d219, type: 3}
+  lockedSprite: {fileID: 21300000, guid: ae6ae6193a9ac4d42bf65cc080e72149, type: 3}
 --- !u!1001 &1906589265
 PrefabInstance:
   m_ObjectHideFlags: 0

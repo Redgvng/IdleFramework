@@ -5,42 +5,34 @@ using System.Linq;
 
 namespace InventoryLibrary
 {
-    public class CreateItemByOrder<T> : ICreateItem<T> where T : IItem
+    public class CreateItemByOrder<T> : ISetItem<T> where T : IItem
     {
-        readonly ICreateItem<T>[] createItems;
-        public CreateItemByOrder(ICreateItem<T>[] createItems)
+        readonly ISetItem<T>[] setItems;
+        readonly Cal SlotNum;
+        public bool CanSet => setItems.Where((item, index) => index < SlotNum.GetValue()).Any(x => x.CanSet);
+        public CreateItemByOrder(ISetItem<T>[] setItems, Cal SlotNum)
         {
-            this.createItems = createItems;
+            this.setItems = setItems;
+            this.SlotNum = SlotNum;
         }
-        public bool CanSet => createItems.Any(x => x.CanSet);
-        public void Create(T item)
+        public void SetItem(T item)
         {
             if (!CanSet)
                 return;
 
-            for (int i = 0; i < createItems.Length; i++)
+            for (int i = 0; i < setItems.Length; i++)
             {
-                if (createItems[i].CanSet)
+                if (setItems[i].CanSet)
                 {
-                    createItems[i].Create(item);
+                    var create = new CreateItem<T>(setItems[i]);
+                    create.SetItem(item);
                     return;
                 }
             }
         }
-    }
-
-    public class SwapItemClass : IItemStack
-    {
-        public void Stack(IItem[] items, int swapping, int swapped)
+        public T GetItem()
         {
-            if (items.Length < swapping || items.Length < swapped)
-            {
-                throw new System.Exception("インデックスがアイテムの長さよりも長いです");
-            }
-
-            var tempItem = items[swapped];
-            items[swapped] = items[swapping];
-            items[swapping] = tempItem;
+            return setItems[0].GetItem();
         }
     }
 }
