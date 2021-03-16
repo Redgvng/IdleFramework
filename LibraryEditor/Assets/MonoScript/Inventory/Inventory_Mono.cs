@@ -22,17 +22,23 @@ namespace InventoryLibrary
     }
 	public class Inventory_Mono : Subject
 	{
-	    public Item_Mono[] items;
+		//Readonly
+		public const int inventoryNum = 100;
+		//Private
 		ISetItem<Item> inputItem = default;
+		IClickAction<Item_Mono> clickAction;
+
+		//Public
+		public int InventoryId;
+		public Item_Mono[] items;
 		public Cal SlotNum = new Cal(10);
+
 		[SerializeField]
 		Button GenerateItemButton;
-		//クリック関係
-		IClickAction<Item_Mono> clickAction;
+
 		// Use this for initialization
 		void Awake()
 		{
-			items = gameObject.GetComponentsInChildren<Item_Mono>();
 			clickAction = new SwapItemFromInventory<Item_Mono, Item>();
 			var create = new CreateItemByOrder<Item>(items, SlotNum);
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => create.SetItem(new Item(UnityEngine.Random.Range(1,6))));

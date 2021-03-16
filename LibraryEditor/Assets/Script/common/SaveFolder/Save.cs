@@ -23,5 +23,5 @@ public class Save
     /* ここから永久に保存したい変数をpublicで宣言していく */
     /* 初期化はSave */
 
-    public Item[] items;
+    public Item[] items, equippedItems;
 }

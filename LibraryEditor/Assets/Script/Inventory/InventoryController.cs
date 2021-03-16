@@ -17,6 +17,7 @@ namespace InventoryLibrary
         }
         public void SetItem(T item)
         {
+            Debug.Log(CanSet);
             if (!CanSet)
                 return;
 

@@ -15,12 +15,24 @@ namespace InventoryLibrary
 	{
 
         int index => transform.GetSiblingIndex();
-
         ItemContollerTestForMono<Item> controller;
+        //セーブする配列の設定
+        Item[] saveArray { get
+            {
+                switch (transform.parent.GetComponent<Inventory_Mono>().InventoryId)
+                {
+                    case 0:
+                        return main.S.items;
+                    case 1:
+                        return main.S.equippedItems;
+                    default:
+                        return null;
+                }
+            } }
 
         void Start()
         {
-            controller = new ItemContollerTestForMono<Item>(index, main.S.items);
+            controller = new ItemContollerTestForMono<Item>(index, saveArray);
             this.ObserveEveryValueChanged(x => GetItem().id).Subscribe(_ => Notify());
             Notify();
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 namespace InventoryLibrary
 {
@@ -21,10 +22,10 @@ namespace InventoryLibrary
             items.ToList().ForEach(x => x.Attach(this));
             inventoryController.Attach(this);
         }
+
         //itemの状態を更新します。
         public void _Update(ISubject subject)
         {
-            Debug.Log(subject is Inventory_Mono);
             if (subject is Item_Mono)
             {
                 var item = subject as Item_Mono;
