@@ -56,7 +56,7 @@ namespace InventoryLibrary
         }
     }
 
-    public class DeleteItem<T> : IDeleteItem<T> where T : IItem
+    public class DeleteItem<T> : IDeleteItem<T>
     {
         ISetItem<T> set;
         T nullItem;
