@@ -2,19 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Runtime.Serialization;
 
 namespace InventoryLibrary
 {
-    /*
     public interface IItem
     {
         int id { get; set; }
     }
-    */
-
     [System.Serializable]
-    public struct Item 
+    public struct Item : IItem
     {
         [SerializeField]
         int _id;
@@ -24,15 +20,13 @@ namespace InventoryLibrary
         {
             _id = id;
         }
-
     }
-    public struct ItemTest
+    public struct ItemTest : IItem
     {
         public int id { get; set; }
         public ItemTest(int id)
         {
             this.id = id;
         }
-
     }
 }

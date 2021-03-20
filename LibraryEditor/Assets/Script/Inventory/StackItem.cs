@@ -4,14 +4,14 @@ using UnityEngine;
 using System;
 
 namespace InventoryLibrary {
-    public class SwapItem : IStackItem
+    public class SwapItem<T> : IStackItem<T> where T : IItem
     {
-        readonly ISetItem swappedItem;
-        public SwapItem(ISetItem setItem = null)
+        readonly ISetItem<T> swappedItem;
+        public SwapItem(ISetItem<T> setItem = null)
         {
-            this.swappedItem = setItem == null ? new NullSetItem() : setItem;
+            this.swappedItem = setItem == null ? new NullSetItem<T>() : setItem;
         }
-        public void Stack(ISetItem swapping)
+        public void Stack(ISetItem<T> swapping)
         {
             var tempItem = swappedItem.GetItem();
             swappedItem.SetItem(swapping.GetItem());
@@ -19,27 +19,28 @@ namespace InventoryLibrary {
         }
     }
 
-    public class SwapItemFromInventory<T> : IClickAction<T>
+    public class SwapItemFromInventory<T, U> : IClickAction<T> where U : struct, IItem
     {
-        ISetItem inputItem;
+        ISetItem<U> inputItem;
 
         public void Click(T stackItem)
         {
-            Debug.Log(stackItem is SwapItem);
-            Debug.Log(stackItem is ISetItem);
-            if (!(stackItem is SwapItem && stackItem is ISetItem))
+            if (!(stackItem is SwapItem<U> && stackItem is ISetItem<U>))
                 return;
 
-            var swap = stackItem as SwapItem;
+
+            var swap = stackItem as SwapItem<U>;
 
             if (inputItem != null && inputItem.GetItem().id != 0)
             {
+                Debug.Log("ひっくり返したよ");
                 swap.Stack(inputItem);
                 inputItem = default;
             }
             else
             {
-                inputItem = swap as ISetItem;
+                Debug.Log("登録したよ");
+                inputItem = swap as ISetItem<U>;
             }
         }
     }

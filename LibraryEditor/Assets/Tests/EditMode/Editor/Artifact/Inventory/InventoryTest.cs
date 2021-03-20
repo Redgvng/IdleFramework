@@ -13,8 +13,8 @@ namespace Tests
         [Test]
         public void CanCreateItemFromInventoryByOrder()
         {
-            var creates  = Enumerable.Range(0, 100).Select(_ => new CreateItem(new NullSetItem())).ToArray();
-            var create = new CreateItemByOrder(creates, new Cal(10));
+            var creates  = Enumerable.Range(0, 100).Select(_ => new CreateItem<ItemTest>(new NullSetItem<ItemTest>())).ToArray();
+            var create = new CreateItemByOrder<ItemTest>(creates, new Cal(10));
             creates[0].SetItem(new ItemTest(1));
             creates[1].SetItem(new ItemTest(1));
             create.SetItem(new ItemTest(2));
@@ -25,9 +25,9 @@ namespace Tests
         [Test]
         public void CanCreateItemFromInventoryByOrderWithSaveArray()
         {
-            var saveArray = new IItem[100];
-            var creates = Enumerable.Range(0, 100).Select(id => new CreateItem(new SetItemToSave(id,saveArray))).ToArray();
-            var create = new CreateItemByOrder(creates, new Cal(10));
+            var saveArray = new Item[100];
+            var creates = Enumerable.Range(0, 100).Select(id => new CreateItem<Item>(new SetItemToSave<Item>(id,saveArray))).ToArray();
+            var create = new CreateItemByOrder<Item>(creates, new Cal(10));
             creates[0].SetItem(new Item(1));
             creates[1].SetItem(new Item(1));
             create.SetItem(new Item(2));
@@ -38,36 +38,36 @@ namespace Tests
         [Test]
         public void CanSwapItem()
         {
-            var items = Enumerable.Range(0, 100).Select(id => new NullSetItem()).ToArray();
+            var items = Enumerable.Range(0, 100).Select(id => new NullSetItem<ItemTest>()).ToArray();
             items[3].SetItem(new ItemTest(1));
             items[5].SetItem(new ItemTest(2));
             //3と5を入れ替えます。
-            var swap = new SwapItem(items[3]);
+            var swap = new SwapItem<ItemTest>(items[3]);
             swap.Stack(items[5]);
             Assert.AreEqual(1, items[5].GetItem().id);
             Assert.AreEqual(2, items[3].GetItem().id);
         }
-        class dummy : IStackItem, ISetItem
+        class dummy : IStackItem<ItemTest>, ISetItem<ItemTest>
         {
-            IStackItem stack;
-            ISetItem set;
+            IStackItem<ItemTest> stack;
+            ISetItem<ItemTest> set;
             public bool CanSet => true;
-            public dummy(IStackItem stack , ISetItem set)
+            public dummy(IStackItem<ItemTest> stack , ISetItem<ItemTest> set)
             {
                 this.stack = stack;
                 this.set = set;
             }
-            public void Stack(ISetItem item)
+            public void Stack(ISetItem<ItemTest> item)
             {
                 stack.Stack(item);
             }
 
-            public void SetItem(IItem item)
+            public void SetItem(ItemTest item)
             {
                 set.SetItem(item);
             }
 
-            public IItem GetItem()
+            public ItemTest GetItem()
             {
                 return set.GetItem();
             }
@@ -75,11 +75,11 @@ namespace Tests
         [Test]
         public void CanSwapItemFromInventory()
         {
-            var swap = new SwapItemFromInventory<dummy>();
-            var set1 = new NullSetItem();
-            var set2 = new NullSetItem();
-            var item1 = new dummy(new SwapItem(set1), set1);
-            var item2 = new dummy(new SwapItem(set2), set2);
+            var swap = new SwapItemFromInventory<dummy, ItemTest>();
+            var set1 = new NullSetItem<ItemTest>();
+            var set2 = new NullSetItem<ItemTest>();
+            var item1 = new dummy(new SwapItem<ItemTest>(set1), set1);
+            var item2 = new dummy(new SwapItem<ItemTest>(set2), set2);
             item1.SetItem(new ItemTest(1));
             item2.SetItem(new ItemTest(2));
             swap.Click(item1);
@@ -92,10 +92,10 @@ namespace Tests
         [Test]
         public void CanSwapItemWithNullItem()
         {
-            var items = Enumerable.Range(0, 100).Select(id => new NullSetItem()).ToArray();
+            var items = Enumerable.Range(0, 100).Select(id => new NullSetItem<ItemTest>()).ToArray();
             items[3].SetItem(new ItemTest(1));
             //3と5を入れ替えます。ただし、5は何も入ってません。
-            var swap = new SwapItem(items[3]);
+            var swap = new SwapItem<ItemTest>(items[3]);
             swap.Stack(items[5]);
             Assert.AreEqual(1, items[5].GetItem().id);
             Assert.AreEqual(0, items[3].GetItem().id);

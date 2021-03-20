@@ -40,7 +40,7 @@ namespace InventoryLibrary
 		// Use this for initialization
 		void Awake()
 		{
-			clickAction = new SwapItemFromInventory<Item_Mono>();
+			clickAction = new SwapItemFromInventory<Item_Mono, Item>();
 			var create = new CreateItemByOrder<Item>(items, SlotNum);
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => create.SetItem(new Item(UnityEngine.Random.Range(1,6))));
 			items.ToList()

@@ -1,23 +1,22 @@
 ﻿namespace InventoryLibrary {
-    public interface IGetItem<T> where T : struct
+    public interface IGetItem<T>
     {
         T GetItem();
     }
-    public interface ISetItem<T> : IGetItem<T> where T : struct
+    public interface ISetItem<T> : IGetItem<T> 
     {
         void SetItem(T item);
         bool CanSet { get; }
     }
  
-    public interface IDeleteItem
+    public interface IDeleteItem<T> 
     {
         void Delete();
     }
-    public interface IStackItem<T> where T : struct 
+    public interface IStackItem<T>
     {
         void Stack(ISetItem<T> item);
     }
-    //Itemとは限らないので、ジェネリックにします。
     public interface IClickAction<T>
     {
         void Click(T clicked);
