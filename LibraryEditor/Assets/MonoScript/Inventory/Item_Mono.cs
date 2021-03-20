@@ -8,14 +8,15 @@ using static Main;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
+using System.Runtime.Serialization;
 
 namespace InventoryLibrary
 {
-	public class Item_Mono : Subject, ISetItem<Item>, IDeleteItem<Item>,IStackItem<Item>
+	public class Item_Mono : Subject, ISetItem<Item>, IDeleteItem,IStackItem<Item>
 	{
 
         int index => transform.GetSiblingIndex();
-        ItemContollerTestForMono<Item> controller;
+        ItemContollerTestForMono controller;
         //セーブする配列の設定
         Item[] saveArray { get
             {
@@ -32,7 +33,7 @@ namespace InventoryLibrary
 
         void Start()
         {
-            controller = new ItemContollerTestForMono<Item>(index, saveArray);
+            controller = new ItemContollerTestForMono(index, saveArray);
             this.ObserveEveryValueChanged(x => GetItem().id).Subscribe(_ => Notify());
             Notify();
         }
@@ -41,21 +42,21 @@ namespace InventoryLibrary
         {
             controller.Delete();
         }
-        public void SetItem(Item item)
+        public void SetItem(IItem item)
         {
             controller.SetItem(item);
         }
-        public Item GetItem()
+        public IItem GetItem()
         {
             return controller.GetItem();
         }
-        public void Stack(ISetItem<Item> stack)
+        public void Stack(ISetItem stack)
         {
             controller.Stack(stack);
         }
         public bool CanSet => controller.CanSet;
     }
-    public class SetItemToSave<T> : ISetItem<T>
+    public class SetItemToSave<T> : ISetItem where T : IItem
     {
         readonly int index;
         readonly T[] saveArray;
@@ -65,25 +66,32 @@ namespace InventoryLibrary
             this.index = index;
             this.saveArray = saveArray;
         }
-        public T GetItem()
+        public IItem GetItem()
         {
             return saveArray[index];
         }
 
-        public void SetItem(T item)
+        public void SetItem(IItem item)
         {
-            saveArray[index] = item;
+            saveArray[index] = item as T;
         }
     }
-    public class NullSetItem<T> : ISetItem<T> 
+
+    //テストでのみ使われるやつ？です
+    public class NullSetItem : ISetItem
     {
-        T item { get; set; }
+        IItem item { get; set; }
         public bool CanSet => true;
-        public T GetItem()
+        public IItem GetItem()
         {
+            if(item == null)
+            {
+                item = new ItemTest(0);
+                return GetItem();
+            }
             return item;
         }
-        public void SetItem(T item)
+        public void SetItem(IItem item)
         {
             this.item = item;
         }

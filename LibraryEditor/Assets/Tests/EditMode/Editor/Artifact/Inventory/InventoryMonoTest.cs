@@ -9,14 +9,14 @@ namespace Tests
 {
     public class ItemMonoTest
     {
-        ItemTest[] saveArray = new ItemTest[itemNum];
+        IItem[] saveArray = new IItem[itemNum];
         const int itemNum = 100;
         [Test]
         public void CanSetItem()
         {
             int index = 3;
 
-            var itemController = new ItemContollerTestForMono<ItemTest>(index, saveArray);
+            var itemController = new ItemContollerTestForMono(index, saveArray);
             var item = new ItemTest(5);
             itemController.SetItem(item);
             Assert.IsTrue(saveArray[3].id != 0);
@@ -28,7 +28,7 @@ namespace Tests
         {
             int index = 3;
 
-            var itemController = new ItemContollerTestForMono<ItemTest>(index, saveArray);
+            var itemController = new ItemContollerTestForMono(index, saveArray);
             itemController.Delete();
             Debug.Log(itemController.GetItem().id != 0);
             Assert.AreEqual(0, itemController.GetItem().id);

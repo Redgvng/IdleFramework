@@ -5,59 +5,58 @@ using static Main;
 
 namespace InventoryLibrary
 {
-    public class ItemContollerTestForMono<T> : ISetItem<T>, IDeleteItem<T>, IStackItem<T> where T : struct, IItem
+    public class ItemContollerTestForMono : ISetItem, IDeleteItem, IStackItem
     {
-        public T GetItem() => setItem.GetItem();
-        public void SetItem(T item) => setItem.SetItem(item);
+        public IItem GetItem() => setItem.GetItem();
+        public void SetItem(IItem item) => setItem.SetItem(item);
         public bool CanSet { get => GetItem().id == 0; }
         //constructor
-        public ItemContollerTestForMono(int index, T[] saveArray)
+        public ItemContollerTestForMono(int index, Item[] saveArray)
         {
-            var setSave = new SetItemToSave<T>(index, saveArray);
+            var setSave = new SetItemToSave(index, saveArray);
             setItem = setSave;
-            deleteItem = new DeleteItem<T>(setSave);
-            swapItem = new SwapItem<T>(setSave);
+            deleteItem = new DeleteItem(setSave);
+            swapItem = new SwapItem(setSave);
         }
         //PrivateMember
-        readonly ISetItem<T> setItem;
-        readonly IDeleteItem<T> deleteItem;
-        IStackItem<T> swapItem;
+        readonly ISetItem setItem;
+        readonly IDeleteItem deleteItem;
+        IStackItem swapItem;
         public void Delete()
         {
             deleteItem.Delete();
         }
-        public void Stack(ISetItem<T> item)
+        public void Stack(ISetItem item)
         {
             swapItem.Stack(item);
         }
     }
 
 
-    public class CreateItem<T> : ISetItem<T> where T : IItem
+    public class CreateItem : ISetItem
     {
-        ISetItem<T> set;
-        public bool CanSet => set.GetItem().id == 0;
-
-        public CreateItem(ISetItem<T> set)
+        ISetItem set;
+        public bool CanSet => set.GetItem() == null ? false : set.GetItem().id == 0;
+        public CreateItem(ISetItem set)
         {
             this.set = set;
         }
-        public void SetItem(T item)
+        public void SetItem(IItem item)
         {
             if (CanSet)
                 set.SetItem(item);
         }
 
-        public T GetItem()
+        public IItem GetItem()
         {
             return set.GetItem();
         }
     }
 
-    public class DeleteItem<T> : IDeleteItem<T>
+    public class DeleteItem : IDeleteItem
     {
-        ISetItem<T> set;
-        public DeleteItem(ISetItem<T> set)
+        ISetItem set;
+        public DeleteItem(ISetItem set)
         {
             this.set = set;
         }

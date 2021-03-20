@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace InventoryLibrary
 {
-    public class CreateItemByOrder<T> : ISetItem<T> where T : IItem
+    public class CreateItemByOrder<T> : ISetItem<T> where T : struct
     {
         readonly ISetItem<T>[] setItems;
         readonly Cal SlotNum;
