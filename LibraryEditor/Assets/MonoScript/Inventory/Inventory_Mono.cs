@@ -24,7 +24,7 @@ namespace InventoryLibrary
 	{
 		//Readonly
 		public const int inventoryNum = 100;
-		//Private
+		//Private -> これを共有にしなければいけない。。。
 		ISetItem<Item> inputItem = default;
 		IClickAction<Item_Mono> clickAction;
 

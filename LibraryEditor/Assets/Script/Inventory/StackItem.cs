@@ -18,17 +18,18 @@ namespace InventoryLibrary {
             swapping.SetItem(tempItem);
         }
     }
+
     public class SwapItemFromInventory<T, U> : IClickAction<T> where U : struct, IItem
     {
         ISetItem<U> inputItem;
 
         public void Click(T stackItem)
         {
-            if (!(stackItem is IStackItem<U> && stackItem is ISetItem<U>))
+            if (!(stackItem is SwapItem<U> && stackItem is ISetItem<U>))
                 return;
 
 
-            var swap = stackItem as IStackItem<U>;
+            var swap = stackItem as SwapItem<U>;
 
             if (inputItem != null && inputItem.GetItem().id != 0)
             {
