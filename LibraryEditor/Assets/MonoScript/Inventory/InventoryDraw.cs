@@ -12,15 +12,10 @@ namespace InventoryLibrary
         public Sprite[] sprites;
         public Sprite defaultSprite;
         public Sprite lockedSprite;
-        ISubject[] items;
-        ISubject inventoryController;
 
         void Awake()
         {
-            items = gameObject.GetComponentsInChildren<ISubject>();
-            inventoryController = gameObject.GetComponent<ISubject>();
-            items.ToList().ForEach(x => x.Attach(this));
-            inventoryController.Attach(this);
+            GameObject.FindObjectsOfType<Subject>().ToList().ForEach(x => x.Attach(this));
         }
 
         //itemの状態を更新します。
@@ -28,6 +23,7 @@ namespace InventoryLibrary
         {
             if (subject is Item_Mono)
             {
+                Debug.Log(subject);
                 var item = subject as Item_Mono;
                 item.gameObject.GetComponent<Image>().sprite = sprites[item.GetItem().id];
             }

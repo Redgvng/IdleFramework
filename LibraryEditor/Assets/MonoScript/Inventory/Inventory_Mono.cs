@@ -30,6 +30,7 @@ namespace InventoryLibrary
 
 		//Public
 		public int InventoryId;
+		[NonSerialized]
 		public Item_Mono[] items;
 		public Cal SlotNum = new Cal(10);
 
