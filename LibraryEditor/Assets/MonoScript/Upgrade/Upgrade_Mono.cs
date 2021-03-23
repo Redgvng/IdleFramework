@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 namespace UpgradeLibrary {
     public enum EffectKind
@@ -16,15 +17,22 @@ namespace UpgradeLibrary {
         additive,
         multiplicative
     }
+    [Serializable]
+    public class LinearInfo : PropertyAttribute
+    {
+        public NumbersName resource;
+        public double initialValue, initialSteep;
+    }
+
     public class Upgrade_Mono : MonoBehaviour, ILevel
     {
         public long level { get; set; }
         [SerializeField]
+        int resourceNum;
+        [SerializeField]
         CostKind costkind;
         [SerializeField]
-        NumbersName[] resourseNames;
-        [SerializeField]
-        double[] linear_initialValue, linear_steep;
+        LinearInfo[] linearInfo;
         [SerializeField]
         CalculateWay calway;
         [SerializeField]
@@ -39,29 +47,11 @@ namespace UpgradeLibrary {
         // アップグレードを作成します。最終的にはfactory methodを作ったほうがイイカモ？
         void Awake()
         {
-            //コスト情報を入力します。
-            ICost cost = null;
-            if (costkind == CostKind.linear)
+            //コストの設定をします。
+            List<ICost> cost = new List<ICost>();
+            if(costkind == CostKind.linear)
             {
-                cost = new LinearCost(linear_initialValue[0], linear_steep[0], this);
-            }else if(costkind == CostKind.exponential)
-            {
-                //指数のやつを書く
-            }
-
-            //取引情報を入力します。
-            ITransaction transaction;
-            if(resourseNames.Length == 1)
-            {
-                transaction = new Transaction(DataContainer<NUMBER>.GetInstance().GetDataByName(resourseNames[0]), cost);
-            }
-            else
-            {
-                var transactionList = new List<ITransaction>();
-                resourseNames.ToList().Select((x,index) => transactionList.Add(new Transaction(resourseNames[])))
-                transaction = new MultipleTransaction(new Transaction[] {
-
-                });
+                linearInfo.ToList().ForEach(x => cost.Add(new ))
             }
         }
 

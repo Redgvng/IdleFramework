@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UpgradeLibrary;
+using System;
 
 //　カスタマイズするクラスを設定
 [CustomEditor(typeof(Upgrade_Mono))]
@@ -20,10 +21,10 @@ public class Upgrade_Editor : Editor
         EditorGUILayout.LabelField("コスト設定", bold);
         
         //リソースの種類を指定させます。
-        EditorGUILayout.LabelField("コストとして使用するリソースの数と種類を指定してください");
-        var resourseNames = serializedObject.FindProperty("resourseNames");
-        EditorGUILayout.PropertyField(resourseNames, true);
-        if (resourseNames.arraySize == 0)
+        EditorGUILayout.LabelField("コストとして使用するリソースの数を指定してください");
+        var resourseNum = serializedObject.FindProperty("resourceNum");
+        resourseNum.intValue = EditorGUILayout.IntField("リソースの数", resourseNum.intValue);
+        if (resourseNum.intValue == 0)
             return;
 
         //コストの計算方法を指定させます。
@@ -36,12 +37,10 @@ public class Upgrade_Editor : Editor
 
         if (costkind.enumValueIndex == (int)CostKind.linear)
         {
-            var initialValue = serializedObject.FindProperty("linear_initialValue");
-            var steep = serializedObject.FindProperty("linear_steep");
-            initialValue.arraySize = resourseNames.arraySize;
-            steep.arraySize = resourseNames.arraySize;
-            EditorGUILayout.PropertyField(initialValue);
-            EditorGUILayout.PropertyField(steep);
+            var linearInfo = serializedObject.FindProperty("linearInfo"); 
+            EditorGUILayout.LabelField("コストの各情報を入力してください");
+            linearInfo.arraySize = resourseNum.intValue;
+            EditorGUILayout.PropertyField(linearInfo);
         }
 
         EditorGUILayout.Space();
@@ -85,3 +84,4 @@ public class Upgrade_Editor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
+
