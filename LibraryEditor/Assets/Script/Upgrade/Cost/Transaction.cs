@@ -1,4 +1,5 @@
-﻿namespace UpgradeLibrary{
+﻿using System.Collections.Generic;
+namespace UpgradeLibrary{
     
     //levelをここから消そう。
     public interface ITransaction
@@ -30,11 +31,11 @@
     //トランザクションの配列を受け取り、まとめて決済を行います。
     public class MultipleTransaction : ITransaction
     {
-        ITransaction[] transactions { get; }
+        IList<ITransaction> transactions { get; }
         public bool CanBuy()
         {
             //全ての決済が可能であれば、trueを返します。
-            for (int i = 0; i < transactions.Length; i++)
+            for (int i = 0; i < transactions.Count; i++)
             {
                 if (!transactions[i].CanBuy())
                 {
@@ -46,12 +47,12 @@
 
         public void Pay()
         {
-            for (int i = 0; i < transactions.Length; i++)
+            for (int i = 0; i < transactions.Count; i++)
             {
                 transactions[i].Pay();
             }
         }
-        public MultipleTransaction(ITransaction[] transactions)
+        public MultipleTransaction(IList<ITransaction> transactions)
         {
             this.transactions = transactions;
         }

@@ -38,8 +38,10 @@ public class Upgrade_Editor : Editor
         {
             var initialValue = serializedObject.FindProperty("linear_initialValue");
             var steep = serializedObject.FindProperty("linear_steep");
-            initialValue.doubleValue = EditorGUILayout.DoubleField("コストの初期値",initialValue.doubleValue);
-            steep.doubleValue = EditorGUILayout.DoubleField("コストの傾き",steep.doubleValue);
+            initialValue.arraySize = resourseNames.arraySize;
+            steep.arraySize = resourseNames.arraySize;
+            EditorGUILayout.PropertyField(initialValue);
+            EditorGUILayout.PropertyField(steep);
         }
 
         EditorGUILayout.Space();
@@ -73,6 +75,10 @@ public class Upgrade_Editor : Editor
             calway.enumValueIndex,
             new string[] {"加算", "乗算"}
             );
+
+        //レベル当たりの上昇率を入力してください。
+        var valuePerLevel = serializedObject.FindProperty("valuePerLevel");
+        valuePerLevel.doubleValue = EditorGUILayout.DoubleField("1レベル当たりの上昇量", valuePerLevel.doubleValue);
 
 
         //　シリアライズオブジェクトのプロパティの変更を更新
