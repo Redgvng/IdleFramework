@@ -26,8 +26,44 @@ public class Upgrade_Editor : Editor
         resourseNum.intValue = EditorGUILayout.IntField("リソースの数", resourseNum.intValue);
         if (resourseNum.intValue == 0)
             return;
+        if(resourseNum.intValue > 4)
+        {
+            EditorGUILayout.LabelField("1 ～ 4の値を指定してください");
+            return;
+        }
+
+        //配列を取得します。
+        var targetObject = (Upgrade_Mono)target;
+        var costInfoArray = targetObject.costInfo;
+        for (int i = 0; i < resourseNum.intValue; i++)
+        {
+            EditorGUILayout.BeginVertical(GUI.skin.box);
+            {
+                int index = i + 1;
+                costInfoArray[i].resource = (NumbersName)EditorGUILayout.Popup(
+                    index + "つ目のリソース",
+                    (int)costInfoArray[i].resource,
+                    Enum.GetNames(typeof(NumbersName))
+                    );
+                costInfoArray[i].costKind = (CostKind)EditorGUILayout.Popup(
+                    "コストの計算方法",
+                    (int)costInfoArray[i].costKind,
+                    new string[] { "線形関数", "指数関数" }
+                    );
+                //線形か指数かでラベルを変える。
+                if(costInfoArray[i].costKind == CostKind.linear)
+                {
+                    EditorGUILayout.LabelField("初期値");
+                    costInfoArray[i].factor1 = EditorGUILayout.DoubleField(costInfoArray[i].factor1);
+                    EditorGUILayout.LabelField("傾き");
+                    costInfoArray[i].factor2 = EditorGUILayout.DoubleField(costInfoArray[i].factor2);
+                }
+            }
+            EditorGUILayout.EndVertical();
+        }
 
         //コストの計算方法を指定させます。
+        /*
         var costkind = serializedObject.FindProperty("costkind");
         costkind.enumValueIndex = EditorGUILayout.Popup(
             "コストの計算方法",
@@ -42,6 +78,7 @@ public class Upgrade_Editor : Editor
             linearInfo.arraySize = resourseNum.intValue;
             EditorGUILayout.PropertyField(linearInfo);
         }
+        */
 
         EditorGUILayout.Space();
 

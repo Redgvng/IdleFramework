@@ -18,10 +18,11 @@ namespace UpgradeLibrary {
         multiplicative
     }
     [Serializable]
-    public class LinearInfo : PropertyAttribute
+    public class CostInfo : PropertyAttribute
     {
+        public CostKind costKind;
         public NumbersName resource;
-        public double initialValue, initialSteep;
+        public double factor1, factor2;
     }
 
     public class Upgrade_Mono : MonoBehaviour, ILevel
@@ -29,10 +30,7 @@ namespace UpgradeLibrary {
         public long level { get; set; }
         [SerializeField]
         int resourceNum;
-        [SerializeField]
-        CostKind costkind;
-        [SerializeField]
-        LinearInfo[] linearInfo;
+        public CostInfo[] costInfo = new CostInfo[4];
         [SerializeField]
         CalculateWay calway;
         [SerializeField]
@@ -47,11 +45,12 @@ namespace UpgradeLibrary {
         // アップグレードを作成します。最終的にはfactory methodを作ったほうがイイカモ？
         void Awake()
         {
-            //コストの設定をします。
-            List<ICost> cost = new List<ICost>();
-            if(costkind == CostKind.linear)
+            foreach (var item in costInfo)
             {
-                linearInfo.ToList().ForEach(x => cost.Add(new ))
+                if (item == null)
+                    Debug.Log("nullです");
+
+                Debug.Log(item.costKind);
             }
         }
 
