@@ -14,11 +14,11 @@ namespace Tests
         void Start()
         {
             this.ObserveEveryValueChanged(_ => DataContainer<NUMBER>.GetInstance().GetDataByName(NumbersName.gold).Number)
-                .Subscribe(_ => gold.text = DataContainer<NUMBER>.GetInstance().GetDataByName(NumbersName.gold).Number.ToString("F0"));
+                .Subscribe(_ => gold.text = "Gold : " + DataContainer<NUMBER>.GetInstance().GetDataByName(NumbersName.gold).Number.ToString("F0")) ;
             this.ObserveEveryValueChanged(_ => DataContainer<NUMBER>.GetInstance().GetDataByName(NumbersName.stone).Number)
-                .Subscribe(_ => stone.text = DataContainer<NUMBER>.GetInstance().GetDataByName(NumbersName.stone).Number.ToString("F0"));
+                .Subscribe(_ => stone.text = "Stone : " + DataContainer<NUMBER>.GetInstance().GetDataByName(NumbersName.stone).Number.ToString("F0"));
             this.ObserveEveryValueChanged(_ => DataContainer<NUMBER>.GetInstance().GetDataByName(NumbersName.exp).Number)
-                .Subscribe(_ => exp.text = DataContainer<NUMBER>.GetInstance().GetDataByName(NumbersName.exp).Number.ToString("F0"));
+                .Subscribe(_ => exp.text = "Exp : " + DataContainer<NUMBER>.GetInstance().GetDataByName(NumbersName.exp).Number.ToString("F0"));
         }
     }
 }

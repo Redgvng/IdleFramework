@@ -22,6 +22,7 @@ namespace UpgradeLibrary {
 
         public void Pay()
         {
+            Debug.Log("upgrade呼ばれてるよ");
             if (!transaction.CanBuy())
                 return;
             transaction.Pay();

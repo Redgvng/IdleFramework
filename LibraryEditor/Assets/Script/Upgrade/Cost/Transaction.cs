@@ -52,7 +52,7 @@ namespace UpgradeLibrary{
                 transactions[i].Pay();
             }
         }
-        public MultipleTransaction(IList<ITransaction> transactions)
+        public MultipleTransaction(params ITransaction[] transactions)
         {
             this.transactions = transactions;
         }
