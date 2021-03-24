@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
+using System;
 
 public class IdleProduce : IMultiplier
 {
@@ -13,7 +14,7 @@ public class IdleProduce : IMultiplier
         multiplier = new Multiplier();
         this.targetResourse = targetResourse;
         DataContainer<IdleProduce>.GetInstance().SetDataByName(this, Name);
-        Observable.EveryUpdate().Subscribe(_ => ProducePerMinute());
+        Observable.Interval(TimeSpan.FromSeconds(1)) .Subscribe(_ => ProducePerMinute());
     }
     void ProducePerMinute()
     {
