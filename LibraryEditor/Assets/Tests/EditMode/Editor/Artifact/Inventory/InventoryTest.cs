@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using InventoryLibrary;
 using System.Linq;
+using CommonLibrary;
 
 namespace Tests
 {

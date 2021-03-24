@@ -9,6 +9,7 @@ using TMPro;
 using UniRx;
 using UniRx.Triggers;
 using System.Linq;
+using CommonLibrary;
 //
 namespace InventoryLibrary
 {

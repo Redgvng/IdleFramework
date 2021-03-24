@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using InventoryLibrary;
 using System;
+using CommonLibrary;
 
 [System.Serializable]
 public class Save
@@ -24,4 +25,6 @@ public class Save
     /* 初期化はSave */
 
     public Item[] items, equippedItems;
+    //NUMBER
+    public NUMBER[] numbers;
 }

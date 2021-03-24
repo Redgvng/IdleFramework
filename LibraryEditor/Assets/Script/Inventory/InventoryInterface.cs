@@ -1,14 +1,5 @@
-﻿namespace InventoryLibrary {
-    public interface IGetItem<T>
-    {
-        T GetItem();
-    }
-    public interface ISetItem<T> : IGetItem<T> 
-    {
-        void SetItem(T item);
-        bool CanSet { get; }
-    }
- 
+﻿using CommonLibrary;
+namespace InventoryLibrary {
     public interface IDeleteItem<T> 
     {
         void Delete();

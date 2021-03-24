@@ -5,19 +5,22 @@ using UniRx;
 using UniRx.Triggers;
 using System;
 
-public class IdleProduce : IMultiplier
+namespace CommonLibrary
 {
-    public Multiplier multiplier { get; }
-    NUMBER targetResourse { get; }
-    public IdleProduce(NumbersName Name, NUMBER targetResourse)
+    public class IdleProduce : IMultiplier
     {
-        multiplier = new Multiplier();
-        this.targetResourse = targetResourse;
-        DataContainer<IdleProduce>.GetInstance().SetDataByName(this, Name);
-        Observable.Interval(TimeSpan.FromSeconds(1)) .Subscribe(_ => ProducePerMinute());
-    }
-    void ProducePerMinute()
-    {
-        targetResourse.IncrementNumber(multiplier.CaluculatedNumber(0), true);
+        public Multiplier multiplier { get; }
+        NUMBER targetResourse { get; }
+        public IdleProduce(NumbersName Name, NUMBER targetResourse)
+        {
+            multiplier = new Multiplier();
+            this.targetResourse = targetResourse;
+            DataContainer<IdleProduce>.GetInstance().SetDataByName(this, Name);
+            Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(_ => ProducePerMinute());
+        }
+        void ProducePerMinute()
+        {
+            targetResourse.IncrementNumber(multiplier.CaluculatedNumber(0), true);
+        }
     }
 }

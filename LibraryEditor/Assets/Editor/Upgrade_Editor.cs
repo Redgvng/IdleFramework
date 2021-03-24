@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UpgradeLibrary;
+using CommonLibrary;
 using System;
 
 //　カスタマイズするクラスを設定

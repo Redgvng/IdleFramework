@@ -8,6 +8,7 @@ using static Main;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
+using CommonLibrary;
 
 namespace InventoryLibrary
 {

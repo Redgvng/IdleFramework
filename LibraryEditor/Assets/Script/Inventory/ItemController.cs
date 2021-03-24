@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static Main;
+using CommonLibrary;
 
 namespace InventoryLibrary
 {

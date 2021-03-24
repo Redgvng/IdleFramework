@@ -6,6 +6,7 @@ using System;
 using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
+using CommonLibrary;
 
 namespace UpgradeLibrary {
     public enum EffectKind

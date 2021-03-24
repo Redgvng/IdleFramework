@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CommonLibrary;
 namespace UpgradeLibrary{
     
     //levelをここから消そう。

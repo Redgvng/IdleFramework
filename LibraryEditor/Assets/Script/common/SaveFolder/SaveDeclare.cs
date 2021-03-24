@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using static UsefulMethod;
 using static UsefulStatic;
 using static Main;
+using CommonLibrary;
 
 /// <summary>
 /// 主にsaveしたい配列の初期化を行うクラス
@@ -18,8 +19,9 @@ public class SaveDeclare :MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		//Upgrade 
-		//InitializeArray(ref main.S.UpgradeLevels, Enum.GetValues(typeof(Upgrade.ID)).Length);
+		//NUMBER
+		InitializeArray(ref main.S.numbers, Enum.GetValues(typeof(NumbersName)).Length);
+		//Inventory
 		InitializeArray(ref main.S.items, 100);
 		InitializeArray(ref main.S.equippedItems, 100);
 	}

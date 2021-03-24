@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using CommonLibrary;
 
 namespace InventoryLibrary {
     public class SwapItem<T> : IStackItem<T> where T : IItem

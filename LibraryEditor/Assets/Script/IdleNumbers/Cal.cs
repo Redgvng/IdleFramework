@@ -6,70 +6,65 @@ using UnityEngine.UI;
 using static UsefulMethod;
 using TMPro;
 
-/*
-public interface ICalculator
+namespace CommonLibrary
 {
-    double GetValue();
-    string ThisName { get; }
-}
-*/
-
-public interface ICapped
-{
-    bool CappedAction(NUMBER number, Cal calculator);
-}
-
-public class NullCapped : ICapped
-{
-    public bool CappedAction(NUMBER number, Cal calculator) { return false; }
-}
-
-public class Cap_Truncate : ICapped
-{
-    public bool CappedAction(NUMBER number, Cal calculator)
+    public interface ICapped
     {
-        if (number.Number > calculator.GetValue())
+        bool CappedAction(NUMBER number, Cal calculator);
+    }
+
+    public class NullCapped : ICapped
+    {
+        public bool CappedAction(NUMBER number, Cal calculator) { return false; }
+    }
+
+    public class Cap_Truncate : ICapped
+    {
+        public bool CappedAction(NUMBER number, Cal calculator)
         {
-            number.Number = calculator.GetValue();
-            return true;
+            if (number.Number > calculator.GetValue())
+            {
+                number.Number = calculator.GetValue();
+                return true;
+            }
+            return false;
         }
-        return false;
-    }
-}
-
-public class Cal
-{
-    public Multiplier multiplier = new Multiplier();
-    double initialValue;
-
-    public Cal(double initialValue)
-    {
-        this.initialValue = initialValue;
-    }
-    public Cal(double initialValue, CalsName Name)
-    {
-        this.initialValue = initialValue;
-        DataContainer<Cal>.GetInstance().SetDataByName(this, Name);
     }
 
-    public double GetValue()
+    public class Cal
     {
-        return multiplier.CaluculatedNumber(initialValue);
-    }
-}
+        public Multiplier multiplier = new Multiplier();
+        double initialValue;
 
-public class Cap : Cal
-{
-    ICapped capped;
-    public Cap(double initialValue, ICapped capped = null) : base(initialValue)
-    {
-        if (capped == null)
-            this.capped = new Cap_Truncate();
-        else
-            this.capped = capped;
+        public Cal(double initialValue)
+        {
+            this.initialValue = initialValue;
+        }
+        public Cal(double initialValue, CalsName Name)
+        {
+            this.initialValue = initialValue;
+            DataContainer<Cal>.GetInstance().SetDataByName(this, Name);
+        }
+
+        public double GetValue()
+        {
+            return multiplier.CaluculatedNumber(initialValue);
+        }
     }
-    public void Check(NUMBER number)
+
+    public class Cap : Cal
     {
-         capped.CappedAction(number,this);
+        ICapped capped;
+        public Cap(double initialValue, ICapped capped = null) : base(initialValue)
+        {
+            if (capped == null)
+                this.capped = new Cap_Truncate();
+            else
+                this.capped = capped;
+        }
+        public void Check(NUMBER number)
+        {
+            capped.CappedAction(number, this);
+        }
     }
 }
