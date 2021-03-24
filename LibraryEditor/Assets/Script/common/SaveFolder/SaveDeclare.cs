@@ -34,8 +34,6 @@ public class SaveDeclare :MonoBehaviour {
 
 	void Update()
     {
-		Debug.Log(main.S.numbers.Length);
-		Debug.Log(main.S.numbers.Length);
-		Debug.Log(main.S.items.Length);
+		
 	}
 }

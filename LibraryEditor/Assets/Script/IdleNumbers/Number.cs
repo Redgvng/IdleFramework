@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using Cysharp.Threading.Tasks;
 
 namespace CommonLibrary
 {
@@ -23,28 +25,29 @@ namespace CommonLibrary
         public bool CanSet => true;
 
         //Private
-        private readonly ISetItem<double> setNumber;
-        
+        private ISetItem<double> setNumber;
+
         //テスト用コンストラクタ
         public NUMBER(double initialNumber = 0)
         {
             multiplier = new Multiplier();
             this.Number = initialNumber;
         }
-        //基本的にはこのコンストラクタを使うこと。
+        //基本的にはこのコンストラクタを使うこと。Mainに大きく依存
         public NUMBER(NumbersName Name, double initialNumber = 0)
         {
             DataContainer<IMultiplier>.GetInstance().SetDataByName(this, Name);
             DataContainer<NUMBER>.GetInstance().SetDataByName(this, Name);
-            setNumber = new SetItemToSave<double>((int)Name, Main.main.S.numbers);
             multiplier = new Multiplier();
-            this.Number = initialNumber;
+            setNumber = new SetItemToSave<double>((int)Name, Main.main.S.numbers);
+            if(!Main.main.S.isContinuePlay)
+                this.Number = initialNumber;
         }
         public virtual void IncrementNumber(double increment = 1, bool isNetValue = false)
         {
             Number += !isNetValue ? multiplier.CaluculatedNumber(increment) : increment;
             TotalNumber += !isNetValue ? multiplier.CaluculatedNumber(increment) : increment;
-            Debug.Log(Main.main.S.numbers.Length);
+            Debug.Log(Main.main.S.numbers[(int)NumbersName.stone]);
         }
         public virtual void DecrementNumber(double decrement = 1)
         {
