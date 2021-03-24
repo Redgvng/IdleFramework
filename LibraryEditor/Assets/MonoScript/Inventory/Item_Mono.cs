@@ -56,6 +56,10 @@ namespace InventoryLibrary
         }
         public bool CanSet => controller.CanSet;
     }
+}
+
+namespace CommonLibrary
+{
     public class SetItemToSave<T> : ISetItem<T>
     {
         readonly int index;
@@ -76,7 +80,7 @@ namespace InventoryLibrary
             saveArray[index] = item;
         }
     }
-    public class NullSetItem<T> : ISetItem<T> 
+    public class NullSetItem<T> : ISetItem<T>
     {
         T item { get; set; }
         public bool CanSet => true;

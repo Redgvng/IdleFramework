@@ -24,10 +24,18 @@ public class SaveDeclare :MonoBehaviour {
 		//Inventory
 		InitializeArray(ref main.S.items, 100);
 		InitializeArray(ref main.S.equippedItems, 100);
+
 	}
 
 	// Use this for initialization
 	void Start () {
 
+	}
+
+	void Update()
+    {
+		Debug.Log(main.S.numbers.Length);
+		Debug.Log(main.S.numbers.Length);
+		Debug.Log(main.S.items.Length);
 	}
 }

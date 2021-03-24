@@ -8,8 +8,6 @@ namespace CommonLibrary
     {
         string GetName();
     }
-
-
     public interface IMultiplier
     {
         Multiplier multiplier { get; }
@@ -17,11 +15,17 @@ namespace CommonLibrary
     //こいつら一旦統計量持てない
     public class NUMBER : IComparable<NUMBER>, IMultiplier
     {
+        //Public
         public int NumberAsInt => (int)Number;
-        public virtual double Number { get; set; }
+        public virtual double Number { get => setNumber.GetItem(); set => setNumber.SetItem(value); }
         public virtual double TotalNumber { get; set; }
-
         public Multiplier multiplier { get; }
+        public bool CanSet => true;
+
+        //Private
+        private readonly ISetItem<double> setNumber;
+        
+        //テスト用コンストラクタ
         public NUMBER(double initialNumber = 0)
         {
             multiplier = new Multiplier();
@@ -30,15 +34,17 @@ namespace CommonLibrary
         //基本的にはこのコンストラクタを使うこと。
         public NUMBER(NumbersName Name, double initialNumber = 0)
         {
-            multiplier = new Multiplier();
-            this.Number = initialNumber;
             DataContainer<IMultiplier>.GetInstance().SetDataByName(this, Name);
             DataContainer<NUMBER>.GetInstance().SetDataByName(this, Name);
+            setNumber = new SetItemToSave<double>((int)Name, Main.main.S.numbers);
+            multiplier = new Multiplier();
+            this.Number = initialNumber;
         }
         public virtual void IncrementNumber(double increment = 1, bool isNetValue = false)
         {
             Number += !isNetValue ? multiplier.CaluculatedNumber(increment) : increment;
             TotalNumber += !isNetValue ? multiplier.CaluculatedNumber(increment) : increment;
+            Debug.Log(Main.main.S.numbers.Length);
         }
         public virtual void DecrementNumber(double decrement = 1)
         {

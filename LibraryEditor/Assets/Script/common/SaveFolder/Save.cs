@@ -26,5 +26,5 @@ public class Save
 
     public Item[] items, equippedItems;
     //NUMBER
-    public NUMBER[] numbers;
+    public double[] numbers;
 }
