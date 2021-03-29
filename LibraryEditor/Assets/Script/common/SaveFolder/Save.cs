@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using InventoryLibrary;
+using IdleLibrary.Inventory;
 using System;
-using CommonLibrary;
 
 [System.Serializable]
 public class Save

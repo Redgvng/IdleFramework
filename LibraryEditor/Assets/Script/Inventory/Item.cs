@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace InventoryLibrary
+namespace IdleLibrary.Inventory
 {
     public interface IItem
     {

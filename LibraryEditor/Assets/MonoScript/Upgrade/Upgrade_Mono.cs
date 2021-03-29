@@ -6,9 +6,7 @@ using System;
 using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
-using CommonLibrary;
-
-namespace UpgradeLibrary {
+namespace IdleLibrary.Upgrade {
     public enum EffectKind
     {
         Number,

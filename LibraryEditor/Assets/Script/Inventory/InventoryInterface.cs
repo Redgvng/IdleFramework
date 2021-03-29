@@ -1,5 +1,4 @@
-﻿using CommonLibrary;
-namespace InventoryLibrary {
+﻿namespace IdleLibrary.Inventory {
     public interface IDeleteItem<T> 
     {
         void Delete();

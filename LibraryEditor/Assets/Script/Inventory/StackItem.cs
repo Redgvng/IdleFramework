@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using CommonLibrary;
-
-namespace InventoryLibrary {
+namespace IdleLibrary.Inventory {
     public class SwapItem<T> : IStackItem<T> where T : IItem
     {
         readonly ISetItem<T> swappedItem;

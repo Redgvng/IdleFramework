@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using CommonLibrary;
-
-namespace UpgradeLibrary
+namespace IdleLibrary.Upgrade
 {
     public enum BuyMode
     {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace InventoryLibrary {
+namespace IdleLibrary.Inventory {
     public class Inventory_Initialize : MonoBehaviour
     {
         Inventory_Mono inventory;

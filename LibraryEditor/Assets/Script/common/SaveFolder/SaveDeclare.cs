@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using static UsefulMethod;
 using static UsefulStatic;
 using static Main;
-using CommonLibrary;
+using IdleLibrary;
 
 /// <summary>
 /// 主にsaveしたい配列の初期化を行うクラス

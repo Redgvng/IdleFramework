@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using InventoryLibrary;
+using IdleLibrary.Inventory;
 using System.Linq;
-using CommonLibrary;
+using IdleLibrary;
 
 namespace Tests
 {

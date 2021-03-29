@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using CommonLibrary;
-namespace UpgradeLibrary{
+namespace IdleLibrary.Upgrade{
     
     //levelをここから消そう。
     public interface ITransaction

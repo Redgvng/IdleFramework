@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using CommonLibrary;
 
-namespace InventoryLibrary
+namespace IdleLibrary.Inventory
 {
     public class CreateItemByOrder<T> : ISetItem<T> where T : IItem
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UpgradeLibrary {
+namespace IdleLibrary.Upgrade {
 
     //外部からは買った時の処理と、買えるかどうかが必要(ITransactionでアップグレードも表現しよう。)
     public class Upgrade : ITransaction

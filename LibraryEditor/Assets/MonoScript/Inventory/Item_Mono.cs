@@ -8,9 +8,7 @@ using static Main;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
-using CommonLibrary;
-
-namespace InventoryLibrary
+namespace IdleLibrary.Inventory
 {
 	public class Item_Mono : Subject, ISetItem<Item>, IDeleteItem<Item>,IStackItem<Item>
 	{
@@ -58,7 +56,7 @@ namespace InventoryLibrary
     }
 }
 
-namespace CommonLibrary
+namespace IdleLibrary
 {
     public class SetItemToSave<T> : ISetItem<T>
     {

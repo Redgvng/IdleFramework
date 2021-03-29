@@ -4,7 +4,7 @@ using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
 
-namespace CommonLibrary
+namespace IdleLibrary
 {
     public interface IName
     {

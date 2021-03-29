@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UpgradeLibrary;
-using CommonLibrary;
+using IdleLibrary.Upgrade;
+using IdleLibrary;
 using System;
 
 //　カスタマイズするクラスを設定

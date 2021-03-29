@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 
-namespace InventoryLibrary
+namespace IdleLibrary.Inventory
 {
     public class InventoryDraw : MonoBehaviour, IObserver
     {

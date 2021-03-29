@@ -4,7 +4,7 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
-namespace CommonLibrary
+namespace IdleLibrary
 {
     public class ClickProduce : IMultiplier
     {

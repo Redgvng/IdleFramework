@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using static UsefulMethod;
 using TMPro;
 
-namespace CommonLibrary
+namespace IdleLibrary
 {
     public interface ICapped
     {

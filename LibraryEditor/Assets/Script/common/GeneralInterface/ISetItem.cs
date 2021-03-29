@@ -1,4 +1,4 @@
-namespace CommonLibrary
+namespace IdleLibrary
 {
     public interface ISetItem<T> : IGetItem<T>
     {

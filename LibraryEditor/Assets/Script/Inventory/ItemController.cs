@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static Main;
-using CommonLibrary;
 
-namespace InventoryLibrary
+namespace IdleLibrary.Inventory
 {
     public class ItemContollerTestForMono<T> : ISetItem<T>, IDeleteItem<T>, IStackItem<T> where T : struct, IItem
     {

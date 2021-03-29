@@ -5,7 +5,7 @@ using UniRx;
 using UniRx.Triggers;
 using System;
 
-namespace CommonLibrary
+namespace IdleLibrary
 {
     public class IdleProduce : IMultiplier
     {
