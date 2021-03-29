@@ -48,6 +48,8 @@ namespace UpgradeLibrary {
         [SerializeField]
         EffectKind effectKind;
 
+        //ウインドウ
+
         // アップグレードを作成します。最終的にはfactory methodを作ったほうがイイカモ？
         void Awake()
         {
@@ -71,65 +73,41 @@ namespace UpgradeLibrary {
             maxUpgrade = new MaxUpgrade(upgrade);
             gameObject.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => upgrade.Pay());
             //効果の設定
+            Multiplier targetMultiplier = null;
             switch (effectKind)
             {
                 case EffectKind.Number:
-                    switch (calway)
-                    {
-                        case CalculateWay.additive:
-                            DataContainer<NUMBER>.GetInstance().GetDataByName(targetNumber).multiplier.AddAddtiveMultiplier(() => valuePerLevel * level);
-                            break;
-                        case CalculateWay.multiplicative:
-                            DataContainer<NUMBER>.GetInstance().GetDataByName(targetNumber).multiplier.AddAddtiveMultiplier(() => 1.0  + valuePerLevel * level);
-                            break;
-                        default:
-                            break;
-                    }
+                    targetMultiplier = DataContainer<NUMBER>.GetInstance().GetDataByName(targetNumber).multiplier;
                     break;
                 case EffectKind.Cal:
-                    switch (calway)
-                    {
-                        case CalculateWay.additive:
-                            DataContainer<Cal>.GetInstance().GetDataByName(targetCal).multiplier.AddAddtiveMultiplier(() => valuePerLevel * level);
-                            break;
-                        case CalculateWay.multiplicative:
-                            DataContainer<Cal>.GetInstance().GetDataByName(targetCal).multiplier.AddAddtiveMultiplier(() => 1.0 + valuePerLevel * level);
-                            break;
-                        default:
-                            break;
-                    }
+                    targetMultiplier = DataContainer<Cal>.GetInstance().GetDataByName(targetNumber).multiplier;
                     break;
                 case EffectKind.Click:
-                    switch (calway)
-                    {
-                        case CalculateWay.additive:
-                            DataContainer<ClickProduce>.GetInstance().GetDataByName(targetNumber).multiplier.AddAddtiveMultiplier(() => valuePerLevel * level);
-                            break;
-                        case CalculateWay.multiplicative:
-                            DataContainer<ClickProduce>.GetInstance().GetDataByName(targetNumber).multiplier.AddAddtiveMultiplier(() => 1.0 + valuePerLevel * level);
-                            break;
-                        default:
-                            break;
-                    }
+                    targetMultiplier = DataContainer<ClickProduce>.GetInstance().GetDataByName(targetNumber).multiplier;
                     break;
                 case EffectKind.Produce:
-                    switch (calway)
-                    {
-                        case CalculateWay.additive:
-                            DataContainer<IdleProduce>.GetInstance().GetDataByName(targetNumber).multiplier.AddAddtiveMultiplier(() => valuePerLevel * level);
-                            break;
-                        case CalculateWay.multiplicative:
-                            DataContainer<IdleProduce>.GetInstance().GetDataByName(targetNumber).multiplier.AddAddtiveMultiplier(() => 1.0 + valuePerLevel * level);
-                            break;
-                        default:
-                            break;
-                    }
+                    targetMultiplier = DataContainer<IdleProduce>.GetInstance().GetDataByName(targetNumber).multiplier;
                     break;
                 default:
                     break;
             }
 
+            switch (calway)
+            {
+                case CalculateWay.additive:
+                    targetMultiplier.AddAddtiveMultiplier(() => valuePerLevel * level);
+                    break;
+                case CalculateWay.multiplicative:
+                    targetMultiplier.AddAddtiveMultiplier(() => 1.0 + valuePerLevel * level);
+                    break;
+                default:
+                    break;
+            }
+
+            //ウインドウの設定
+
         }
+
 
     }
 }

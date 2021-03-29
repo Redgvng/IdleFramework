@@ -37,7 +37,7 @@ namespace CommonLibrary
         public NUMBER(NumbersName Name, double initialNumber = 0)
         {
             DataContainer<IMultiplier>.GetInstance().SetDataByName(this, Name);
-            DataContainer<NUMBER>.GetInstance().SetDataByName(this, Name);
+            DataContainer<NUMBER>.GetInstance().SetDataByName(this, Name);  
             multiplier = new Multiplier();
             setNumber = new SetItemToSave<double>((int)Name, Main.main.S.numbers);
             if(!Main.main.S.isContinuePlay)

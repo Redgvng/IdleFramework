@@ -1418,7 +1418,7 @@ MonoBehaviour:
   targetNumber: 1
   targetCal: 0
   valuePerLevel: 1
-  effectKind: 2
+  effectKind: 3
 --- !u!114 &1801320569
 MonoBehaviour:
   m_ObjectHideFlags: 0
