@@ -34,7 +34,7 @@ namespace IdleLibrary
             setNumber = new NullSetItem<double>();
             this.Number = initialNumber;
         }
-        //基本的にはこのコンストラクタを使うこと。Mainに大きく依存
+        //基本的にはこのコンストラクタを使うこと。
         public NUMBER(NumbersName Name)
         {
             DataContainer<IMultiplier>.GetInstance().SetDataByName(this, Name);
@@ -46,7 +46,6 @@ namespace IdleLibrary
         {
             Number += !isNetValue ? multiplier.CaluculatedNumber(increment) : increment;
             TotalNumber += !isNetValue ? multiplier.CaluculatedNumber(increment) : increment;
-            Debug.Log(Main.main.S.numbers[(int)NumbersName.stone]);
         }
         public virtual void DecrementNumber(double decrement = 1)
         {
