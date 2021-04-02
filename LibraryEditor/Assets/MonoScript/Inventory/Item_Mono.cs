@@ -12,7 +12,6 @@ namespace IdleLibrary.Inventory
 {
 	public class Item_Mono : Subject, ISetItem<Item>, IDeleteItem<Item>,IStackItem<Item>
 	{
-
         int index => transform.GetSiblingIndex();
         ItemContollerTestForMono<Item> controller;
         //セーブする配列の設定

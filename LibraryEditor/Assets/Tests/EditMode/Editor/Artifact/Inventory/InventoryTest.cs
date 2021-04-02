@@ -76,9 +76,9 @@ namespace Tests
         [Test]
         public void CanSwapItemFromInventory()
         {
-            var swap = new SwapItemFromInventory<dummy, ItemTest>();
             var set1 = new NullSetItem<ItemTest>();
             var set2 = new NullSetItem<ItemTest>();
+            var swap = new SwapItemFromInventory<ItemTest>();
             var item1 = new dummy(new SwapItem<ItemTest>(set1), set1);
             var item2 = new dummy(new SwapItem<ItemTest>(set2), set2);
             item1.SetItem(new ItemTest(1));

@@ -9,6 +9,6 @@
     }
     public interface IClickAction<T>
     {
-        void Click(T clicked);
+        void Click();
     }
 }

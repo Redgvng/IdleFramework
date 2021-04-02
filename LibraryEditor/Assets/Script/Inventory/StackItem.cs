@@ -18,18 +18,19 @@ namespace IdleLibrary.Inventory {
         }
     }
 
-    public class SwapItemFromInventory<T, U> : IClickAction<T> where U : struct, IItem
+    //T ... Inventory Slot
+    //U ... Entity of Item
+    public class SwapItemFromInventory<T> : IClickAction<T> where T : struct, IItem 
     {
-        ISetItem<U> inputItem;
-
-        public void Click(T stackItem)
+        ISetItem<T> inputItem;
+        ISetItem<T> originalItem;
+        public SwapItemFromInventory(ISetItem<T> originalItem)
         {
-            if (!(stackItem is SwapItem<U> && stackItem is ISetItem<U>))
-                return;
-
-
-            var swap = stackItem as SwapItem<U>;
-
+            this.originalItem = originalItem;
+        }
+        public void Click()
+        {
+            var swap = new SwapItem<T>(originalItem);
             if (inputItem != null && inputItem.GetItem().id != 0)
             {
                 Debug.Log("ひっくり返したよ");
@@ -39,7 +40,7 @@ namespace IdleLibrary.Inventory {
             else
             {
                 Debug.Log("登録したよ");
-                inputItem = swap as ISetItem<U>;
+                inputItem = swap as ISetItem<T>;
             }
         }
     }
