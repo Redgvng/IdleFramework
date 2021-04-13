@@ -78,14 +78,14 @@ namespace Tests
         {
             var set1 = new NullSetItem<ItemTest>();
             var set2 = new NullSetItem<ItemTest>();
-            var swap = new SwapItemFromInventory<ItemTest>();
+            //var swap = new SwapItemFromInventory<ItemTest>();
             var item1 = new dummy(new SwapItem<ItemTest>(set1), set1);
             var item2 = new dummy(new SwapItem<ItemTest>(set2), set2);
             item1.SetItem(new ItemTest(1));
             item2.SetItem(new ItemTest(2));
-            swap.Click(item1);
+            //swap.Click(item1);
             //これで1が登録された。
-            swap.Click(item2);
+            //swap.Click(item2);
             //1と2がひっくり返るはず
             Assert.AreEqual(1, item2.GetItem().id);
             Assert.AreEqual(2, item1.GetItem().id);

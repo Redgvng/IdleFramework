@@ -39,7 +39,7 @@ namespace IdleLibrary.Inventory
 		// Use this for initialization
 		void Awake()
 		{
-			clickAction = new SwapItemFromInventory<Item_Mono, Item>();
+			//clickAction = new SwapItemFromInventory<Item_Mono, Item>();
 			var create = new CreateItemByOrder<Item>(items, SlotNum);
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => create.SetItem(new Item(UnityEngine.Random.Range(1,6))));
 			items.ToList()
@@ -47,7 +47,7 @@ namespace IdleLibrary.Inventory
 			    .Subscribe((UnityEngine.EventSystems.PointerEventData obj) => {
                     if(obj.pointerId == -1)
                     {
-						clickAction.Click(x);
+						//clickAction.Click(x);
                     } 
                     if (obj.pointerId == -2) x.Delete(); }));
 			this.ObserveEveryValueChanged(_ => inputItem?.GetItem().id).Subscribe(_ => Notify());

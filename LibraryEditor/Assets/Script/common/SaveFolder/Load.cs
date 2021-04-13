@@ -77,7 +77,7 @@ document.addEventListener('click', function() {
     //Incentivized Ads 初回Bonusから呼ぶ
     public IEnumerator saveText()
     {
-        main.saveCtrl.setSaveKey();
+        //main.saveCtrl.setSaveKey();
         yield return new WaitForSeconds(0.3f);
 
         saveTitle = gameTitle + "_" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");

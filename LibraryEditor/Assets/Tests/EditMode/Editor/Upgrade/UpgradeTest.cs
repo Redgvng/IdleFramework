@@ -83,5 +83,31 @@ namespace Tests
             Assert.AreEqual(39, gold.Number);
             Assert.AreEqual(31, level.level);
         }
+        [Test]
+        public void ShouldDoFixedNumberCost()
+        {
+            var level = new MockLevel();
+            var gold = new NUMBER();
+            ITransaction simpleTransaction = new Transaction(gold, new LinearCost(1, 2, level));
+            ITransaction upgrade = new Upgrade(level, simpleTransaction);
+            //Max化します。
+            upgrade = new FixedNumberUpgrade(upgrade, 10);
+            gold.Number = 1000;
+            upgrade.Pay();
+            Assert.AreEqual(10, level.level);
+        }
+        [Test]
+        public void ShouldDoFixedNumberCostWhenNotEnoughCase()
+        {
+            var level = new MockLevel();
+            var gold = new NUMBER();
+            ITransaction simpleTransaction = new Transaction(gold, new LinearCost(1, 2, level));
+            ITransaction upgrade = new Upgrade(level, simpleTransaction);
+            //Max化します。
+            upgrade = new FixedNumberUpgrade(upgrade, 10);
+            gold.Number = 10;
+            upgrade.Pay();
+            Assert.AreEqual(3, level.level);
+        }
     }
 }

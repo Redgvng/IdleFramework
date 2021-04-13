@@ -22,7 +22,6 @@ namespace IdleLibrary.Upgrade {
 
         public void Pay()
         {
-            Debug.Log("upgrade呼ばれてるよ");
             if (!transaction.CanBuy())
                 return;
             transaction.Pay();
@@ -47,10 +46,41 @@ namespace IdleLibrary.Upgrade {
             if (!upgrade.CanBuy())
                 return;
 
-            //買えなくなるまで買います。
+            //買えなくなるまで買います。 
             int count = 0;
             while(upgrade.CanBuy() && count <= 10000)
             {
+                count++;
+                upgrade.Pay();
+            }
+        }
+    }
+
+    public class FixedNumberUpgrade : ITransaction
+    {
+        private ITransaction upgrade;
+        private readonly int fixedNum = 1;
+        public FixedNumberUpgrade(ITransaction upgrade, int fixedNum)
+        {
+            this.upgrade = upgrade;
+            this.fixedNum = fixedNum;
+        }
+
+        public bool CanBuy()
+        {
+            return upgrade.CanBuy();
+        }
+
+        public void Pay()
+        {
+            if (!upgrade.CanBuy())
+                return;
+
+            //買えなくなるまで買います。
+            int count = 0;
+            while (upgrade.CanBuy() && count < fixedNum)
+            {
+                count++;
                 upgrade.Pay();
             }
         }
