@@ -21,11 +21,13 @@ namespace IdleLibrary.Upgrade
     {
         readonly double initialValue;
         readonly double steep;
+        readonly ILevel level;
         public Cal Cost { get; }
         public LinearCost(double initialValue, double steep, ILevel level)
         {
             this.initialValue = initialValue;
             this.steep = steep;
+            this.level = level;
             Cost = new Cal(initialValue);
             Cost.multiplier.AddAddtiveMultiplier(() => level.level * steep);
         }
@@ -37,6 +39,7 @@ namespace IdleLibrary.Upgrade
             Cost.multiplier.AddAddtiveMultiplier(() => level * steep);
         }
     }
+
 }
 
 /*

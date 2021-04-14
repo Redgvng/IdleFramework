@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.IO;
+using TMPro;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using static Main;
@@ -13,18 +14,28 @@ using static Main;
 public class Load : MonoBehaviour, IPointerDownHandler
 {
     public Button saveButton;
+    public Button saveButtonOnCrazygame;
     string saveTitle, saveContent;
+    [SerializeField]
+    string gameTitle = "";
+    [SerializeField]
+    string sceneName = "";
     bool isOver;
+    public static bool isLoaded;
     AES aes = new AES();
+    public static bool isLoading;
 
-    string[] saveStrArray = new string[2];
-    string[] jsonArray = new string[2];
+    string[] saveStrArray = new string[6];
+    string[] jsonArray = new string[6];
 
     void Start()
     {
+        saveButton.onClick.AddListener(() => StartCoroutine(saveText()));
+        saveButtonOnCrazygame.onClick.AddListener(() => StartCoroutine(saveText()));
+
 #if UNITY_EDITOR
 #elif UNITY_WEBGL
-        saveButton.onClick.AddListener(()=>StartCoroutine(saveText()));
+        
 
 
         Application.ExternalEval(
@@ -63,11 +74,13 @@ document.addEventListener('click', function() {
 #endif
     }
 
-
     //Incentivized Ads 初回Bonusから呼ぶ
     public IEnumerator saveText()
     {
-        saveTitle = "IdleWine_" + DateTime.Now.ToString();
+        //main.saveCtrl.setSaveKey();
+        yield return new WaitForSeconds(0.3f);
+
+        saveTitle = gameTitle + "_" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
 
         saveStrArray[0] = PlayerPrefs.GetString(keyList.resetSaveKey);
         saveStrArray[1] = PlayerPrefs.GetString(keyList.permanentSaveKey);
@@ -84,6 +97,11 @@ document.addEventListener('click', function() {
         yield return saveContent;
 
 #if UNITY_EDITOR
+        //EditorのAssets/SaveData/にセーブ
+        FileInfo file = new FileInfo(Application.dataPath + "/SaveData/" + gameTitle + "_OnEditor.txt");
+        file.Directory.Create();
+        File.WriteAllText(file.FullName, saveContent);
+
 #elif UNITY_WEBGL
         Application.ExternalEval(
                     @"
@@ -102,6 +120,7 @@ document.addEventListener('click', function() {
     public void OnPointerDown(PointerEventData eventData)
     {
 #if UNITY_EDITOR
+        LoadOnEditor();
 #elif UNITY_WEBGL
         Application.ExternalEval(
             @"
@@ -133,16 +152,30 @@ if (fileuploader) {
 #endif
     }
 
+    WWW www;
 
     public void FileDialogResult(string fileUrl)
     {
-        StartCoroutine(ReadTxt(fileUrl));
+        // isLoading = true;
+        // preventError();
+        // //StartCoroutine(ReadTxt(fileUrl));
+        // ReadTxt(fileUrl);
+        StartCoroutine(preDownLoad(fileUrl));
     }
 
-    IEnumerator ReadTxt(string url)
+    IEnumerator preDownLoad(string url)
     {
-        var www = new WWW(url);
+        isLoaded = true;
+        www = new WWW(url);
         yield return www;
+        preventError();
+        ReadTxt(url);
+    }
+
+    void ReadTxt(string url)
+    {
+        //var www = new WWW(url);
+        //yield return www;
         jsonArray = www.text.Split('#');
         //復号化
 
@@ -150,42 +183,55 @@ if (fileuploader) {
         {
             saveStrArray[i] = null;
             saveStrArray[i] = System.Text.Encoding.UTF8.GetString(aes.dencrypt(Convert.FromBase64String(jsonArray[i])));
-            yield return saveStrArray[i];
+            //yield return saveStrArray[i];
         }
         SaveR SRdata = JsonUtility.FromJson<SaveR>(saveStrArray[0]);
         Save Sdata = JsonUtility.FromJson<Save>(saveStrArray[1]);
-        yield return SRdata;
-        yield return Sdata;
+
         main.SR = SRdata;
-        main.S = Sdata;
-        yield return new WaitForSeconds(1.0f);
-        SceneManager.LoadScene("wine");
+        main.S = Sdata; 
+        //yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadScene(sceneName);
     }
 
-    //string debugData = "";
-    //public void LoadOnEditor()
-    //{
-    //    StartCoroutine(LoadOnEditorCor(debugData));
-    //}
+    public TextAsset saveFile_Debug;
+    [ContextMenu("Editorからロード")]
+    void LoadOnEditor()
+    {
+        if(saveFile_Debug == null)
+        {
+            return;
+        }
+        preventError();
+        //StartCoroutine(LoadOnEditorCor(saveFile_Debug.text));
+        LoadOnEditorCor(saveFile_Debug.text);
+    }
 
-    //IEnumerator LoadOnEditorCor(string data)
-    //{
-    //    yield return data;
-    //    jsonArray = data.Split('#');
-    //    //復号化
-    //    for (int i = 0; i < jsonArray.Length; i++)
-    //    {
-    //        saveStrArray[i] = null;
-    //        saveStrArray[i] = System.Text.Encoding.UTF8.GetString(aes.dencrypt(Convert.FromBase64String(jsonArray[i])));
-    //        yield return saveStrArray[i];
-    //    }
-    //    SaveR SRdata = JsonUtility.FromJson<SaveR>(saveStrArray[0]);
-    //    Save Sdata = JsonUtility.FromJson<Save>(saveStrArray[1]);
-    //    yield return SRdata;
-    //    yield return Sdata;
-    //    main.SR = SRdata;
-    //    main.S = Sdata;
-    //    yield return new WaitForSeconds(1.0f);
-    //    SceneManager.LoadScene("wine");
-    //}
+    void preventError()
+    {
+        StopAllCoroutines();
+        Time.timeScale = 0;
+    }
+
+    void LoadOnEditorCor(string data)
+    {
+       // yield return new WaitForSeconds(0.1f);
+       // yield return data;
+        jsonArray = data.Split('#');
+        //復号化
+        for (int i = 0; i < jsonArray.Length; i++)
+        {
+            saveStrArray[i] = null;
+            saveStrArray[i] = System.Text.Encoding.UTF8.GetString(aes.dencrypt(Convert.FromBase64String(jsonArray[i])));
+           // yield return saveStrArray[i];
+        }
+        SaveR SRdata = JsonUtility.FromJson<SaveR>(saveStrArray[0]);
+        Save Sdata = JsonUtility.FromJson<Save>(saveStrArray[1]);
+
+        main.SR = SRdata;
+        main.S = Sdata;
+
+        //yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadScene("main");
+    }
 }
