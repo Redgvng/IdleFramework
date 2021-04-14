@@ -40,6 +40,29 @@ namespace IdleLibrary.Upgrade
         }
     }
 
+    public class ExponentialCost : ICost
+    {
+        readonly double initialValue;
+        readonly double factor;
+        readonly ILevel level;
+        public Cal Cost { get; }
+        public ExponentialCost(double initialValue, double factor, ILevel level)
+        {
+            this.initialValue = initialValue;
+            this.factor = factor;
+            this.level = level;
+            Cost = new Cal(initialValue);
+            Cost.multiplier.AddMultiplicativeMultiplier(() => Math.Pow(factor, level.level));
+        }
+        public ExponentialCost(double initialValue, double factor, int level)
+        {
+            this.initialValue = initialValue;
+            this.factor = factor;
+            Cost = new Cal(initialValue);
+            Cost.multiplier.AddMultiplicativeMultiplier(() => Math.Pow(factor, level));
+        }
+    }
+
 }
 
 /*
