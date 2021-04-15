@@ -34,13 +34,13 @@ namespace IdleLibrary
             setNumber = new NullSetItem<double>();
             this.Number = initialNumber;
         }
-        //基本的にはこのコンストラクタを使うこと。
-        public NUMBER(NumbersName Name)
+        //本番用コンストラクタ
+        public NUMBER(NumbersName Name, ISetItem<double> setNumber)
         {
             DataContainer<IMultiplier>.GetInstance().SetDataByName(this, Name);
             DataContainer<NUMBER>.GetInstance().SetDataByName(this, Name);  
             multiplier = new Multiplier();
-            setNumber = new SetItemToSave<double>((int)Name, Main.main.S.numbers);
+            this.setNumber = setNumber;
         }
         public virtual void IncrementNumber(double increment = 1, bool isNetValue = false)
         {
