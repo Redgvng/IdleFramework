@@ -27,20 +27,20 @@ namespace IdleLibrary
         //Private
         private ISetItem<double> setNumber;
 
-        //テスト用コンストラクタ
-        public NUMBER(double initialNumber = 0)
+        //ユニットテスト用コンストラクタ
+        public NUMBER(double initialValue = 0)
         {
+            Number = initialValue;
             multiplier = new Multiplier();
-            setNumber = new NullSetItem<double>();
-            this.Number = initialNumber;
+            this.setNumber = new NullSetItem<double>();
         }
+
         //本番用コンストラクタ
-        public NUMBER(NumbersName Name, ISetItem<double> setNumber)
+        public NUMBER(NumbersName Name, IDataContainer<NUMBER> dataContainer, ISetItem<double> setNumber = null)
         {
-            DataContainer<IMultiplier>.GetInstance().SetDataByName(this, Name);
-            DataContainer<NUMBER>.GetInstance().SetDataByName(this, Name);  
+            dataContainer.SetDataByName(this, Name);  
             multiplier = new Multiplier();
-            this.setNumber = setNumber;
+            this.setNumber = setNumber == null ? new NullSetItem<double>() : setNumber;
         }
         public virtual void IncrementNumber(double increment = 1, bool isNetValue = false)
         {
@@ -68,7 +68,7 @@ namespace IdleLibrary
         }
     }
 
-
+    /*
     public class CappedNumber : NUMBER
     {
         public Cap cap;
@@ -85,13 +85,6 @@ namespace IdleLibrary
             cap.Check(this);
         }
     }
-
-    public class Money : NUMBER
-    {
-        public Money(double initialValue)
-        {
-            IncrementNumber(initialValue);
-        }
-    }
+    */
 }
 

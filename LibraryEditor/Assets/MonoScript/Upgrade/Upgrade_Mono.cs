@@ -6,6 +6,7 @@ using System;
 using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
+using static UsefulMethod;
 namespace IdleLibrary.Upgrade {
     public enum EffectKind
     {
@@ -54,18 +55,22 @@ namespace IdleLibrary.Upgrade {
         [SerializeField]
         RectTransform canvas;
 
+        //private variable
+        ICost[] cost;
         // アップグレードを作成します。最終的にはfactory methodを作ったほうがイイカモ？
         void Awake()
         {
             ITransaction[] transactions = new ITransaction[resourceNum];
+            cost = new ICost[resourceNum];
             for (int i = 0; i < resourceNum; i++)
             {
                 switch (costInfo[i].costKind)
                 {
                     case CostKind.linear:
+                        cost[i] = new LinearCost(costInfo[i].factor1, costInfo[i].factor2, this);
                         transactions[i] = new Transaction(
                             DataContainer<NUMBER>.GetInstance().GetDataByName(costInfo[i].resource),
-                            new LinearCost(costInfo[i].factor1, costInfo[i].factor2, this));
+                            cost[i]);
                         break;
                     case CostKind.exponential:
                         break;
@@ -110,8 +115,18 @@ namespace IdleLibrary.Upgrade {
 
             //ウインドウの設定
             var pop = popUp.StartPopUp(this.gameObject, canvas);
-            pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.text.text =
-               String.Format(windowText,level));
+            string Text()
+            {
+                var text = $"- Current Level : {level}\n\n";
+                text += "<cost>\n";
+                for (int i = 0; i < resourceNum; i++)
+                {
+                    text += $"{costInfo[i].resource} : {cost[i].Cost.GetValue()} " +
+                        $"(Currently you have {tDigit(DataContainer<NUMBER>.GetInstance().GetDataByName(costInfo[i].resource).Number)})";
+                }
+                return text;
+            }
+            pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.text.text = Text());
         }
 
 

@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public interface IDataContainer<T>
+{
+    public T GetDataByName(Enum name);
+    public void SetDataByName(T instance, Enum name);
+}
 //Singleton
-public class DataContainer<T> 
+public class DataContainer<T> : IDataContainer<T>
 {
     public static Dictionary<Enum, T> dictionary = new Dictionary<Enum, T>();
     static DataContainer<T> instance;
