@@ -12,20 +12,20 @@ namespace IdleLibrary.Upgrade{
     public class Transaction : ITransaction
     {
         //コストの処理を委譲する。
-        public ICost cost { get; }
+        public ICost GetCost { get; }
         public NUMBER resource { get; }
         public bool CanBuy()
         {
-            return resource.Number >= cost.Cost.GetValue();
+            return resource.Number >= GetCost.Cost.GetValue();
         }
         public void Pay()
         {
-            resource.DecrementNumber(cost.Cost.GetValue());
+            resource.DecrementNumber(GetCost.Cost.GetValue());
         }
         public Transaction(NUMBER resource, ICost cost)
         {
             this.resource = resource;
-            this.cost = cost;
+            this.GetCost = cost;
         }
     }
     //トランザクションの配列を受け取り、まとめて決済を行います。

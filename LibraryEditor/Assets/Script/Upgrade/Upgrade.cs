@@ -5,6 +5,7 @@ using UnityEngine;
 namespace IdleLibrary.Upgrade {
 
     //外部からは買った時の処理と、買えるかどうかが必要(ITransactionでアップグレードも表現しよう。)
+    //UpgradeがCostを公開するようにする。
     public class Upgrade : ITransaction
     {
         ILevel level;
@@ -28,10 +29,11 @@ namespace IdleLibrary.Upgrade {
             level.level++;
         }
     }
+    //ICostの情報が必要。
     public class MaxUpgrade : ITransaction
     {
-        ITransaction upgrade;
-        public MaxUpgrade(ITransaction upgrade)
+        private ITransaction upgrade;
+        public MaxUpgrade(ITransaction upgrade, IGetCost getCost)
         {
             this.upgrade = upgrade;
         }

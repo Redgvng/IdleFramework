@@ -11,15 +11,9 @@ namespace IdleLibrary.Upgrade
         double MaxCost(NUMBER number);
     }
 
-    public class MaxCost
+    public interface IGetCost
     {
-        private readonly ICost cost;
-        public MaxCost(NUMBER number, ICost cost)
-        {
-            this.cost = cost;
-            Cost = new Cal(cost.Cost.GetValue());
-        }
-        public Cal Cost;
+        ICost GetCost { get; }
     }
 
     //リソースのみを計算する。
