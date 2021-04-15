@@ -109,5 +109,23 @@ namespace Tests
             upgrade.Pay();
             Assert.AreEqual(3, level.level);
         }
+
+        [Test]
+        public void CanShowMaxCostEffectivelyWhenUsingLinear()
+        {
+            var level = new MockLevel();
+            var gold = new NUMBER();
+            ICost cost = new LinearCost(1, 2, level);
+            ITransaction simpleTransaction = new Transaction(gold, cost);
+            //この時点で...Maxのコストは出せる？ICostがeffectiveだったらeffectiveにだす。とか
+            //ICost MaxCostClass = new MaxCostClass(NUMBER, ICost)
+
+            ITransaction upgrade = new Upgrade(level, simpleTransaction);
+            //Max化します。
+            upgrade = new MaxUpgrade(upgrade);
+            gold.Number = 10;
+            upgrade.Pay();
+            Assert.AreEqual(3, level.level);
+        }
     }
 }

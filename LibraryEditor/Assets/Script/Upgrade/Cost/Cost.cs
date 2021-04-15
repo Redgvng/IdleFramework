@@ -4,16 +4,20 @@ using UnityEngine;
 using System;
 namespace IdleLibrary.Upgrade
 {
-    public enum BuyMode
-    {
-        Buy1,
-        Buy10,
-        Buy25,
-        BuyMax
-    }
     public interface ICost
     {
         Cal Cost { get; }
+    }
+
+    public class MaxCost
+    {
+        private readonly ICost cost;
+        public MaxCost(NUMBER number, ICost cost)
+        {
+            this.cost = cost;
+            Cost = new Cal(cost.Cost.GetValue());
+        }
+        public Cal Cost;
     }
 
     //リソースのみを計算する。
@@ -28,15 +32,22 @@ namespace IdleLibrary.Upgrade
             this.initialValue = initialValue;
             this.steep = steep;
             this.level = level;
-            Cost = new Cal(initialValue);
-            Cost.multiplier.AddAddtiveMultiplier(() => level.level * steep);
+            Cost = new CalDL((level) => initialValue + level * steep, level);
         }
-        public LinearCost(double initialValue, double steep, int level)
+
+        public (long level, double cost) MaxCostInfo(NUMBER number)
         {
-            this.initialValue = initialValue;
-            this.steep = steep;
-            Cost = new Cal(initialValue);
-            Cost.multiplier.AddAddtiveMultiplier(() => level * steep);
+            double n = number.Number;
+            double a = initialValue;
+            double b = steep;
+            long level = this.level.level;
+            //現在のレベルを基準にして...
+            double TotalCost(long maxLevel) => -a * level + a * maxLevel - b * Math.Pow(level, 2) / 2 +
+                b * level / 2 + b * Math.Pow(maxLevel, 2) / 2 - b * maxLevel / 2;
+            long SolveX() => b != 0 ? (long)((Math.Sqrt(4 * Math.Pow(a, 2) + 4 * a * b * (2 * level - 1) + b *
+                (b * Math.Pow(1 - 2 * level, 2) + 8 * n)) - 2 * a + b) / 2 / b) : (long)(n / a + level);
+
+            return (SolveX(), TotalCost(SolveX()));
         }
     }
 
@@ -53,13 +64,6 @@ namespace IdleLibrary.Upgrade
             this.level = level;
             Cost = new Cal(initialValue);
             Cost.multiplier.AddMultiplicativeMultiplier(() => Math.Pow(factor, level.level));
-        }
-        public ExponentialCost(double initialValue, double factor, int level)
-        {
-            this.initialValue = initialValue;
-            this.factor = factor;
-            Cost = new Cal(initialValue);
-            Cost.multiplier.AddMultiplicativeMultiplier(() => Math.Pow(factor, level));
         }
     }
 

@@ -21,6 +21,8 @@ namespace IdleLibrary
         void Click()
         {
             targetResourse.IncrementNumber(multiplier.CaluculatedNumber(1), true);
+            Debug.Log(targetResourse.Number);
+            Debug.Log(DataContainer<NUMBER>.GetInstance().GetDataByName(NumbersName.stone).Number);
         }
     }
 }

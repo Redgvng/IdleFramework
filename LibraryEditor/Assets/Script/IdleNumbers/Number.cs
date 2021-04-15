@@ -30,9 +30,9 @@ namespace IdleLibrary
         //ユニットテスト用コンストラクタ
         public NUMBER(double initialValue = 0)
         {
-            Number = initialValue;
             multiplier = new Multiplier();
             this.setNumber = new NullSetItem<double>();
+            Number = initialValue;
         }
 
         //本番用コンストラクタ
