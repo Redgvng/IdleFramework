@@ -24,9 +24,9 @@ namespace IdleLibrary
         void Awake()
         {
             //ゲームで使われるリソースを宣言します。
-            var gold = new NUMBER(NumbersName.gold);
-            var stone = new NUMBER(NumbersName.stone);
-            var exp = new NUMBER(NumbersName.exp);
+            var gold = new NUMBER(NumbersName.gold, new NullSetItem<double>());
+            var stone = new NUMBER(NumbersName.stone, new NullSetItem<double>());
+            var exp = new NUMBER(NumbersName.exp, new NullSetItem<double>());
 
             //クリックで得られるものを宣言します。
             new ClickProduce(NumbersName.stone, stone, StoneButton);

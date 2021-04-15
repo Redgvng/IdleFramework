@@ -1233,6 +1233,7 @@ GameObject:
   - component: {fileID: 1234273522}
   - component: {fileID: 1234273521}
   - component: {fileID: 1234273520}
+  - component: {fileID: 1234273523}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1342,6 +1343,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1234273518}
   m_CullTransparentMesh: 1
+--- !u!114 &1234273523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234273518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7118d811b37c61c469c911876c604674, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceNum: 1
+  costInfo:
+  - costKind: 0
+    resource: 1
+    factor1: 3
+    factor2: 0
+  - costKind: 0
+    resource: 0
+    factor1: 0
+    factor2: 0
+  - costKind: 0
+    resource: 0
+    factor1: 0
+    factor2: 0
+  - costKind: 0
+    resource: 0
+    factor1: 0
+    factor2: 0
+  calway: 0
+  targetNumber: 0
+  targetCal: 0
+  valuePerLevel: 1
+  effectKind: 3
+  popUp: {fileID: -2609383388560463190, guid: 527d86a425ef27a4cb72a3541d9471da, type: 3}
+  windowText: "\u3046\u3093\u3053\u3046\u3093\u3053"
+  canvas: {fileID: 445077737}
 --- !u!1 &1259378505
 GameObject:
   m_ObjectHideFlags: 0

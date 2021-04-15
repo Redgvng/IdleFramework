@@ -47,6 +47,12 @@ namespace IdleLibrary.Upgrade {
         EffectKind effectKind;
 
         //ウインドウ
+        [SerializeField]
+        PopUp popUp;
+        [SerializeField]
+        string windowText;
+        [SerializeField]
+        RectTransform canvas;
 
         // アップグレードを作成します。最終的にはfactory methodを作ったほうがイイカモ？
         void Awake()
@@ -103,7 +109,9 @@ namespace IdleLibrary.Upgrade {
             }
 
             //ウインドウの設定
-
+            var pop = popUp.StartPopUp(this.gameObject, canvas);
+            pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.text.text =
+               String.Format(windowText,level));
         }
 
 
