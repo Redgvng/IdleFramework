@@ -48,25 +48,6 @@ namespace IdleLibrary
         public virtual double GetValue() => multiplier.CaluculatedNumber(initialValue);
     }
 
-    //レベルに依存したCal
-    public class CalDL : Cal
-    {
-        private Func<long, double> initialFunc;
-        private ILevel level;
-        public CalDL(Func<long, double> initialFunc, ILevel level) : base(0)
-        {
-            this.initialFunc = initialFunc;
-            this.level = level;
-        }
-        public CalDL(Func<long, double> initialFunc, ILevel level, CalsName Name) : base(0,Name)
-        {
-            this.initialFunc = initialFunc;
-            this.level = level;
-        }
-        public override double GetValue() => multiplier.CaluculatedNumber(initialFunc(level.level));
-        public double GetValue(long level) => multiplier.CaluculatedNumber(initialFunc(level));
-    }
-
     public class Cap : Cal
     {
         ICapped capped;

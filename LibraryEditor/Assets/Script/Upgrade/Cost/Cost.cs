@@ -6,16 +6,31 @@ namespace IdleLibrary.Upgrade
 {
     public interface ICost
     {
-        CalDL Cost { get; }
+        double Cost { get; }
         long LevelAtMaxCost(NUMBER number);
         double MaxCost(NUMBER number);
         double FixedNumCost(NUMBER number, int fixedNum);
     }
 
-    public interface IGetCost
+    //コスト用のcal 外部に公開したくない。
+    public class CalDL : Cal
     {
-        ICost GetCost { get; }
+        private Func<long, double> initialFunc;
+        private ILevel level;
+        public CalDL(Func<long, double> initialFunc, ILevel level) : base(0)
+        {
+            this.initialFunc = initialFunc;
+            this.level = level;
+        }
+        public CalDL(Func<long, double> initialFunc, ILevel level, CalsName Name) : base(0, Name)
+        {
+            this.initialFunc = initialFunc;
+            this.level = level;
+        }
+        public override double GetValue() => multiplier.CaluculatedNumber(initialFunc(level.level));
+        public double GetValue(long level) => multiplier.CaluculatedNumber(initialFunc(level));
     }
+
 
     //リソースのみを計算する。
     public class LinearCost : ICost
@@ -23,13 +38,14 @@ namespace IdleLibrary.Upgrade
         readonly double initialValue;
         readonly double steep;
         readonly ILevel level;
-        public CalDL Cost { get; }
+        private CalDL cost { get; }
+        public double Cost => cost.GetValue();
         public LinearCost(double initialValue, double steep, ILevel level)
         {
             this.initialValue = initialValue;
             this.steep = steep;
             this.level = level;
-            Cost = new CalDL((level) => initialValue + level * steep, level);
+            cost = new CalDL((level) => initialValue + level * steep, level);
         }
 
         public long LevelAtMaxCost(NUMBER number)
@@ -76,7 +92,8 @@ namespace IdleLibrary.Upgrade
         readonly double initialValue;
         readonly double factor;
         readonly ILevel level;
-        public CalDL Cost { get; }
+        private CalDL cost { get; }
+        public double Cost => cost.GetValue();
         public ExponentialCost(double initialValue, double factor, ILevel level)
         {
             if(factor == 1)
@@ -89,7 +106,7 @@ namespace IdleLibrary.Upgrade
             this.initialValue = initialValue;
             this.factor = factor;
             this.level = level;
-            Cost = new CalDL((level) => Math.Pow(factor, level), level);
+            cost = new CalDL((level) => Math.Pow(factor, level), level);
         }
         public long LevelAtMaxCost(NUMBER number)
         {
