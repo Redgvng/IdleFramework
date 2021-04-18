@@ -7,8 +7,14 @@ namespace IdleLibrary.Upgrade
     public interface ICost
     {
         double Cost { get; }
+        /// <summary>
+        /// レベルは増分ではなく、最終的なレベルを表します。
+        /// </summary>
         long LevelAtMaxCost(NUMBER number);
         double MaxCost(NUMBER number);
+        /// <summary>
+        /// 現在のレベルを基準とした増分を入力します。例えば現在のレベルが10で、レベル12にするのに必要なコストであれば、引数は2を入力してください。
+        /// </summary>
         double FixedNumCost(NUMBER number, int fixedNum);
     }
 

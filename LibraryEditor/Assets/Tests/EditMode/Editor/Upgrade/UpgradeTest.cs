@@ -41,15 +41,16 @@ namespace Tests
             var crystal = new NUMBER(20);
             var leaf = new NUMBER(30);
             var gold = new NUMBER(40);
-            var MultipleTransactoin = new MultipleTransaction(new Transaction[]
-            {
-                new Transaction(stone, new LinearCost(1,2,level)),
-                new Transaction(crystal, new LinearCost(3,2,level)),
-                new Transaction(leaf, new LinearCost(5,2,level)),
-                new Transaction(gold, new LinearCost(1,2,level)),
-            });
-            ITransaction upgrade = new Upgrade(level, MultipleTransactoin);
-            upgrade.Pay();
+            var multipleUpgrade = new MultipleUpgrade(level,
+                new (NUMBER, ICost)[]
+                {
+                    (stone, new LinearCost(1,2,level)),
+                    (crystal, new LinearCost(3,2,level)),
+                    (leaf, new LinearCost(5,2,level)),
+                    (gold, new LinearCost(1,2,level)),
+                }
+                );
+            multipleUpgrade.Pay();
             Assert.AreEqual(9, stone.Number);
             Assert.AreEqual(17, crystal.Number);
             Assert.AreEqual(25, leaf.Number);

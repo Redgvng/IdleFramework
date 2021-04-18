@@ -62,16 +62,16 @@ namespace IdleLibrary.Upgrade {
     //Upgradeと同じようにふるまってほしい
     public class MultipleUpgrade
     {
-        private readonly IEnumerable<Upgrade> upgrades;
+        private readonly IEnumerable<(NUMBER number, ICost cost)> info;
         private readonly ILevel level;
-        public MultipleUpgrade(ILevel level, IEnumerable<Upgrade> upgrades)
+        public MultipleUpgrade(ILevel level, IEnumerable<(NUMBER number,ICost cost)> info)
         {
-            this.upgrades = upgrades;
+            this.info = info;
             this.level = level;
         }
         public bool CanBuy()
         {
-            return upgrades.All((upgrade) => upgrade.number.Number >= upgrade.cost.Cost);
+            return info.All((info) => info.number.Number >= info.cost.Cost);
         }
 
         public void Pay()
@@ -79,7 +79,7 @@ namespace IdleLibrary.Upgrade {
             if (!CanBuy())
                 return;
 
-            foreach (var item in upgrades)
+            foreach (var item in info)
             {
                 item.number.DecrementNumber(item.cost.Cost);
             }
@@ -91,11 +91,12 @@ namespace IdleLibrary.Upgrade {
             if (!CanBuy())
                 return;
 
-            var minLevel = upgrades.Select((x) => x.cost.LevelAtMaxCost(x.number)).Min();
-            foreach (var item in upgrades)
+            var minLevel = info.Select((x) => x.cost.LevelAtMaxCost(x.number)).Min();
+            foreach (var item in info)
             {
                 item.number.DecrementNumber(item.cost.Cost);
             }
+            level.level = minLevel;
         }
 
         public void FixedAmountPay(int fixedNum)
@@ -103,15 +104,22 @@ namespace IdleLibrary.Upgrade {
             if (!CanBuy())
                 return;
 
-            if (cost.LevelAtMaxCost(number) > fixedNum)
+            var minLevel = info.Select((x) => x.cost.LevelAtMaxCost(x.number)).Min();
+            if (minLevel > fixedNum)
             {
-                number.DecrementNumber(cost.FixedNumCost(number, fixedNum));
+                foreach (var item in info)
+                {
+                    item.number.DecrementNumber(item.cost.FixedNumCost(item.number, fixedNum));
+                }
                 level.level += fixedNum;
             }
             else
             {
-                number.DecrementNumber(cost.MaxCost(number));
-                level.level = cost.LevelAtMaxCost(number);
+                foreach (var item in info)
+                {
+                    item.number.DecrementNumber(item.cost.MaxCost(item.number));
+                }
+                level.level = minLevel;
             }
         }
     }
