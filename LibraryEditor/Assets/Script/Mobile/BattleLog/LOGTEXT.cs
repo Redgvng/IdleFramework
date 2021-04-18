@@ -10,7 +10,6 @@ using Cysharp.Threading.Tasks;
 
 public class LOGTEXT : MonoBehaviour
 {
-    //Testです
     //フェードアウトの滑らかさ（デフォルト：1秒間に10コマ）
     static int fadeoutsmoothness = 10;
     static float showTime = 3.0f;
@@ -20,6 +19,7 @@ public class LOGTEXT : MonoBehaviour
     private void Awake()
     {
         thisText = gameObject.GetComponent<TextMeshProUGUI>();
+        //Foo
     }
     public void SetInfo(string text, float timesec)
     {
@@ -29,6 +29,7 @@ public class LOGTEXT : MonoBehaviour
         thisText.text = text;
         showTime = timesec;
         FadeOut();
+        float aaa = 0;
     }
     async void FadeOut()
     {
