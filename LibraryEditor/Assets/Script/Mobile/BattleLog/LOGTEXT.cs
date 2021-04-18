@@ -19,7 +19,6 @@ public class LOGTEXT : MonoBehaviour
     private void Awake()
     {
         thisText = gameObject.GetComponent<TextMeshProUGUI>();
-        //test
     }
     public void SetInfo(string text, float timesec)
     {
@@ -48,5 +47,4 @@ public class LOGTEXT : MonoBehaviour
                 await UniTask.DelayFrame(1);
         }
     }
-    //test
 }
