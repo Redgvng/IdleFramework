@@ -23,6 +23,7 @@ namespace IdleLibrary
         public GameObject StoneButton;
         void Awake()
         {
+            /*
             //ゲームで使われるリソースを宣言します。
             var gold = new NUMBER(NumbersName.gold);
             var stone = new NUMBER(NumbersName.stone);
@@ -34,6 +35,7 @@ namespace IdleLibrary
             //自動的に生産されるものを宣言します。
             new IdleProduce(NumbersName.gold, gold);
             new IdleProduce(NumbersName.stone, stone);
+            */
         }
     }
 }
