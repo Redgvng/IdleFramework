@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace IdleLibrary.Upgrade {
 
@@ -20,14 +21,14 @@ namespace IdleLibrary.Upgrade {
 
         public bool CanBuy()
         {
-            return number.Number >= cost.Cost.GetValue();
+            return number.Number >= cost.Cost;
         }
 
         public void Pay()
         {
             if (!CanBuy())
                 return;
-            number.DecrementNumber(cost.Cost.GetValue());
+            number.DecrementNumber(cost.Cost);
             level.level++;
         }
 
@@ -58,12 +59,57 @@ namespace IdleLibrary.Upgrade {
         }
     }
 
+    //Upgradeと同じようにふるまってほしい
     public class MultipleUpgrade
     {
-        (NUMBER, ICost)[] costInfo;
-        public MultipleUpgrade(params (NUMBER, ICost)[] ps)
+        private readonly IEnumerable<Upgrade> upgrades;
+        private readonly ILevel level;
+        public MultipleUpgrade(ILevel level, IEnumerable<Upgrade> upgrades)
         {
-            this.costInfo = ps;
+            this.upgrades = upgrades;
+            this.level = level;
+        }
+        public bool CanBuy()
+        {
+            return upgrades.All((upgrade) => upgrade.number.Number >= upgrade.cost.Cost);
+        }
+
+        public void Pay()
+        {
+            if (!CanBuy())
+                return;
+
+            foreach (var item in upgrades)
+            {
+                item.number.DecrementNumber(item.cost.Cost);
+            }
+            level.level++;
+        }
+
+        public void MaxPay()
+        {
+            if (!CanBuy())
+                return;
+
+            number.DecrementNumber(cost.MaxCost(number));
+            level.level = cost.LevelAtMaxCost(number);
+        }
+
+        public void FixedAmountPay(int fixedNum)
+        {
+            if (!CanBuy())
+                return;
+
+            if (cost.LevelAtMaxCost(number) > fixedNum)
+            {
+                number.DecrementNumber(cost.FixedNumCost(number, fixedNum));
+                level.level += fixedNum;
+            }
+            else
+            {
+                number.DecrementNumber(cost.MaxCost(number));
+                level.level = cost.LevelAtMaxCost(number);
+            }
         }
     }
 }

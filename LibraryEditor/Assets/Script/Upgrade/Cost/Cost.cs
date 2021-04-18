@@ -31,6 +31,25 @@ namespace IdleLibrary.Upgrade
         public double GetValue(long level) => multiplier.CaluculatedNumber(initialFunc(level));
     }
 
+    public class NullCost : ICost
+    {
+        public double Cost => 0;
+
+        public double FixedNumCost(NUMBER number, int fixedNum)
+        {
+            return 0;
+        }
+
+        public long LevelAtMaxCost(NUMBER number)
+        {
+            return 0;
+        }
+
+        public double MaxCost(NUMBER number)
+        {
+            return 0;
+        }
+    }
 
     //リソースのみを計算する。
     public class LinearCost : ICost

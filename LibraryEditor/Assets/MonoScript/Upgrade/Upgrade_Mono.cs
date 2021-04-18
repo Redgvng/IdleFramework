@@ -58,6 +58,7 @@ namespace IdleLibrary.Upgrade {
         //private variable
         ICost[] cost;
         // アップグレードを作成します。最終的にはfactory methodを作ったほうがイイカモ？
+        /*
         void Awake()
         {
             ITransaction[] transactions = new ITransaction[resourceNum];
@@ -128,6 +129,8 @@ namespace IdleLibrary.Upgrade {
             }
             pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.text.text = Text());
         }
+
+        */
 
 
     }
