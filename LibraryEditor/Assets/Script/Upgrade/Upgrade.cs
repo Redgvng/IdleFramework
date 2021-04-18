@@ -37,8 +37,9 @@ namespace IdleLibrary.Upgrade {
             if (!CanBuy())
                 return;
 
+            long tempLevel = cost.LevelAtMaxCost(number);
             number.DecrementNumber(cost.MaxCost(number));
-            level.level = cost.LevelAtMaxCost(number);
+            level.level = tempLevel;
         }
 
         public void FixedAmountPay(int fixedNum)
@@ -53,8 +54,9 @@ namespace IdleLibrary.Upgrade {
             }
             else
             {
+                long tempLevel = cost.LevelAtMaxCost(number);
                 number.DecrementNumber(cost.MaxCost(number));
-                level.level = cost.LevelAtMaxCost(number);
+                level.level = tempLevel;
             }
         }
     }
