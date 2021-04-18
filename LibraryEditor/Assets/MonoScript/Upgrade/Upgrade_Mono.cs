@@ -58,10 +58,10 @@ namespace IdleLibrary.Upgrade {
         //private variable
         ICost[] cost;
         // アップグレードを作成します。最終的にはfactory methodを作ったほうがイイカモ？
-        /*
         void Awake()
         {
-            ITransaction[] transactions = new ITransaction[resourceNum];
+            List<(NUMBER, ICost)> info = new List<(NUMBER, ICost)>();
+            MultipleUpgrade upgrade;
             cost = new ICost[resourceNum];
             for (int i = 0; i < resourceNum; i++)
             {
@@ -69,17 +69,16 @@ namespace IdleLibrary.Upgrade {
                 {
                     case CostKind.linear:
                         cost[i] = new LinearCost(costInfo[i].factor1, costInfo[i].factor2, this);
-                        transactions[i] = new Transaction(
-                            DataContainer<NUMBER>.GetInstance().GetDataByName(costInfo[i].resource),
-                            cost[i]);
                         break;
                     case CostKind.exponential:
+                        cost[i] = new ExponentialCost(costInfo[i].factor1, costInfo[i].factor2, this);
                         break;
                     default:
                         break;
                 }
+                info.Add((DataContainer<NUMBER>.GetInstance().GetDataByName(costInfo[i].resource), cost[i]));
             }
-            Upgrade upgrade = new Upgrade(this, new MultipleTransaction(transactions));
+            upgrade = new MultipleUpgrade(this, info);
             //maxUpgrade = new MaxUpgrade(upgrade);
             gameObject.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => upgrade.Pay());
             //効果の設定
@@ -122,16 +121,13 @@ namespace IdleLibrary.Upgrade {
                 text += "<cost>\n";
                 for (int i = 0; i < resourceNum; i++)
                 {
-                    text += $"{costInfo[i].resource} : {cost[i].Cost.GetValue()} " +
+                    text += $"{costInfo[i].resource} : {cost[i].Cost} " +
                         $"(Currently you have {tDigit(DataContainer<NUMBER>.GetInstance().GetDataByName(costInfo[i].resource).Number)})";
                 }
                 return text;
             }
             pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.text.text = Text());
         }
-
-        */
-
 
     }
 }
