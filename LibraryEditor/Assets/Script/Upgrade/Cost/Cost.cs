@@ -6,9 +6,10 @@ namespace IdleLibrary.Upgrade
 {
     public interface ICost
     {
-        Cal Cost { get; }
+        CalDL Cost { get; }
         long LevelAtMaxCost(NUMBER number);
         double MaxCost(NUMBER number);
+        double FixedNumCost(NUMBER number, int fixedNum);
     }
 
     public interface IGetCost
@@ -22,7 +23,7 @@ namespace IdleLibrary.Upgrade
         readonly double initialValue;
         readonly double steep;
         readonly ILevel level;
-        public Cal Cost { get; }
+        public CalDL Cost { get; }
         public LinearCost(double initialValue, double steep, ILevel level)
         {
             this.initialValue = initialValue;
@@ -56,6 +57,18 @@ namespace IdleLibrary.Upgrade
 
             return TotalCost(LevelAtMaxCost(number));
         }
+
+        public double FixedNumCost(NUMBER number, int fixedNum)
+        {
+            double n = number.Number;
+            double a = initialValue;
+            double b = steep;
+            long level = this.level.level;
+            double TotalCost(long maxLevel) => -a * level + a * maxLevel - b * Math.Pow(level, 2) / 2 +
+            b * level / 2 + b * Math.Pow(maxLevel, 2) / 2 - b * maxLevel / 2;
+
+            return TotalCost(this.level.level + fixedNum);
+        }
     }
 
     public class ExponentialCost : ICost
@@ -63,7 +76,7 @@ namespace IdleLibrary.Upgrade
         readonly double initialValue;
         readonly double factor;
         readonly ILevel level;
-        public Cal Cost { get; }
+        public CalDL Cost { get; }
         public ExponentialCost(double initialValue, double factor, ILevel level)
         {
             if(factor == 1)
@@ -76,8 +89,7 @@ namespace IdleLibrary.Upgrade
             this.initialValue = initialValue;
             this.factor = factor;
             this.level = level;
-            Cost = new Cal(initialValue);
-            Cost.multiplier.AddMultiplicativeMultiplier(() => Math.Pow(factor, level.level));
+            Cost = new CalDL((level) => Math.Pow(factor, level), level);
         }
         public long LevelAtMaxCost(NUMBER number)
         {
@@ -100,6 +112,17 @@ namespace IdleLibrary.Upgrade
             double TotalCost(long maxLevel) => a * (Math.Pow(b, maxLevel) - Math.Pow(b, level)) / (b - 1);
 
             return TotalCost(LevelAtMaxCost(number));
+        }
+
+        public double FixedNumCost(NUMBER number, int fixedNum)
+        {
+            double n = number.Number;
+            double a = initialValue;
+            double b = factor;
+            long level = this.level.level;
+            double TotalCost(long maxLevel) => a * (Math.Pow(b, maxLevel) - Math.Pow(b, level)) / (b - 1);
+
+            return TotalCost(this.level.level + fixedNum);
         }
     }
 

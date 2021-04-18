@@ -5,86 +5,65 @@ using UnityEngine;
 namespace IdleLibrary.Upgrade {
 
     //外部からは買った時の処理と、買えるかどうかが必要(ITransactionでアップグレードも表現しよう。)
-    //UpgradeがCostを公開するようにする。
-    public class Upgrade : ITransaction
+    //UpgradeからCostの情報が取れないのは明らかにおかしい
+    public class Upgrade
     {
-        ILevel level;
-        ITransaction transaction;
-        public Upgrade(ILevel level, ITransaction transaction)
+        private ILevel level;
+        public NUMBER number;
+        public ICost cost;
+        public Upgrade(ILevel level, NUMBER number, ICost cost)
         {
             this.level = level;
-            this.transaction = transaction;
+            this.number = number;
+            this.cost = cost;
         }
 
         public bool CanBuy()
         {
-            return transaction.CanBuy();
+            return number.Number >= cost.Cost.GetValue();
         }
 
         public void Pay()
         {
-            if (!transaction.CanBuy())
+            if (!CanBuy())
                 return;
-            transaction.Pay();
+            number.DecrementNumber(cost.Cost.GetValue());
             level.level++;
         }
-    }
-    //ICostの情報が必要。
-    public class MaxUpgrade : ITransaction
-    {
-        private ITransaction upgrade;
-        public MaxUpgrade(ITransaction upgrade, IGetCost getCost)
-        {
-            this.upgrade = upgrade;
-        }
 
-        public bool CanBuy()
+        public void MaxPay()
         {
-            return upgrade.CanBuy();
-        }
-
-        public void Pay()
-        {
-            if (!upgrade.CanBuy())
+            if (!CanBuy())
                 return;
 
-            //買えなくなるまで買います。 
-            int count = 0;
-            while(upgrade.CanBuy() && count <= 10000)
+            number.DecrementNumber(cost.MaxCost(number));
+            level.level = cost.LevelAtMaxCost(number);
+        }
+
+        public void FixedAmountPay(int fixedNum)
+        {
+            if (!CanBuy())
+                return;
+
+            if(cost.LevelAtMaxCost(number) > fixedNum)
             {
-                count++;
-                upgrade.Pay();
+                number.DecrementNumber(cost.FixedNumCost(number,fixedNum));
+                level.level += fixedNum;
+            }
+            else
+            {
+                number.DecrementNumber(cost.MaxCost(number));
+                level.level = cost.LevelAtMaxCost(number);
             }
         }
     }
 
-    public class FixedNumberUpgrade : ITransaction
+    public class MultipleUpgrade
     {
-        private ITransaction upgrade;
-        private readonly int fixedNum = 1;
-        public FixedNumberUpgrade(ITransaction upgrade, int fixedNum)
+        (NUMBER, ICost)[] costInfo;
+        public MultipleUpgrade(params (NUMBER, ICost)[] ps)
         {
-            this.upgrade = upgrade;
-            this.fixedNum = fixedNum;
-        }
-
-        public bool CanBuy()
-        {
-            return upgrade.CanBuy();
-        }
-
-        public void Pay()
-        {
-            if (!upgrade.CanBuy())
-                return;
-
-            //買えなくなるまで買います。
-            int count = 0;
-            while (upgrade.CanBuy() && count < fixedNum)
-            {
-                count++;
-                upgrade.Pay();
-            }
+            this.costInfo = ps;
         }
     }
 }

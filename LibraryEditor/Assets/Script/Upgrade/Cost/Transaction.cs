@@ -2,6 +2,7 @@
 namespace IdleLibrary.Upgrade{
     
     //levelをここから消そう。
+    /*
     public interface ITransaction
     {
         bool CanBuy();
@@ -69,4 +70,5 @@ namespace IdleLibrary.Upgrade{
             return;
         }
     }
+    */
 }

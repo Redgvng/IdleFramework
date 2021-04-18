@@ -32,7 +32,7 @@ namespace IdleLibrary.Upgrade {
     {
         public long level { get; set; }
         //Maxアップグレード用
-        public MaxUpgrade maxUpgrade;
+        //public MaxUpgrade maxUpgrade;
         [SerializeField]
         int resourceNum;
         public CostInfo[] costInfo = new CostInfo[4];
@@ -79,7 +79,7 @@ namespace IdleLibrary.Upgrade {
                 }
             }
             Upgrade upgrade = new Upgrade(this, new MultipleTransaction(transactions));
-            maxUpgrade = new MaxUpgrade(upgrade);
+            //maxUpgrade = new MaxUpgrade(upgrade);
             gameObject.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => upgrade.Pay());
             //効果の設定
             Multiplier targetMultiplier = null;
