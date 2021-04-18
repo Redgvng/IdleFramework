@@ -10,6 +10,7 @@ using Cysharp.Threading.Tasks;
 
 public class LOGTEXT : MonoBehaviour
 {
+    //Testです
     //フェードアウトの滑らかさ（デフォルト：1秒間に10コマ）
     static int fadeoutsmoothness = 10;
     static float showTime = 3.0f;
