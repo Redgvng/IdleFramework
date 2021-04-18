@@ -69,6 +69,17 @@ namespace Tests
             Assert.AreEqual(3, level.level);
         }
         [Test]
+        public void ShouldDoMaCostForMultipleUpgrade()
+        {
+            var level = new MockLevel();
+            var gold = new NUMBER();
+            var upgrade = new MultipleUpgrade(level, (gold, new LinearCost(1, 2, level)));
+            gold.Number = 10;
+            upgrade.MaxPay();
+            Assert.AreEqual(1, gold.Number);
+            Assert.AreEqual(3, level.level);
+        }
+        [Test]
         public void ShouldDoMaxCostWithVeryBigNumber()
         {
             var level = new MockLevel();

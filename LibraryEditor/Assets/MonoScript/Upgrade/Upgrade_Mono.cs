@@ -28,7 +28,7 @@ namespace IdleLibrary.Upgrade {
         public double factor1, factor2;
     }
 
-    public class Upgrade_Mono : MonoBehaviour, ILevel
+    public class Upgrade_Mono : MonoBehaviour, ILevel, IObserver
     {
         public long level { get; set; }
         //Maxアップグレード用
@@ -78,9 +78,24 @@ namespace IdleLibrary.Upgrade {
                 }
                 info.Add((DataContainer<NUMBER>.GetInstance().GetDataByName(costInfo[i].resource), cost[i]));
             }
-            upgrade = new MultipleUpgrade(this, info);
-            //maxUpgrade = new MaxUpgrade(upgrade);
-            gameObject.GetComponent<Button>().OnClickAsObservable().Subscribe(_ => upgrade.Pay());
+            upgrade = new MultipleUpgrade(this, info.ToArray());
+            gameObject.GetComponent<Button>().OnClickAsObservable().Subscribe(_ =>
+            {
+                Debug.Log(buyAmount);
+                switch (buyAmount)
+                {
+                    case 1:
+                        upgrade.Pay();
+                        Debug.Log("呼んでる？");
+                        break;
+                    case -1:
+                        upgrade.MaxPay();
+                        break;
+                    default:
+                        upgrade.FixedAmountPay(buyAmount);
+                        break;
+                }
+            });
             //効果の設定
             Multiplier targetMultiplier = null;
             switch (effectKind)
@@ -127,6 +142,17 @@ namespace IdleLibrary.Upgrade {
                 return text;
             }
             pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.text.text = Text());
+        }
+
+        //倍率によって変えるやつ
+        int buyAmount;
+        public void _Update(ISubject subject)
+        {
+            if (subject is BuyAmountMultiplier)
+            {
+                var multiplier = subject as BuyAmountMultiplier;
+                buyAmount = multiplier.multiplierNum;
+            }
         }
 
     }
