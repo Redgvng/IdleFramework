@@ -91,8 +91,11 @@ namespace IdleLibrary.Upgrade {
             if (!CanBuy())
                 return;
 
-            number.DecrementNumber(cost.MaxCost(number));
-            level.level = cost.LevelAtMaxCost(number);
+            var minLevel = upgrades.Select((x) => x.cost.LevelAtMaxCost(x.number)).Min();
+            foreach (var item in upgrades)
+            {
+                item.number.DecrementNumber(item.cost.Cost);
+            }
         }
 
         public void FixedAmountPay(int fixedNum)
