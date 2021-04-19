@@ -118,6 +118,17 @@ public class Upgrade_Editor : Editor
         valuePerLevel.doubleValue = EditorGUILayout.DoubleField("1レベル当たりの上昇量", valuePerLevel.doubleValue);
 
 
+        //ウインドウの設定
+        EditorGUILayout.LabelField("ポップアップウインドウ設定", bold);
+        var popUpWindow = serializedObject.FindProperty("popUp");
+        EditorGUILayout.ObjectField(popUpWindow);
+
+        var canvas = serializedObject.FindProperty("canvas");
+        EditorGUILayout.ObjectField(canvas);
+
+        //GUILayout.Label("Window説明文");
+        //var windowText = serializedObject.FindProperty("windowText");
+        //windowText.stringValue = GUILayout.TextArea(windowText.stringValue);
         //　シリアライズオブジェクトのプロパティの変更を更新
         serializedObject.ApplyModifiedProperties();
     }

@@ -17,5 +17,12 @@ namespace Tests
             double temp = number.Number;
         }
 
+        [Test]
+        public void CanSetNumberWithSetClass()
+        {
+            NUMBER number = new NUMBER(3);
+            number.IncrementNumber(1);
+            Assert.AreEqual(4, number.Number);
+        }
     }
 }

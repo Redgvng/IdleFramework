@@ -21,16 +21,18 @@ namespace IdleLibrary
     public class DataInitialize : MonoBehaviour
     {
         public GameObject StoneButton;
+
+        NUMBER gold, stone, exp;
         void Awake()
         {
             /*
             //ゲームで使われるリソースを宣言します。
-            var gold = new NUMBER(NumbersName.gold);
-            var stone = new NUMBER(NumbersName.stone);
-            var exp = new NUMBER(NumbersName.exp);
+            gold = new NUMBER(NumbersName.gold, DataContainer<NUMBER>.GetInstance());
+            stone = new NUMBER(NumbersName.stone, DataContainer<NUMBER>.GetInstance());
+            exp = new NUMBER(NumbersName.exp, DataContainer<NUMBER>.GetInstance());
 
             //クリックで得られるものを宣言します。
-            new ClickProduce(NumbersName.stone, stone, StoneButton);
+            new ClickProduce(NumbersName.stone, stone, StoneButton, DataContainer<ClickProduce>.GetInstance());
 
             //自動的に生産されるものを宣言します。
             new IdleProduce(NumbersName.gold, gold);
