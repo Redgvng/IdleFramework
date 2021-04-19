@@ -567,9 +567,9 @@ MonoBehaviour:
   targetCal: 0
   valuePerLevel: 1
   effectKind: 3
-  popUp: {fileID: -2609383388560463190, guid: 527d86a425ef27a4cb72a3541d9471da, type: 3}
+  popUp: {fileID: 0}
   windowText: 
-  canvas: {fileID: 445077737}
+  canvas: {fileID: 0}
 --- !u!1 &445077732
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,9 +1440,9 @@ MonoBehaviour:
   targetCal: 0
   valuePerLevel: 1
   effectKind: 3
-  popUp: {fileID: -2609383388560463190, guid: 527d86a425ef27a4cb72a3541d9471da, type: 3}
-  windowText: 'Current Level : {0}'
-  canvas: {fileID: 445077737}
+  popUp: {fileID: 0}
+  windowText: 
+  canvas: {fileID: 0}
 --- !u!1 &1259378505
 GameObject:
   m_ObjectHideFlags: 0
