@@ -34,7 +34,7 @@ namespace IdleLibrary
     public class Cal
     {
         public Multiplier multiplier = new Multiplier();
-        double initialValue;
+        private double initialValue;
 
         public Cal(double initialValue)
         {
@@ -45,11 +45,7 @@ namespace IdleLibrary
             this.initialValue = initialValue;
             DataContainer<Cal>.GetInstance().SetDataByName(this, Name);
         }
-
-        public double GetValue()
-        {
-            return multiplier.CaluculatedNumber(initialValue);
-        }
+        public virtual double GetValue() => multiplier.CaluculatedNumber(initialValue);
     }
 
     public class Cap : Cal
