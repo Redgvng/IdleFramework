@@ -11,7 +11,7 @@ namespace IdleLibrary{
     public class Transaction : ITransaction
     {
         //コストの処理を委譲する。
-        public IMaxableCost cost { get; }
+        public ICost cost { get; }
         public NUMBER resource { get; }
         public bool CanBuy()
         {
@@ -21,7 +21,7 @@ namespace IdleLibrary{
         {
             resource.DecrementNumber(cost.Cost);
         }
-        public Transaction(NUMBER resource, IMaxableCost cost)
+        public Transaction(NUMBER resource, ICost cost)
         {
             this.resource = resource;
             this.cost = cost;
