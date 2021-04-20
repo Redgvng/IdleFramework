@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-namespace IdleLibrary.Upgrade
+namespace IdleLibrary
 {
     public interface ICost
     {

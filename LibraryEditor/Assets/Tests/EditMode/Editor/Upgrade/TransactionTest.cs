@@ -10,7 +10,6 @@ namespace Tests
 {
     public class TransactionTest
     {
-        /*
         NUMBER gold = new NUMBER();
         
         // A Test behaves as an ordinary method
@@ -83,6 +82,5 @@ namespace Tests
             //一個も買えないはず
             Assert.AreEqual(doubleTransaction.CanBuy(), false);
         }
-        */
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-namespace IdleLibrary.Upgrade{
+namespace IdleLibrary{
     
-    //levelをここから消そう。
-    /*
     public interface ITransaction
     {
         bool CanBuy();
@@ -13,20 +11,20 @@ namespace IdleLibrary.Upgrade{
     public class Transaction : ITransaction
     {
         //コストの処理を委譲する。
-        public ICost GetCost { get; }
+        public ICost cost { get; }
         public NUMBER resource { get; }
         public bool CanBuy()
         {
-            return resource.Number >= GetCost.Cost.GetValue();
+            return resource.Number >= cost.Cost;
         }
         public void Pay()
         {
-            resource.DecrementNumber(GetCost.Cost.GetValue());
+            resource.DecrementNumber(cost.Cost);
         }
         public Transaction(NUMBER resource, ICost cost)
         {
             this.resource = resource;
-            this.GetCost = cost;
+            this.cost = cost;
         }
     }
     //トランザクションの配列を受け取り、まとめて決済を行います。
@@ -70,5 +68,5 @@ namespace IdleLibrary.Upgrade{
             return;
         }
     }
-    */
+
 }

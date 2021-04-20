@@ -15,19 +15,18 @@ namespace IdleLibrary.Upgrade {
         void Claim();
         void Reward();
     }
+
     public class Expedition : IExpedition
     {
-        public NUMBER number;
-        public ICost cost;
+        private readonly ITransaction transaction;
         private float requiredHour;
         //private float[] hour = new float[] { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 24.0f};
         private bool isExpedition;
         private float currentTime;
 
-        public Expedition(NUMBER number, ICost cost, float initHour)
+        public Expedition(ITransaction transaction, float initHour)
         {
-            this.number = number;
-            this.cost = cost;
+            this.transaction = transaction;
             this.requiredHour = initHour;
         }
         public bool CanClaim()
@@ -36,7 +35,7 @@ namespace IdleLibrary.Upgrade {
         }
         public bool CanStart()
         {
-            return !isExpedition && number.Number >= cost.Cost;
+            return !isExpedition && transaction.CanBuy();
         }
         public void SelectTime(float hour)
         {
@@ -46,7 +45,8 @@ namespace IdleLibrary.Upgrade {
         {
             if (!CanStart())
                 return;
-            number.DecrementNumber(cost.Cost);
+
+            transaction.Pay();
             isExpedition = true;
         }
         public void Claim()
