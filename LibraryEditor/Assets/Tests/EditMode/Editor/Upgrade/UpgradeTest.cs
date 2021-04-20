@@ -42,7 +42,7 @@ namespace Tests
             var leaf = new NUMBER(30);
             var gold = new NUMBER(40);
             var multipleUpgrade = new MultipleUpgrade(level,
-                new (NUMBER, ICost)[]
+                new (NUMBER, IMaxableCost)[]
                 {
                     (stone, new LinearCost(1,2,level)),
                     (crystal, new LinearCost(3,2,level)),

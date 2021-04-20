@@ -7,6 +7,10 @@ using IdleLibrary;
 
 namespace Tests.Cost
 {
+    public class FixedCostTest
+    {
+        
+    }
     public class LinearCostTest
     {
         [Test]

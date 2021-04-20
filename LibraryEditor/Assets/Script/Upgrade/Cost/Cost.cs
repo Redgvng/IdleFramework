@@ -7,6 +7,11 @@ namespace IdleLibrary
     public interface ICost
     {
         double Cost { get; }
+
+    }
+
+    public interface IMaxableCost : ICost
+    {
         /// <summary>
         /// レベルは増分ではなく、最終的なレベルを表します。
         /// </summary>
@@ -17,7 +22,6 @@ namespace IdleLibrary
         /// </summary>
         double FixedNumCost(NUMBER number, int fixedNum);
     }
-
     //コスト用のcal 外部に公開したくない。
     public class CalDL : Cal
     {
@@ -37,7 +41,7 @@ namespace IdleLibrary
         public double GetValue(long level) => multiplier.CaluculatedNumber(initialFunc(level));
     }
 
-    public class NullCost : ICost
+    public class NullCost : IMaxableCost
     {
         public double Cost => 0;
 
@@ -57,8 +61,18 @@ namespace IdleLibrary
         }
     }
 
+    public class FixedCost : ICost
+    {
+        public double Cost => cost.GetValue();
+        private Cal cost;
+        public FixedCost(double cost)
+        {
+            this.cost = new Cal(cost);
+        }
+    }
+
     //リソースのみを計算する。
-    public class LinearCost : ICost
+    public class LinearCost : IMaxableCost
     {
         readonly double initialValue;
         readonly double steep;
@@ -112,7 +126,7 @@ namespace IdleLibrary
         }
     }
 
-    public class ExponentialCost : ICost
+    public class ExponentialCost : IMaxableCost
     {
         readonly double initialValue;
         readonly double factor;

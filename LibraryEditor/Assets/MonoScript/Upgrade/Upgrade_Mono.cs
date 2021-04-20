@@ -56,13 +56,13 @@ namespace IdleLibrary.Upgrade {
         RectTransform canvas;
 
         //private variable
-        ICost[] cost;
+        IMaxableCost[] cost;
         // アップグレードを作成します。最終的にはfactory methodを作ったほうがイイカモ？
         void Awake()
         {
-            List<(NUMBER, ICost)> info = new List<(NUMBER, ICost)>();
+            List<(NUMBER, IMaxableCost)> info = new List<(NUMBER, IMaxableCost)>();
             MultipleUpgrade upgrade;
-            cost = new ICost[resourceNum];
+            cost = new IMaxableCost[resourceNum];
             for (int i = 0; i < resourceNum; i++)
             {
                 switch (costInfo[i].costKind)

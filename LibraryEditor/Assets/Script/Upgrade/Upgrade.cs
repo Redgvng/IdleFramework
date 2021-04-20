@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-namespace IdleLibrary {
+namespace IdleLibrary.Upgrade {
 
     public interface IUpgrade
     {
@@ -19,8 +19,8 @@ namespace IdleLibrary {
     {
         private ILevel level;
         public NUMBER number;
-        public ICost cost;
-        public Upgrade(ILevel level, NUMBER number, ICost cost)
+        public IMaxableCost cost;
+        public Upgrade(ILevel level, NUMBER number, IMaxableCost cost)
         {
             this.level = level;
             this.number = number;
@@ -72,9 +72,9 @@ namespace IdleLibrary {
     //Upgradeと同じようにふるまってほしい
     public class MultipleUpgrade : IUpgrade
     {
-        private readonly IEnumerable<(NUMBER number, ICost cost)> info;
+        private readonly IEnumerable<(NUMBER number, IMaxableCost cost)> info;
         private readonly ILevel level;
-        public MultipleUpgrade(ILevel level, params (NUMBER number,ICost cost)[] info)
+        public MultipleUpgrade(ILevel level, params (NUMBER number, IMaxableCost cost)[] info)
         {
             this.info = info;
             this.level = level;
