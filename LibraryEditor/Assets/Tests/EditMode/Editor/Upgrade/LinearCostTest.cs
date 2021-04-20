@@ -9,7 +9,15 @@ namespace Tests.Cost
 {
     public class FixedCostTest
     {
-        
+        [Test]
+        public void CanSolveLevelAndCostAtMax()
+        {
+            var level = new MockLevel();
+            var cost = new FixedCost(10);
+            var gold = new NUMBER(95);
+
+            Assert.IsTrue(false);
+        }
     }
     public class LinearCostTest
     {
