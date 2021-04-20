@@ -27,10 +27,11 @@ namespace IdleLibrary {
         {
             this.transaction = transaction;
             this.requiredHour = initHour;
+            Progress();
         }
         public bool CanClaim()
         {
-            return isStarted && currentTime >= RequiredTimesec();
+            return currentTime >= RequiredTimesec();
         }
         public bool CanStart()
         {
@@ -68,14 +69,14 @@ namespace IdleLibrary {
         {
             while (true)
             {
-                IncreaseCurrentTime(1);
+                if (isStarted && currentTime < RequiredTimesec())
+                    IncreaseCurrentTime(1);
                 await UniTask.Delay(1000);
             }
         }
         public void IncreaseCurrentTime(float timesec) 
         {
-            if (isStarted && currentTime < RequiredTimesec())
-                currentTime += timesec;
+            currentTime += timesec;
         }
     }
 }
