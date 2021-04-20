@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-namespace IdleLibrary.Upgrade {
+namespace IdleLibrary {
 
     public interface IUpgrade
     {

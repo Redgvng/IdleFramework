@@ -1,17 +1,17 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 
-namespace IdleLibrary.Upgrade {
+namespace IdleLibrary {
 
     public interface IExpedition
     {
         bool CanStart();
         bool CanClaim();
         void SelectTime(float hour);
-        void StartExplore();
+        void StartExpedition();
         void Claim();
         void Reward();
     }
@@ -20,8 +20,7 @@ namespace IdleLibrary.Upgrade {
     {
         private readonly ITransaction transaction;
         private float requiredHour;
-        //private float[] hour = new float[] { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 24.0f};
-        private bool isExpedition;
+        private bool isStarted;
         private float currentTime;
 
         public Expedition(ITransaction transaction, float initHour)
@@ -31,7 +30,7 @@ namespace IdleLibrary.Upgrade {
         }
         public bool CanClaim()
         {
-            return isExpedition && currentTime >= requiredHour;
+            return isStarted && currentTime >= RequiredTimesec();
         }
         public bool CanStart()
         {
@@ -39,36 +38,44 @@ namespace IdleLibrary.Upgrade {
         }
         public void SelectTime(float hour)
         {
-            this.requiredHour = hour;
+            requiredHour = hour;
         }
-        public void StartExplore()
+        public float RequiredTimesec()
+        {
+            return requiredHour * 3600f;
+        }
+        public void StartExpedition()
         {
             if (!CanStart())
                 return;
 
             transaction.Pay();
-            isExpedition = true;
+            isStarted = true;
         }
         public void Claim()
         {
             if(!CanClaim())
                 return;
-            isExpedition = false;
+            isStarted = false;
             currentTime = 0;
             Reward();
         }
         public void Reward()
         {
             //Claimした時の報酬
-        }
+        }        
         async void Progress()
         {
             while (true)
             {
-                if(isExpedition && currentTime < requiredHour)
-                    currentTime++;
+                IncreaseCurrentTime(1);
                 await UniTask.Delay(1000);
             }
+        }
+        public void IncreaseCurrentTime(float timesec) 
+        {
+            if (isStarted && currentTime < RequiredTimesec())
+                currentTime += timesec;
         }
     }
 }
