@@ -34,7 +34,7 @@ namespace IdleLibrary {
         }
         public bool CanStart()
         {
-            return !isExpedition && transaction.CanBuy();
+            return !isStarted && transaction.CanBuy();
         }
         public void SelectTime(float hour)
         {
