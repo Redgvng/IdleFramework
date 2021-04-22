@@ -13,39 +13,38 @@ namespace IdleLibrary.Inventory
 {
 	public class Inventory_Mono : Subject
 	{
-		//Readonly
-		public const int inventoryNum = 100;
-		//Private -> これを共有にしなければいけない。。。
-		ISetItem<Item> inputItem = default;
-		IClickAction<Item_Mono> clickAction;
-
-		//Public
-		public int InventoryId;
-		[NonSerialized]
-		public Item_Mono[] items;
-		public Cal SlotNum = new Cal(10);
-
 		[SerializeField]
 		Button GenerateItemButton;
 
-		private Inventory inventory = new Inventory();
+		[SerializeField]
+		private GameObject item;
+		[SerializeField]
+		private Transform canvas;
+
+		public Inventory inventory = new Inventory();
+		public GameObject[] items;
 
 		// Use this for initialization
 		void Awake()
 		{
-			//clickAction = new SwapItemFromInventory<Item_Mono, Item>();
-			var create = new CreateItemByOrder<Item>(items, SlotNum);
-			GenerateItemButton.OnClickAsObservable().Subscribe(_ => create.SetItem(new Item(UnityEngine.Random.Range(1,6))));
-			items.ToList()
-                .ForEach(x => x.gameObject.GetOrAddComponent<ObservableEventTrigger>().OnPointerDownAsObservable()
+			//インスタンス化
+			items = new GameObject[inventory.GetInventoryLength()];
+            for (int i = 0; i < items.Length; i++)
+            {
+				items[i] = Instantiate(item, canvas);
+			}
+
+			GenerateItemButton.OnClickAsObservable().Subscribe(_ => inventory.SetItemByOrder(new Item(UnityEngine.Random.Range(1,6))));
+			items.Select((game, index) => new { game, index})
+				.ToList()
+                .ForEach(x => x.game.GetOrAddComponent<ObservableEventTrigger>().OnPointerDownAsObservable()
 			    .Subscribe((UnityEngine.EventSystems.PointerEventData obj) => {
                     if(obj.pointerId == -1)
                     {
 						//clickAction.Click(x);
-                    } 
-                    if (obj.pointerId == -2) x.Delete(); }));
-			this.ObserveEveryValueChanged(_ => inputItem?.GetItem().id).Subscribe(_ => Notify());
-			this.ObserveEveryValueChanged(_ => SlotNum.GetValue()).Subscribe(_ => Notify());
+						Notify();
+					} 
+                    if (obj.pointerId == -2) inventory.DeleteItem(x.index); Notify(); }));
 		}      
     }
 }

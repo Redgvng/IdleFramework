@@ -25,6 +25,14 @@ namespace IdleLibrary.Inventory
 
             return items[index];
         }
+        public IEnumerable<Item> GetItems()
+        {
+            return items;
+        }
+        public int GetInventoryLength()
+        {
+            return (int)maxNum.GetValue();
+        }
         public void SetItem(Item item, int index)
         {
             if(index < 0 || index >= maxNum.GetValue())
