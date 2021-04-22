@@ -148,6 +148,12 @@ public class UsefulMethod : MonoBehaviour
         else if (toShowSign) digit_builder.Insert(0, "+");
         return digit_builder.ToString();
     }
+    public static string percent(double d, int num = 2)
+    {
+        if (d == 0)
+            return 0 + "%";
+        return tDigit(d * 100, num) + "%";
+    }
 
     //不要な0を取り消す関数
     static System.Text.RegularExpressions.Regex pattern1 = new System.Text.RegularExpressions.Regex(@"(\.\d+?)0+\b");

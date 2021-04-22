@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+//UI
+using UnityEngine.UI;
+using TMPro;
+using static UsefulMethod;
+using static UsefulStatic;
 
 namespace IdleLibrary {
 
@@ -20,8 +25,8 @@ namespace IdleLibrary {
     {
         private readonly ITransaction transaction;
         private float requiredHour;
+        private float currentTimesec;
         private bool isStarted;
-        private float currentTime;
 
         public Expedition(ITransaction transaction, float initHour)
         {
@@ -31,7 +36,7 @@ namespace IdleLibrary {
         }
         public bool CanClaim()
         {
-            return currentTime >= RequiredTimesec();
+            return currentTimesec >= RequiredTimesec();
         }
         public bool CanStart()
         {
@@ -49,7 +54,6 @@ namespace IdleLibrary {
         {
             if (!CanStart())
                 return;
-
             transaction.Pay();
             isStarted = true;
         }
@@ -58,7 +62,7 @@ namespace IdleLibrary {
             if(!CanClaim())
                 return;
             isStarted = false;
-            currentTime = 0;
+            currentTimesec = 0;
             Reward();
         }
         public void Reward()
@@ -69,14 +73,63 @@ namespace IdleLibrary {
         {
             while (true)
             {
-                if (isStarted && currentTime < RequiredTimesec())
+                if (isStarted && currentTimesec < RequiredTimesec())
                     IncreaseCurrentTime(1);
                 await UniTask.Delay(1000);
             }
         }
         public void IncreaseCurrentTime(float timesec) 
         {
-            currentTime += timesec;
+            currentTimesec += timesec;
         }
+        public float ProgressPercent()
+        {
+            return currentTimesec / RequiredTimesec();
+        }
+
+        //以下UI
+        public Button startClaimButton;
+        public TextMeshProUGUI startClaimText, requiredHourText, progressPercentText, rewardText;
+        public Slider progressBar;
+
+        public void UpdateStartClaimButton()
+        {
+            if (isStarted)
+            {
+                startClaimText.text = "Claim";
+                startClaimButton.interactable = CanClaim();
+            }
+            else
+            {
+                startClaimText.text = "Start";
+                startClaimButton.interactable = CanStart();
+            }
+        }
+        public void UpdateProgress()
+        {
+            progressPercentText.text = percent(ProgressPercent());
+            progressBar.value = ProgressPercent();
+        }
+        public void UpdateRequiredHour()
+        {
+            requiredHourText.text = requiredHour.ToString("F1") + " h";
+        }
+
+        //使用例
+        public Button rightButton, leftButton;
+        float[] requiredHours = new float[] { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 24.0f };
+        int hourId;
+        public void SwitchRequiredHour(bool isRight)
+        {
+            if (isStarted)
+                return;
+            if (isRight)
+                hourId = hourId < requiredHours.Length - 1 ? hourId + 1 : 0;
+            else
+                hourId = hourId > 0 ? hourId - 1 : requiredHours.Length - 1;
+            SelectTime(requiredHours[hourId]);
+            UpdateRequiredHour();
+        }
+        
     }
 }
