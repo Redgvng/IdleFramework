@@ -16,7 +16,9 @@ namespace Tests
         public void CanSetItem()
         {
             var inventory = new Inventory();
+
             inventory.SetItem(new Item(3), 2);
+
             Assert.IsTrue(inventory.GetItem(2).id != -1);
             Assert.AreEqual(inventory.GetItem(2).id ,3);
         }
@@ -26,40 +28,60 @@ namespace Tests
         {
             var inventory = new Inventory();
             var item = new Item(1);
+
             inventory.SetItem(item, 0);
             inventory.SetItem(item, 3);
             inventory.SetItem(item, 4);
             inventory.SetItem(item, 6);
             inventory.SetItemByOrder(item);
+            inventory.SetItemByOrder(item);
+            inventory.SetItemByOrder(item);
+            inventory.SetItemByOrder(item);
+
             Assert.AreEqual(inventory.GetItem(1).id, 1);
-            inventory.SetItemByOrder(item);
             Assert.AreEqual(inventory.GetItem(2).id, 1);
-            inventory.SetItemByOrder(item);
             Assert.AreEqual(inventory.GetItem(5).id, 1);
-            inventory.SetItemByOrder(item);
             Assert.AreEqual(inventory.GetItem(7).id, 1);
         }
 
         [Test]
-        public void CanSwapItem()
+        public void CanSwapItemToEmpty()
         {
+            var inventory = new Inventory();
+            var item = new Item(3);
+            inventory.SetItem(item, 2);
 
+            inventory.SwapItem(1, 2);
+
+            Assert.AreEqual(inventory.GetItem(1).id, 3);
+            Assert.AreEqual(inventory.GetItem(2).id, -1);
+        }
+        [Test]
+        public void CanSwapItemToNotEmpty()
+        {
+            var inventory = new Inventory();
+            var item = new Item(3);
+            var item2 = new Item(1);
+            inventory.SetItem(item, 2);
+            inventory.SetItem(item2, 1);
+
+            inventory.SwapItem(1, 2);
+
+            Assert.AreEqual(inventory.GetItem(1).id, 3);
+            Assert.AreEqual(inventory.GetItem(2).id, 1);
         }
 
         [Test]
-        public void CanSwapItemFromInventory()
+        public void CanDeleteItem()
         {
+            var inventory = new Inventory();
+            var item = new Item(3);
+            inventory.SetItem(item, 1);
 
-        }
-        [Test]
-        public void CanSwapItemWithNullItem()
-        {
+            inventory.DeleteItem(1);
 
+            Assert.IsFalse(inventory.GetItem(1).isSet);
         }
-        [Test]
-        public void ShouldNotDuplicateWhenSwap()
-        {
 
-        }
     }
 }

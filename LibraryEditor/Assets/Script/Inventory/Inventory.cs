@@ -49,9 +49,16 @@ namespace IdleLibrary.Inventory
             Debug.LogError("ƒZƒbƒg‚Å‚«‚Ü‚¹‚ñ");
             return;
         }
-        public void SwapItem()
+        public void SwapItem(int swapped, int swapping)
         {
-
+            var item = GetItem(swapped);
+            SetItem(GetItem(swapping), swapped);
+            SetItem(item, swapping);
+        }
+        public void DeleteItem(int index)
+        {
+            var nullItem = new Item(-1);
+            SetItem(nullItem, index);
         }
     }
 
