@@ -39,6 +39,7 @@ namespace IdleLibrary.Inventory
         {
             return (int)maxNum.GetValue();
         }
+
         public void SetItem(Item item, int index)
         {
             if(index < 0 || index >= maxNum.GetValue())
@@ -63,12 +64,20 @@ namespace IdleLibrary.Inventory
             Debug.LogError("ƒZƒbƒg‚Å‚«‚Ü‚¹‚ñ");
             return;
         }
+
         public void SwapItem(int swapped, int swapping)
         {
             var item = GetItem(swapped);
             SetItem(GetItem(swapping), swapped);
             SetItem(item, swapping);
         }
+        public void SwapItemFromOtherInventory(Inventory otherInventory, int originalId, int otherId)
+        {
+            var item = otherInventory.GetItem(otherId);
+            otherInventory.SetItem(GetItem(originalId), otherId);
+            SetItem(item, originalId);
+        } 
+
         public void DeleteItem(int index)
         {
             var nullItem = new Item(-1);

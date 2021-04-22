@@ -119,5 +119,18 @@ namespace Tests
             Assert.AreEqual(-1, inventory.InputId);
         }
 
+        [Test]
+        public void CanSetItemFromOtherInventory()
+        {
+            var inventory = new Inventory();
+            var inventory2 = new Inventory();
+            inventory.SetItemByOrder(new Item(5));
+
+            inventory.SwapItemFromOtherInventory(inventory2, 0, 3);
+
+            Assert.AreEqual(inventory2.GetItem(3).id, 5);
+            Assert.AreEqual(inventory.GetItem(0).id, -1);
+        }
+
     }
 }
