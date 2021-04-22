@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 71000956}
   - component: {fileID: 71000955}
   - component: {fileID: 71000957}
+  - component: {fileID: 71000958}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -219,6 +220,25 @@ MonoBehaviour:
   item: {fileID: 4109965076950982275, guid: 7b9eb2a05d838354e9e62b6d419cae57, type: 3}
   canvas: {fileID: 1864212063}
   items: []
+--- !u!114 &71000958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71000953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d87dbe862208034ca943dfb936e0723, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 21300000, guid: 71af20111c9a32d4c8af25b9991bf5af, type: 3}
+  - {fileID: 21300000, guid: 5c60c20ec7666c546863ff8cac0511db, type: 3}
+  - {fileID: 21300000, guid: 9c4b0b3b16bd9fc4b9845194fa3d39ef, type: 3}
+  - {fileID: 21300000, guid: 4c4e68da8e4dfaa40999a45c70d25da5, type: 3}
+  - {fileID: 21300000, guid: 3ea471d85422f234e84c33cd638eb3ba, type: 3}
+  lockedSprite: {fileID: 21300000, guid: ae6ae6193a9ac4d42bf65cc080e72149, type: 3}
 --- !u!1 &166010741
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ namespace IdleLibrary.Inventory
     public class InventoryDraw : MonoBehaviour, IObserver
     {
         public Sprite[] sprites;
-        public Sprite defaultSprite;
+        //public Sprite defaultSprite;
         public Sprite lockedSprite;
 
         void Awake()
@@ -21,22 +21,25 @@ namespace IdleLibrary.Inventory
         //itemの状態を更新します。
         public void _Update(ISubject subject)
         {
-            if (subject is Item_Mono)
-            {
-                Debug.Log(subject);
-                var item = subject as Item_Mono;
-                item.gameObject.GetComponent<Image>().sprite = sprites[item.GetItem().id];
-            }
             if(subject is Inventory_Mono)
             {
+                Debug.Log("よばれてるよ");
                 var inventory_mono = subject as Inventory_Mono;
                 int index = 0;
                 foreach (var item in inventory_mono.inventory.GetItems())
                 {
                     if (item.isSet)
                     {
-
+                        inventory_mono.items[index].transform.GetChild(0).GetComponent<Image>().sprite = sprites[item.id];
                     }
+                    else
+                    {
+                        inventory_mono.items[index].transform.GetChild(0).GetComponent<Image>().sprite = lockedSprite;
+                        //inventory_mono.items[index].gameObject.GetComponent<Image>().raycastTarget = false;
+                        //inventory_mono.items[index].transform.GetChild(0).GetComponent<Image>().raycastTarget = false;
+                        //inventory_mono.items[index].transform.GetChild(0).gameObject.SetActive(true);
+                    }
+                    index++;
                 }
             }
         }

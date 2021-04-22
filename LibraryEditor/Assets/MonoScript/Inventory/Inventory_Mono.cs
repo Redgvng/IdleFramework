@@ -34,7 +34,7 @@ namespace IdleLibrary.Inventory
 				items[i] = Instantiate(item, canvas);
 			}
 
-			GenerateItemButton.OnClickAsObservable().Subscribe(_ => inventory.SetItemByOrder(new Item(UnityEngine.Random.Range(1,6))));
+			GenerateItemButton.OnClickAsObservable().Subscribe(_ => inventory.SetItemByOrder(new Item(UnityEngine.Random.Range(0,5))));
 			items.Select((game, index) => new { game, index})
 				.ToList()
                 .ForEach(x => x.game.GetOrAddComponent<ObservableEventTrigger>().OnPointerDownAsObservable()
@@ -42,9 +42,16 @@ namespace IdleLibrary.Inventory
                     if(obj.pointerId == -1)
                     {
 						//clickAction.Click(x);
-						Notify();
 					} 
-                    if (obj.pointerId == -2) inventory.DeleteItem(x.index); Notify(); }));
-		}      
+                    if (obj.pointerId == -2) inventory.DeleteItem(x.index);  }));
+			Notify();
+		}
+        private void Update()
+        {
+            if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+            {
+				Notify();
+            }
+        }
     }
 }
