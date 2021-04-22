@@ -8,6 +8,7 @@ namespace IdleLibrary.Inventory
     {
         private List<Item> items = new List<Item>();
         private Cal maxNum = new Cal(10);
+
         public Inventory()
         {
             for (int i = 0; i < maxNum.GetValue(); i++)
@@ -15,6 +16,10 @@ namespace IdleLibrary.Inventory
                 items.Add(new Item(-1));
             }
         }
+        //Property
+        public Item InputItem { get; private set; }
+
+        //function
         public Item GetItem(int index)
         {
             if (index < 0 || index >= maxNum.GetValue())
@@ -67,6 +72,14 @@ namespace IdleLibrary.Inventory
         {
             var nullItem = new Item(-1);
             SetItem(nullItem, index);
+        }
+        public void RegisterItem(int index)
+        {
+            InputItem = GetItem(index);
+        }
+        public void ReleaseItem()
+        {
+            InputItem = new Item(-1);
         }
     }
 
