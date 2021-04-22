@@ -83,5 +83,41 @@ namespace Tests
             Assert.IsFalse(inventory.GetItem(1).isSet);
         }
 
+        [Test]
+        public void CanRegisterItem()
+        {
+            var inventory = new Inventory();
+            var item = new Item(3);
+            inventory.SetItem(item, 1);
+
+            inventory.RegisterItem(1);
+
+            Assert.AreEqual(1, inventory.InputId);
+        }
+
+        [Test]
+        public void CannotRegisterItemIfItemIsEmpty()
+        {
+            var inventory = new Inventory();
+            var item = new Item(3);
+
+            inventory.RegisterItem(1);
+
+            Assert.AreEqual(-1, inventory.InputId);
+        }
+
+        [Test]
+        public void CanReleaseItem()
+        {
+            var inventory = new Inventory();
+            var item = new Item(3);
+            inventory.SetItem(item, 1);
+            inventory.RegisterItem(1);
+
+            inventory.ReleaseItem();
+
+            Assert.AreEqual(-1, inventory.InputId);
+        }
+
     }
 }

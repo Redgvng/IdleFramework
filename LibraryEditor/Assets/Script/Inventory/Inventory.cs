@@ -15,9 +15,10 @@ namespace IdleLibrary.Inventory
             {
                 items.Add(new Item(-1));
             }
+            InputId = -1;
         }
         //Property
-        public Item InputItem { get; private set; }
+        public int InputId { get; private set; }
 
         //function
         public Item GetItem(int index)
@@ -75,11 +76,12 @@ namespace IdleLibrary.Inventory
         }
         public void RegisterItem(int index)
         {
-            InputItem = GetItem(index);
+            if(GetItem(index).isSet)
+                InputId = index;
         }
         public void ReleaseItem()
         {
-            InputItem = new Item(-1);
+            InputId = -1;
         }
     }
 
