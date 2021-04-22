@@ -25,24 +25,23 @@ namespace IdleLibrary.Inventory
             if(subject is Inventory_Mono)
             {
                 var inventory_mono = subject as Inventory_Mono;
-                Debug.Log(inventory_mono.inventory.InputId);
-                int index = 0;
-                //スロットの反映
-                foreach (var item in inventory_mono.inventory.GetItems())
+                foreach(var info in inventory_mono.UIInfoList)
                 {
-                    if (item.isSet)
+                    int index = 0;
+                    foreach (var item in info.inventory.GetItems())
                     {
-                        inventory_mono.items[index].transform.GetChild(0).GetComponent<Image>().sprite = sprites[item.id];
+                        if (item.isSet)
+                        {
+                            info.items[index].transform.GetChild(0).GetComponent<Image>().sprite = sprites[item.id];
+                        }
+                        else
+                        {
+                            info.items[index].transform.GetChild(0).GetComponent<Image>().sprite = lockedSprite;
+                        }
+                        index++;
                     }
-                    else
-                    {
-                        inventory_mono.items[index].transform.GetChild(0).GetComponent<Image>().sprite = lockedSprite;
-                        //inventory_mono.items[index].gameObject.GetComponent<Image>().raycastTarget = false;
-                        //inventory_mono.items[index].transform.GetChild(0).GetComponent<Image>().raycastTarget = false;
-                        //inventory_mono.items[index].transform.GetChild(0).gameObject.SetActive(true);
-                    }
-                    index++;
                 }
+
                 //マウスにくっつくウインドウの設定(後々柔軟に変えられるようにしたい)
                 if(_itemIconWithMouse == null)
                 {

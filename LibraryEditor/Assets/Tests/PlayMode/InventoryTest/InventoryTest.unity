@@ -219,7 +219,7 @@ MonoBehaviour:
   GenerateItemButton: {fileID: 1094505888}
   item: {fileID: 4109965076950982275, guid: 7b9eb2a05d838354e9e62b6d419cae57, type: 3}
   canvas: {fileID: 1864212063}
-  items: []
+  EquipmentCanvas: {fileID: 274367793}
 --- !u!114 &71000958
 MonoBehaviour:
   m_ObjectHideFlags: 0
