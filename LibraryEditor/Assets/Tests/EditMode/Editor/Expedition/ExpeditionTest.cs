@@ -41,4 +41,19 @@ public class ExpeditionTest
         Assert.IsTrue(expedition.CanClaim());
         Assert.AreEqual(70, number.Number);
     }    
+
+    [Test]
+    public void CanRewardSomething()
+    {
+        var gold = new NUMBER();
+        var stone = new NUMBER();
+        var reward = new NumberReward((gold, 100), (stone, 50));
+        var expedition = new Expedition(null, 1, reward);
+
+        expedition.Reward();
+
+        Debug.Log(reward.Text());
+        Assert.AreEqual(100, gold.Number);
+        Assert.AreEqual(50, stone.Number);
+    }
 }

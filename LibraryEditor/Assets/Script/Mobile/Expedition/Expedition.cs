@@ -29,10 +29,11 @@ namespace IdleLibrary {
         private float currentTimesec;
         private bool isStarted;
 
-        public Expedition(ITransaction transaction, float initHour, IReward reward)
+        public Expedition(ITransaction transaction, float initHour, IReward reward = null)
         {
             this.transaction = transaction;
             this.requiredHour = initHour;
+            this.reward = reward == null ? new NullReward() : reward;
             Progress();
         }
         public bool CanClaim()
