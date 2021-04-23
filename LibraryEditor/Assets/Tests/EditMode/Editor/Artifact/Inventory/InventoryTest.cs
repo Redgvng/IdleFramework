@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using IdleLibrary.Inventory;
 using System.Linq;
 using IdleLibrary;
 
