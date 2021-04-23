@@ -9,18 +9,18 @@ namespace IdleLibrary.Inventory
         void Action(int index);
     }
 
-    public class SwapItem : IInventoryAction
+    public class SwapItemWithSameInventory : IInventoryAction
     {
         private readonly Inventory inventory;
-        public SwapItem(Inventory inventory)
+        public SwapItemWithSameInventory(Inventory inventory)
         {
             this.inventory = inventory;
         }
         public void Action(int index)
         {
-            if (inventory.InputId != -1)
+            if (inventory.inputItem.inputItem.id != -1)
             {
-                inventory.SwapItem(index, inventory.InputId);
+                inventory.SwapItem(index, inventory.inputItem);
                 inventory.ReleaseItem();
                 return;
             }
@@ -39,9 +39,9 @@ namespace IdleLibrary.Inventory
         }
         public void Action(int index)
         {
-            if(originalInventory.InputId != -1)
+            if(originalInventory.inputItem.inputItem.id != -1)
             {
-                originalInventory.SwapItemFromOtherInventory(otherInventory, originalInventory.InputId, index);
+                originalInventory.SwapItemFromOtherInventory(otherInventory, index, originalInventory.inputItem);
                 originalInventory.ReleaseItem();
                 return;
             }
@@ -57,7 +57,7 @@ namespace IdleLibrary.Inventory
         }
         public void Action(int index)
         {
-            if (inventory.InputId == -1)
+            if (inventory.inputItem.inputItem.id == -1)
                 inventory.DeleteItem(index);
         }
     }
@@ -71,7 +71,7 @@ namespace IdleLibrary.Inventory
         }
         public void Action(int index)
         {
-            if(inventory.InputId != -1)
+            if(inventory.inputItem.inputItem.id != -1)
             {
                 inventory.ReleaseItem();
             }

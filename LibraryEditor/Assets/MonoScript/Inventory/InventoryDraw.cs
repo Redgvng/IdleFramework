@@ -49,14 +49,14 @@ namespace IdleLibrary.Inventory
                     _itemIconWithMouse.GetComponent<Image>().raycastTarget = false;
                     _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().raycastTarget = false;
                 }
-                if(inventory_mono.inventory.InputId == -1)
+                if(inventory_mono.inputItem.inputItem.id == -1)
                 {
                     _itemIconWithMouse.SetActive(false);
                 }
                 else
                 {
                     _itemIconWithMouse.SetActive(true);
-                    _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().sprite = sprites[inventory_mono.inventory.GetItem(inventory_mono.inventory.InputId).id];
+                    _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().sprite = sprites[inventory_mono.inputItem.inputItem.id];
                     _itemIconWithMouse.transform.position = Input.mousePosition;
                 }
             }

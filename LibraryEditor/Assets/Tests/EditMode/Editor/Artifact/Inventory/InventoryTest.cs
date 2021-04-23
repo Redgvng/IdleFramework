@@ -12,10 +12,11 @@ namespace Tests
 {
     public class InventoryTest
     {
+        InputItem input = new InputItem();
         [Test]
         public void CanSetItem()
         {
-            var inventory = new Inventory();
+            var inventory = new Inventory(input);
 
             inventory.SetItem(new Item(3), 2);
 
@@ -26,7 +27,7 @@ namespace Tests
         [Test]
         public void CanSetItemByOrder()
         {
-            var inventory = new Inventory();
+            var inventory = new Inventory(input);
             var item = new Item(1);
 
             inventory.SetItem(item, 0);
@@ -47,7 +48,7 @@ namespace Tests
         [Test]
         public void CanSwapItemToEmpty()
         {
-            var inventory = new Inventory();
+            var inventory = new Inventory(input);
             var item = new Item(3);
             inventory.SetItem(item, 2);
 
@@ -59,7 +60,7 @@ namespace Tests
         [Test]
         public void CanSwapItemToNotEmpty()
         {
-            var inventory = new Inventory();
+            var inventory = new Inventory(input);
             var item = new Item(3);
             var item2 = new Item(1);
             inventory.SetItem(item, 2);
@@ -74,7 +75,7 @@ namespace Tests
         [Test]
         public void CanDeleteItem()
         {
-            var inventory = new Inventory();
+            var inventory = new Inventory(input);
             var item = new Item(3);
             inventory.SetItem(item, 1);
 
@@ -86,7 +87,7 @@ namespace Tests
         [Test]
         public void CanRegisterItem()
         {
-            var inventory = new Inventory();
+            var inventory = new Inventory(input);
             var item = new Item(3);
             inventory.SetItem(item, 1);
 
@@ -98,7 +99,7 @@ namespace Tests
         [Test]
         public void CannotRegisterItemIfItemIsEmpty()
         {
-            var inventory = new Inventory();
+            var inventory = new Inventory(input);
             var item = new Item(3);
 
             inventory.RegisterItem(1);
@@ -109,7 +110,7 @@ namespace Tests
         [Test]
         public void CanReleaseItem()
         {
-            var inventory = new Inventory();
+            var inventory = new Inventory(input);
             var item = new Item(3);
             inventory.SetItem(item, 1);
             inventory.RegisterItem(1);
@@ -122,8 +123,8 @@ namespace Tests
         [Test]
         public void CanSetItemFromOtherInventory()
         {
-            var inventory = new Inventory();
-            var inventory2 = new Inventory();
+            var inventory = new Inventory(input);
+            var inventory2 = new Inventory(input);
             inventory.SetItemByOrder(new Item(5));
 
             inventory.SwapItemFromOtherInventory(inventory2, 0, 3);

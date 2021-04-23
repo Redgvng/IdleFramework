@@ -4,21 +4,27 @@ using UnityEngine;
 
 namespace IdleLibrary.Inventory
 {
+    public class InputItem
+    {
+        public Item inputItem { get; set; }
+        public int index { get { if (inputItem.id == -1) return -1; else return _index; } set => _index = value; }
+        int _index;
+    }
+
     public class Inventory 
     {
         private List<Item> items = new List<Item>();
         private Cal maxNum = new Cal(10);
+        public InputItem inputItem;
 
-        public Inventory()
+        public Inventory(InputItem inputItem)
         {
             for (int i = 0; i < maxNum.GetValue(); i++)
             {
                 items.Add(new Item(-1));
             }
-            InputId = -1;
+            this.inputItem = inputItem;
         }
-        //Property
-        public int InputId { get; private set; }
 
         //function
         public Item GetItem(int index)
@@ -65,17 +71,17 @@ namespace IdleLibrary.Inventory
             return;
         }
 
-        public void SwapItem(int swapped, int swapping)
+        public void SwapItem(int swapped, InputItem input)
         {
             var item = GetItem(swapped);
-            SetItem(GetItem(swapping), swapped);
-            SetItem(item, swapping);
+            SetItem(input.inputItem, swapped);
+            SetItem(item, input.index);
         }
-        public void SwapItemFromOtherInventory(Inventory otherInventory, int originalId, int otherId)
+        public void SwapItemFromOtherInventory(Inventory otherInventory, int otherId, InputItem input)
         {
             var item = otherInventory.GetItem(otherId);
-            otherInventory.SetItem(GetItem(originalId), otherId);
-            SetItem(item, originalId);
+            otherInventory.SetItem(GetItem(input.index), otherId);
+            SetItem(item, input.index);
         } 
 
         public void DeleteItem(int index)
@@ -85,12 +91,16 @@ namespace IdleLibrary.Inventory
         }
         public void RegisterItem(int index)
         {
-            if(GetItem(index).isSet)
-                InputId = index;
+            if (GetItem(index).isSet)
+            {
+                inputItem.inputItem = GetItem(index);
+                inputItem.index = index;
+            }
         }
         public void ReleaseItem()
         {
-            InputId = -1;
+            inputItem.inputItem = new Item(-1);
+
         }
     }
 

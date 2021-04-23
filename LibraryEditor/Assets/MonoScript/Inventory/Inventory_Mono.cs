@@ -18,17 +18,18 @@ namespace IdleLibrary.Inventory
 
 		public GameObject item;
 
-		public Inventory inventory = new Inventory();
+		public Inventory inventory;
 		public Transform canvas;
 		[NonSerialized]
 		public GameObject[] items;
 
-		public Inventory EquipmentInventory = new Inventory();
+		public Inventory EquipmentInventory;
 		public Transform EquipmentCanvas;
 		[NonSerialized]
 		public GameObject[] EquippedItems;
 
 		public List<(Inventory inventory, GameObject[] items)> UIInfoList = new List<(Inventory inventory, GameObject[] items)>();
+		public InputItem inputItem = new InputItem();
 
 		void InitializeInventory(Inventory inventory, GameObject[] items, Transform canvas)
         {
@@ -39,7 +40,7 @@ namespace IdleLibrary.Inventory
 				items[i] = Instantiate(item, canvas);
 			}
 			//InventoryActionの登録
-			var swap = new SwapItem(inventory);
+			var swap = new SwapItemWithSameInventory(inventory);
 			var delete = new DeleteItem(inventory);
 
 			items.Select((game, index) => new { game, index })
@@ -61,6 +62,8 @@ namespace IdleLibrary.Inventory
 		// Use this for initialization
 		void Awake()
 		{
+			inventory = new Inventory(inputItem);
+			EquipmentInventory = new Inventory(inputItem);
 			InitializeInventory(inventory, items, canvas);
 			InitializeInventory(EquipmentInventory, EquippedItems, EquipmentCanvas);
 
