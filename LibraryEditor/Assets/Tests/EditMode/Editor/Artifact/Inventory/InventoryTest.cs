@@ -71,6 +71,22 @@ namespace Tests
             Assert.AreEqual(inventory.GetItem(1).id, 3);
             Assert.AreEqual(inventory.GetItem(2).id, 1);
         }
+        [Test]
+        public void CanSwapItemFromInputItem()
+        {
+            var Input = new InputItem();
+            var inventory = new Inventory(Input);
+            var item = new Item(3);
+            var item2 = new Item(1);
+            inventory.SetItem(item, 2);
+            inventory.SetItem(item2, 1);
+            inventory.RegisterItem(2);
+
+            inventory.SwapItem(1, Input);
+
+            Assert.AreEqual(inventory.GetItem(1).id, 3);
+            Assert.AreEqual(inventory.GetItem(2).id, 1);
+        }
 
         [Test]
         public void CanDeleteItem()
@@ -93,7 +109,7 @@ namespace Tests
 
             inventory.RegisterItem(1);
 
-            Assert.AreEqual(1, inventory.InputId);
+            Assert.AreEqual(1, inventory.inputItem.index);
         }
 
         [Test]
@@ -104,7 +120,7 @@ namespace Tests
 
             inventory.RegisterItem(1);
 
-            Assert.AreEqual(-1, inventory.InputId);
+            Assert.AreEqual(-1, inventory.inputItem.index);
         }
 
         [Test]
@@ -117,20 +133,38 @@ namespace Tests
 
             inventory.ReleaseItem();
 
-            Assert.AreEqual(-1, inventory.InputId);
+            Assert.AreEqual(-1, inventory.inputItem.inputItem.id);
         }
 
         [Test]
         public void CanSetItemFromOtherInventory()
         {
-            var inventory = new Inventory(input);
-            var inventory2 = new Inventory(input);
-            inventory.SetItemByOrder(new Item(5));
+            var Input = new InputItem();
+            var inventory = new Inventory(Input);
+            var inventory2 = new Inventory(Input);
+            inventory2.SetItemByOrder(new Item(5));
+            inventory.SetItemByOrder(new Item(3));
 
-            inventory.SwapItemFromOtherInventory(inventory2, 0, 3);
+            inventory.RegisterItem(0);
+            inventory.SwapItemFromOtherInventory(inventory2, 0, Input);
 
-            Assert.AreEqual(inventory2.GetItem(3).id, 5);
-            Assert.AreEqual(inventory.GetItem(0).id, -1);
+            Assert.AreEqual(inventory2.GetItem(0).id, 3);
+            Assert.AreEqual(inventory.GetItem(0).id, 5);
+        }
+
+        [Test]
+        public void CannotSwapItemWithOtherInventoryForSameInventorySwap()
+        {
+            var Input = new InputItem();
+            var inventory = new Inventory(Input);
+            var inventory2 = new Inventory(Input);
+            inventory2.SetItemByOrder(new Item(5));
+            inventory.SetItemByOrder(new Item(3));
+            var action = new SwapItemWithSameInventory(inventory);
+            var action2 = new SwapItemWithSameInventory(inventory2);
+
+            inventory.RegisterItem(0);
+
         }
 
     }

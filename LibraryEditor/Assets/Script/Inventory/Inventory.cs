@@ -9,6 +9,10 @@ namespace IdleLibrary.Inventory
         public Item inputItem { get; set; }
         public int index { get { if (inputItem.id == -1) return -1; else return _index; } set => _index = value; }
         int _index;
+        public InputItem()
+        {
+            inputItem = new Item(-1);
+        }
     }
 
     public class Inventory 
@@ -70,7 +74,12 @@ namespace IdleLibrary.Inventory
             Debug.LogError("ƒZƒbƒg‚Å‚«‚Ü‚¹‚ñ");
             return;
         }
-
+        public void SwapItem(int swapped, int swapping)
+        {
+            var item = GetItem(swapped);
+            SetItem(GetItem(swapping), swapped);
+            SetItem(item, swapping);
+        }
         public void SwapItem(int swapped, InputItem input)
         {
             var item = GetItem(swapped);
