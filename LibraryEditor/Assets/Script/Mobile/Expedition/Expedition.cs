@@ -18,7 +18,6 @@ namespace IdleLibrary {
         void SelectTime(float hour);
         void StartExpedition();
         void Claim();
-        void Reward();
     }
 
     public class Expedition : IExpedition
@@ -29,9 +28,9 @@ namespace IdleLibrary {
         private float currentTimesec;
         private bool isStarted;
 
-        public Expedition(ITransaction transaction, float initHour, IReward reward = null)
+        public Expedition(float initHour, ITransaction transaction = null, IReward reward = null)
         {
-            this.transaction = transaction;
+            this.transaction = transaction == null ? new NullTransaction() : transaction;
             this.requiredHour = initHour;
             this.reward = reward == null ? new NullReward() : reward;
             Progress();
@@ -67,7 +66,7 @@ namespace IdleLibrary {
             currentTimesec = 0;
             Reward();
         }
-        public void Reward()
+        private void Reward()
         {
             reward.Reward();
         }        
