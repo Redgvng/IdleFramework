@@ -19,11 +19,12 @@ namespace IdleLibrary {
     public class Expedition : IExpedition
     {
         private readonly ITransaction transaction;
+        private readonly IReward reward;
         private float requiredHour;
         private bool isStarted;
         private float currentTime;
 
-        public Expedition(ITransaction transaction, float initHour)
+        public Expedition(ITransaction transaction, float initHour, IReward reward)
         {
             this.transaction = transaction;
             this.requiredHour = initHour;
@@ -63,7 +64,7 @@ namespace IdleLibrary {
         }
         public void Reward()
         {
-            //Claimした時の報酬
+            reward.Reward();
         }        
         async void Progress()
         {
