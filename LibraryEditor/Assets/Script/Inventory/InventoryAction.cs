@@ -43,6 +43,7 @@ namespace IdleLibrary.Inventory
             {
                 originalInventory.SwapItemFromOtherInventory(otherInventory, originalInventory.InputId, index);
                 originalInventory.ReleaseItem();
+                return;
             }
         }
     }
