@@ -18,15 +18,15 @@ namespace IdleLibrary.Inventory
 		public Transform canvas;
 		public List<GameObject> items = new List<GameObject>();
 		private GameObject itemPre;
-		private List<IInventoryAction> _leftActions = new List<IInventoryAction>();
-		private List<IInventoryAction> _rightActions = new List<IInventoryAction>();
-		public void AddLeftAction(IInventoryAction action)
+		private List<(IInventoryAction action, KeyCode key)> _leftActions = new List<(IInventoryAction action, KeyCode key)>();
+		private List<(IInventoryAction action, KeyCode key)> _rightActions = new List<(IInventoryAction action, KeyCode key)>();
+		public void AddLeftAction(IInventoryAction action, KeyCode key = KeyCode.None)
 		{
-			_leftActions.Add(action);
+			_leftActions.Add((action,key));
 		}
-		public void AddRightaction(IInventoryAction action)
+		public void AddRightaction(IInventoryAction action, KeyCode key = KeyCode.None)
         {
-			_rightActions.Add(action);
+			_rightActions.Add((action, key));
         }
 		public InventoryInfo(Inventory inventory, Transform canvas, List<GameObject> items, GameObject itemPre)
         {
@@ -64,13 +64,45 @@ namespace IdleLibrary.Inventory
 				.Subscribe((UnityEngine.EventSystems.PointerEventData obj) =>
 				{
 					int index = items.IndexOf(item);
+					bool hasKey = false;
 					if (obj.pointerId == -1)
 					{
-						_leftActions.ForEach((action) => action.Action(index));
+						//_leftActions.ForEach((action) => action.Action(index));
+						//keyが登録されているものから探索する。
+						_leftActions.Where((pair) => pair.key != KeyCode.None).ToList().ForEach((pair) =>
+						{
+							if (Input.GetKey(pair.key))
+							{
+								hasKey = true;
+								pair.action.Action(index);
+								return;
+							}
+						});
+						if (hasKey) return;
+						_leftActions.Where((pair) => pair.key == KeyCode.None).ToList().ForEach((pair) =>
+						{
+							pair.action.Action(index);
+							return;
+						});
 					}
 					if (obj.pointerId == -2)
 					{
-						_rightActions.ForEach((action) => action.Action(index));
+						//_rightActions.ForEach((action) => action.Action(index));
+						_rightActions.Where((pair) => pair.key != KeyCode.None).ToList().ForEach((pair) =>
+						{
+							if (Input.GetKey(pair.key))
+							{
+								hasKey = true;
+								pair.action.Action(index);
+								return;
+							}
+						});
+						if (hasKey) return;
+						_rightActions.Where((pair) => pair.key == KeyCode.None).ToList().ForEach((pair) =>
+						{
+							pair.action.Action(index);
+							return;
+						});
 					}
 				});
 			items.Add(item);
@@ -115,6 +147,7 @@ namespace IdleLibrary.Inventory
 
 			//アクションを設定
 			inventory.AddLeftAction(new SwapItem(inventory.inventory));
+			inventory.AddLeftAction(new LockItem(inventory.inventory), KeyCode.L);
 			inventory.AddRightaction(new DeleteItem(inventory.inventory));
 
 			equipmentInventory.AddLeftAction(new SwapItem(equipmentInventory.inventory));
