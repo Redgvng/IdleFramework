@@ -22,6 +22,7 @@ namespace IdleLibrary.Inventory
         }
     }
 
+    //これを丸ごとセーブ？
     public class Inventory 
     {
         private List<Item> items = new List<Item>();
@@ -29,14 +30,23 @@ namespace IdleLibrary.Inventory
         public InputItem inputItem;
 
         public bool isFull => items.All((item) => item.isSet);
+        public int expandNum;
 
         public Inventory(InputItem inputItem)
         {
+            maxNum.multiplier.AddAddtiveMultiplier(() => expandNum);
             for (int i = 0; i < maxNum.GetValue(); i++)
             {
                 items.Add(new Item(-1));
             }
             this.inputItem = inputItem;
+        }
+
+        //とりあえず何も考えずに...
+        public void ExpandInventory()
+        {
+            items.Add(new Item(-1));
+            expandNum++;
         }
 
         //function
