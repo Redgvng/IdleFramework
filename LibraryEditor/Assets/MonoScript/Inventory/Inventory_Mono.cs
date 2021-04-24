@@ -44,7 +44,7 @@ namespace IdleLibrary.Inventory
 				items[i] = GameObject.Instantiate(itemPre, canvas);
 			}
 
-			AddRightaction(new DeleteItem(inventory));
+			//AddRightaction(new DeleteItem(inventory));
 
 			items.Select((game, index) => new { game, index })
 				.ToList()
@@ -82,36 +82,6 @@ namespace IdleLibrary.Inventory
 		public InventoryInfo inventory;
 		public InventoryInfo equipmentInventory;
 
-		/*
-		void InitializeInventory(Inventory inventory, GameObject[] items, Transform canvas)
-        {
-			//インスタンス化
-			items = new GameObject[inventory.GetInventoryLength()];
-			for (int i = 0; i < items.Length; i++)
-			{
-				items[i] = Instantiate(item, canvas);
-			}
-			//InventoryActionの登録
-			var swap = new SwapItemWithSameInventory(inventory);
-			var delete = new DeleteItem(inventory);
-
-			items.Select((game, index) => new { game, index })
-				.ToList()
-				.ForEach(x => x.game.GetOrAddComponent<ObservableEventTrigger>().OnPointerDownAsObservable()
-				.Subscribe((UnityEngine.EventSystems.PointerEventData obj) => {
-					if (obj.pointerId == -1)
-					{
-						swap.Action(x.index);
-					}
-					if (obj.pointerId == -2)
-					{
-						delete.Action(x.index);
-					}
-				}));
-			UIInfoList.Add((inventory, items));
-		}
-		*/
-
 		// Use this for initialization
 		void Awake()
 		{
@@ -124,7 +94,10 @@ namespace IdleLibrary.Inventory
 
 			//アクションを設定
 			inventory.AddLeftAction(new SwapItem(inventory.inventory));
+			inventory.AddRightaction(new DeleteItem(inventory.inventory));
+
 			equipmentInventory.AddLeftAction(new SwapItem(equipmentInventory.inventory));
+			equipmentInventory.AddRightaction(new RevertItemToOtherInventory(equipmentInventory.inventory, inventory.inventory));
 
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
 				inventory.inventory.SetItemByOrder(new Item(UnityEngine.Random.Range(0, 5)));

@@ -28,48 +28,27 @@ namespace IdleLibrary.Inventory
         }
     }
 
-    /*
-    public class SwapItemWithOtherInventory : IInventoryAction
+    public class RevertItemToOtherInventory : IInventoryAction
     {
-        private readonly Inventory originalInventory;
-        private readonly Inventory otherInventory;
-        private InputItem input;
-        public SwapItemWithOtherInventory(Inventory originalInventory, Inventory otherInventory)
+        private readonly Inventory inventory;
+        private readonly Inventory revertedInventory;
+        public RevertItemToOtherInventory(Inventory inventory, Inventory revertedInventory)
         {
-            this.originalInventory = originalInventory;
-            this.otherInventory = otherInventory;
-            input = originalInventory.inputItem;
+            this.inventory = inventory;
+            this.revertedInventory = revertedInventory;
         }
         public void Action(int index)
         {
-            if (!input.inputItem.isSet)
+            if (revertedInventory.isFull)
             {
-                originalInventory.RegisterItem(index);
+                Debug.LogError("アイテムがいっぱいです");
                 return;
             }
-
-            Debug.Log("う");
-
-            //もしinputアイテムとswap先が違うインベントリだったら
-            if (input.inputInventory != originalInventory)
-            {
-
-                originalInventory.SwapItemFromOtherInventory(otherInventory, index, originalInventory.inputItem);
-              　input.ReleaseItem();
-               return;
-            }
-            //同じインベントリ内でやってるのであれば
-            else
-            {
-
-                Debug.Log("こ");
-                originalInventory.SwapItem(index, originalInventory.inputItem);
-                input.ReleaseItem();
-                return;
-            }
+            var item = inventory.GetItem(index);
+            revertedInventory.SetItemByOrder(item);
+            inventory.DeleteItem(index);
         }
     }
-    */
 
     public class DeleteItem : IInventoryAction
     {

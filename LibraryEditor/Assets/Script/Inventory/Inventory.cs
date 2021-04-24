@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace IdleLibrary.Inventory
 {
@@ -26,6 +27,8 @@ namespace IdleLibrary.Inventory
         private List<Item> items = new List<Item>();
         private Cal maxNum = new Cal(10);
         public InputItem inputItem;
+
+        public bool isFull => items.All((item) => item.isSet);
 
         public Inventory(InputItem inputItem)
         {
@@ -103,14 +106,6 @@ namespace IdleLibrary.Inventory
                 input.inputInventory.SetItem(item, input.index);
             }
         }
-        /*
-        public void SwapItemFromOtherInventory(Inventory otherInventory, int otherId, InputItem input)
-        {
-            var item = otherInventory.GetItem(otherId);
-            otherInventory.SetItem(GetItem(input.index), otherId);
-            SetItem(item, input.index);
-        } 
-        */
 
         public void DeleteItem(int index)
         {

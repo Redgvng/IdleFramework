@@ -6,7 +6,6 @@ using UnityEngine.TestTools;
 using IdleLibrary.Inventory;
 using System.Linq;
 using IdleLibrary;
-using IdleLibrary.Inventory;
 
 namespace Tests
 {
@@ -156,7 +155,6 @@ namespace Tests
             Assert.AreEqual(5,inventory.GetItem(0).id);
         }
 
-        //inventory2を不要に代入しなければいけない問題 -> 解決
         [Test]
         public void CannotSwapItemWithinSameInventory()
         {
@@ -171,6 +169,20 @@ namespace Tests
 
             Assert.AreEqual(4,inventory.GetItem(0).id);
             Assert.AreEqual(3, inventory.GetItem(1).id);
+        }
+
+        [Test]
+        public void CanRevertItemToOtherInventory()
+        {
+            var inventory = new Inventory(input);
+            var inventory2 = new Inventory(input);
+            inventory2.SetItemByOrder(new Item(1));
+            var revert = new RevertItemToOtherInventory(inventory2, inventory);
+
+            revert.Action(0);
+
+            Assert.AreEqual(-1, inventory2.GetItem(0).id);
+            Assert.AreEqual(1, inventory.GetItem(0).id);    
         }
 
     }
