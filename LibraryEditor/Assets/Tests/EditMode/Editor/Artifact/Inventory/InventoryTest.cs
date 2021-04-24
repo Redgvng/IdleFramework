@@ -147,28 +147,26 @@ namespace Tests
             var inventory2 = new Inventory(Input);
             inventory2.SetItemByOrder(new Item(5));
             inventory.SetItemByOrder(new Item(3));
-            var swap = new SwapItemWithOtherInventory(inventory, inventory2);
+            var swap = new SwapItem(inventory);
 
-            inventory.RegisterItem(0);
-            inventory.SwapItemFromOtherInventory(inventory2, 0, Input);
+            inventory2.RegisterItem(0);
+            swap.Action(0);
 
             Assert.AreEqual(3,inventory2.GetItem(0).id);
             Assert.AreEqual(5,inventory.GetItem(0).id);
         }
 
-        //inventory2を不要に代入しなければいけない問題
+        //inventory2を不要に代入しなければいけない問題 -> 解決
         [Test]
         public void CannotSwapItemWithinSameInventory()
         {
             var Input = new InputItem();
             var inventory = new Inventory(Input);
-            var inventory2 = new Inventory(Input);
-            inventory2.SetItemByOrder(new Item(5));
             inventory.SetItemByOrder(new Item(3));
             inventory.SetItemByOrder(new Item(4));
+            var swap = new SwapItem(inventory);
 
             inventory.RegisterItem(1);
-            var swap = new SwapItemWithOtherInventory(inventory, inventory2);
             swap.Action(0);
 
             Assert.AreEqual(4,inventory.GetItem(0).id);

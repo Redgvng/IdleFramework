@@ -103,13 +103,14 @@ namespace IdleLibrary.Inventory
                 input.inputInventory.SetItem(item, input.index);
             }
         }
-
+        /*
         public void SwapItemFromOtherInventory(Inventory otherInventory, int otherId, InputItem input)
         {
             var item = otherInventory.GetItem(otherId);
             otherInventory.SetItem(GetItem(input.index), otherId);
             SetItem(item, input.index);
         } 
+        */
 
         public void DeleteItem(int index)
         {

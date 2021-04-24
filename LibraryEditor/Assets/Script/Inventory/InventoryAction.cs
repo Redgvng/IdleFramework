@@ -9,10 +9,10 @@ namespace IdleLibrary.Inventory
         void Action(int index);
     }
 
-    public class SwapItemWithSameInventory : IInventoryAction
+    public class SwapItem : IInventoryAction
     {
         private readonly Inventory inventory;
-        public SwapItemWithSameInventory(Inventory inventory)
+        public SwapItem(Inventory inventory)
         {
             this.inventory = inventory;
         }
@@ -28,6 +28,7 @@ namespace IdleLibrary.Inventory
         }
     }
 
+    /*
     public class SwapItemWithOtherInventory : IInventoryAction
     {
         private readonly Inventory originalInventory;
@@ -68,6 +69,7 @@ namespace IdleLibrary.Inventory
             }
         }
     }
+    */
 
     public class DeleteItem : IInventoryAction
     {
