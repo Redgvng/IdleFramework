@@ -1035,7 +1035,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.056927204, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1184,9 +1184,9 @@ GameObject:
   - component: {fileID: 7628404571559146598}
   - component: {fileID: 7628404571559146599}
   - component: {fileID: 7628404571559146596}
-  - component: {fileID: 7628404571559146649}
   - component: {fileID: 5712235864741099039}
   - component: {fileID: 1171428214053080223}
+  - component: {fileID: 6289122808816971681}
   m_Layer: 5
   m_Name: ExpeditionSample
   m_TagString: Untagged
@@ -1263,7 +1263,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &7628404571559146596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1281,26 +1281,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7628404571559146649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7628404571559146594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7a722df6ad6649a79417f8937e63c85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startClaimButton: {fileID: 7628404569992122612}
-  rightButton: {fileID: 7628404571467909494}
-  leftButton: {fileID: 7628404570883150092}
-  startClaimText: {fileID: 7628404571100910671}
-  requiredHourText: {fileID: 7628404571252011873}
-  progressPercentText: {fileID: 7628404570686080242}
-  rewardText: {fileID: 0}
-  progressBar: {fileID: 7628404571146288031}
 --- !u!222 &5712235864741099039
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1339,3 +1319,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6289122808816971681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7628404571559146594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41691a9d00dd304fa1be835a0afed90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startClaimButton: {fileID: 7628404569992122612}
+  rightButton: {fileID: 7628404571467909494}
+  leftButton: {fileID: 7628404570883150092}
+  startClaimText: {fileID: 7628404571100910671}
+  requiredHourText: {fileID: 7628404571252011873}
+  progressPercentText: {fileID: 7628404570686080242}
+  rewardText: {fileID: 7628404570267058776}
+  progressBar: {fileID: 7628404571146288031}

@@ -24,6 +24,8 @@ namespace IdleLibrary {
         private float requiredHour;
         private float currentTimesec;
         private bool isStarted;
+        float[] requiredHours = new float[] { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 24.0f };
+        int hourId;
 
         public Expedition(float initHour, ITransaction transaction = null, IReward reward = null)
         {
@@ -93,6 +95,16 @@ namespace IdleLibrary {
                     IncreaseCurrentTime(1);
                 await UniTask.Delay(1000);
             }
+        }
+        public void SwitchRequiredHour(bool isRight)
+        {
+            if (IsStarted())
+                return;
+            if (isRight)
+                hourId = hourId < requiredHours.Length - 1 ? hourId + 1 : 0;
+            else
+                hourId = hourId > 0 ? hourId - 1 : requiredHours.Length - 1;
+            SelectTime(requiredHours[hourId]);
         }
         public void IncreaseCurrentTime(float timesec) 
         {

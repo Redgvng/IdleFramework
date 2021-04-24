@@ -6,79 +6,44 @@ using TMPro;
 using static UsefulMethod;
 using static UsefulStatic;
 using IdleLibrary;
+using System.Linq;
 
+//ここにUI関係の処理は一切書かない
+//このスクリプトだけでExpeditionの処理は完結する
 public class ExpeditionSample : MonoBehaviour
 {
-    Expedition expedition;
-    public Button startClaimButton, rightButton, leftButton;
-    public TextMeshProUGUI startClaimText, requiredHourText, progressPercentText, rewardText;
-    public Slider progressBar;
     float[] requiredHours = new float[] { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 24.0f };
     int hourId;
-
-    void UpdateUI()
-    {
-        UpdateStartClaimButton();
-        UpdateProgress();
-        UpdateRequiredHour();
-        UpdateRightLeftButton();
-    }
-    void UpdateStartClaimButton()
-    {
-        if (expedition.IsStarted())
-        {
-            startClaimText.text = "Claim";
-            startClaimButton.interactable = expedition.CanClaim();
-        }
-        else
-        {
-            startClaimText.text = "Start";
-            startClaimButton.interactable = expedition.CanStart();
-        }
-    }
-    void UpdateRightLeftButton()
-    {
-        rightButton.interactable = !expedition.IsStarted();
-        leftButton.interactable = !expedition.IsStarted();
-    }
-    void UpdateProgress()
-    {
-        progressPercentText.text = DoubleTimeToDate(expedition.CurrentTimesec()) + " ( " + percent(expedition.ProgressPercent()) + " )";
-        progressBar.value = expedition.ProgressPercent();
-    }
-    void UpdateRequiredHour()
-    {
-        requiredHourText.text = expedition.RequiredTime(false).ToString("F1") + " h";
-    }
-    void SwitchRequiredHour(bool isRight)
-    {
-        if (expedition.IsStarted())
-            return;
-        if (isRight)
-            hourId = hourId < requiredHours.Length - 1 ? hourId + 1 : 0;
-        else
-            hourId = hourId > 0 ? hourId - 1 : requiredHours.Length - 1;
-        expedition.SelectTime(requiredHours[hourId]);
-        UpdateRequiredHour();
-    }
+    [SerializeField]
+    private Expedition_UI[] expeditions;
 
     // Start is called before the first frame update
     void Start()
     {
-        var number = new NUMBER(100);
-        var cost = new FixedCost(30);
-        var transaction = new Transaction(number, cost);
-        expedition = new Expedition(0.5f, transaction);
+        //通貨
+        var gold = new NUMBER(100);
+        //Expeditionを作る
+        var expedition1 = MakeSomeExpedition(gold, new FixedCost(1), 0.5f);
+        var expedition2 = MakeSomeExpedition(gold, new FixedCost(1), 0.5f);
+        var expedition3 = MakeSomeExpedition(gold, new FixedCost(1), 0.5f);
+        var expedition4 = MakeSomeExpedition(gold, new FixedCost(1), 0.5f);
 
-        UpdateUI();
-        startClaimButton.onClick.AddListener(() => { expedition.StartOrClaim(); UpdateUI(); });
-        rightButton.onClick.AddListener(() => SwitchRequiredHour(true));
-        leftButton.onClick.AddListener(() => SwitchRequiredHour(false));
+        //UIと紐づける(Instantiateするやり方に変えたほうがいいかもしれない)
+        expeditions[0].LinkExpedition(expedition1);
+        expeditions[1].LinkExpedition(expedition2);
+        expeditions[2].LinkExpedition(expedition3);
+        expeditions[3].LinkExpedition(expedition4);
+    }
+
+    Expedition MakeSomeExpedition(NUMBER number, ICost cost, float initHour)
+    {
+        var transaction = new Transaction(number, cost);
+        return new Expedition(initHour, transaction);
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateProgress();
+        expeditions.ToList().ForEach((x) => x.UpdateUI());
     }
 }
