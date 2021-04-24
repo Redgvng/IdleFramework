@@ -123,8 +123,8 @@ namespace IdleLibrary.Inventory
 			UIInfoList.Add(equipmentInventory);
 
 			//アクションを設定
-			inventory.AddLeftAction(new SwapItemWithOtherInventory(inventory.inventory, equipmentInventory.inventory));
-			equipmentInventory.AddLeftAction(new SwapItemWithOtherInventory(equipmentInventory.inventory,inventory.inventory));
+			inventory.AddLeftAction(new SwapItemWithSameInventory(inventory.inventory));
+			equipmentInventory.AddLeftAction(new SwapItemWithSameInventory(equipmentInventory.inventory));
 
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
 				inventory.inventory.SetItemByOrder(new Item(UnityEngine.Random.Range(0, 5)));

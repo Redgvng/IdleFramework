@@ -42,7 +42,10 @@ namespace IdleLibrary.Inventory
         public void Action(int index)
         {
             if (!input.inputItem.isSet)
+            {
+                originalInventory.RegisterItem(index);
                 return;
+            }
 
             Debug.Log("В§");
 
@@ -50,7 +53,6 @@ namespace IdleLibrary.Inventory
             if (input.inputInventory != originalInventory)
             {
 
-                Debug.Log("Вс");
                 originalInventory.SwapItemFromOtherInventory(otherInventory, index, originalInventory.inputItem);
               Б@input.ReleaseItem();
                return;

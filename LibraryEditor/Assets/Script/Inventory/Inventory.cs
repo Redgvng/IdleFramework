@@ -86,12 +86,24 @@ namespace IdleLibrary.Inventory
             SetItem(GetItem(swapping), swapped);
             SetItem(item, swapping);
         }
+        //こいつに、他のインベントリのswapも任せられるか？
         public void SwapItem(int swapped, InputItem input)
         {
-            var item = GetItem(swapped);
-            SetItem(input.inputItem, swapped);
-            SetItem(item, input.index);
+            if (this == input.inputInventory)
+            {
+                var item = GetItem(swapped);
+                SetItem(input.inputItem, swapped);
+                SetItem(item, input.index);
+            }
+            //inventoryが違った場合
+            else
+            {
+                var item = GetItem(swapped);
+                SetItem(input.inputItem, swapped);
+                input.inputInventory.SetItem(item, input.index);
+            }
         }
+
         public void SwapItemFromOtherInventory(Inventory otherInventory, int otherId, InputItem input)
         {
             var item = otherInventory.GetItem(otherId);
