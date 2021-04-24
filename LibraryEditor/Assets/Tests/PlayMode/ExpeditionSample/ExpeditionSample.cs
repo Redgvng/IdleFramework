@@ -12,8 +12,6 @@ using System.Linq;
 //このスクリプトだけでExpeditionの処理は完結する
 public class ExpeditionSample : MonoBehaviour
 {
-    float[] requiredHours = new float[] { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 24.0f };
-    int hourId;
     [SerializeField]
     private Expedition_UI[] expeditions;
 
