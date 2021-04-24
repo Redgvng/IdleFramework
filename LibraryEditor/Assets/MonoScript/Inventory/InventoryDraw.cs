@@ -31,8 +31,7 @@ namespace IdleLibrary.Inventory
                     int index = 0;
                     foreach (var item in info.inventory.GetItems())
                     {
-                        var it = info.items[index];
-                        if (it == null) continue;
+                        if (index >= info.items.Count) continue;
                         if (item.isSet)
                         {
                             info.items[index].transform.GetChild(0).GetComponent<Image>().sprite = sprites[item.id];

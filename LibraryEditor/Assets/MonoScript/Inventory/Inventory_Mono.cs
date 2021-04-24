@@ -8,6 +8,7 @@ using static Main;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
+using Cysharp.Threading.Tasks;
 using System.Linq;
 namespace IdleLibrary.Inventory
 {
@@ -37,26 +38,11 @@ namespace IdleLibrary.Inventory
         }
 		void Initialize()
         {
+			Debug.Log(inventory.GetInventoryLength());
 			for (int i = 0; i < inventory.GetInventoryLength(); i++)
 			{
 				InstantiateItem();
 			}
-
-			/*
-			items.Select((game, index) => new { game, index })
-				.ToList()
-				.ForEach(x => x.game.GetOrAddComponent<ObservableEventTrigger>().OnPointerDownAsObservable()
-				.Subscribe((UnityEngine.EventSystems.PointerEventData obj) => {
-					if (obj.pointerId == -1)
-					{
-						_leftActions.ForEach((action) => action.Action(x.index));
-					}
-					if (obj.pointerId == -2)
-					{
-						_rightActions.ForEach((action) => action.Action(x.index));
-					}
-				}));
-			*/
 
 			//inventoryLength()の値が変化したら、それに応じてInstantiateする.,
 			this.ObserveEveryValueChanged(_ => inventory.GetInventoryLength()).Subscribe(_ =>
@@ -120,8 +106,8 @@ namespace IdleLibrary.Inventory
 		// Use this for initialization
 		void Awake()
 		{
-			inventory = new InventoryInfo(new Inventory(inputItem), canvas, items, item);
-			equipmentInventory = new InventoryInfo(new Inventory(inputItem), EquipmentCanvas, EquippedItems, item);
+			inventory = new InventoryInfo(new Inventory(inputItem, Main.main.S.inventory), canvas, items, item);
+			equipmentInventory = new InventoryInfo(new Inventory(inputItem, Main.main.S.equipmentInventory), EquipmentCanvas, EquippedItems, item);
 
 			//UIと紐づける
 			UIInfoList.Add(inventory);
@@ -147,8 +133,19 @@ namespace IdleLibrary.Inventory
 				equipmentInventory.inventory.ExpandInventory();
 			});
 
+			SaveInventory();
 			Notify();
 		}
+
+		private async void SaveInventory()
+        {
+			while (true)
+			{
+				Main.main.S.inventory = inventory.inventory.saveData;
+				Main.main.S.equipmentInventory = equipmentInventory.inventory.saveData;
+				await UniTask.DelayFrame(60);
+			}
+        }
         private void Update()
         {
 			Notify();

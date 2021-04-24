@@ -22,20 +22,30 @@ namespace IdleLibrary.Inventory
         }
     }
 
-    //これを丸ごとセーブ？
+    [System.Serializable]
+    public class InventoryForSave
+    {
+        public List<Item> items = new List<Item>();
+        public int expandNum;
+    }
+
     public class Inventory 
     {
-        private List<Item> items = new List<Item>();
-        private Cal maxNum = new Cal(10);
+        //Needed to Save
+        public List<Item> items => saveData.items;
+        public int expandNum { get => saveData.expandNum; set => saveData.expandNum = value; }
+        public InventoryForSave saveData;
+
         public InputItem inputItem;
-
         public bool isFull => items.All((item) => item.isSet);
-        public int expandNum;
+        public readonly int initialInventoryNum = 10;
+        int totalInventoryNum => expandNum + initialInventoryNum;
 
-        public Inventory(InputItem inputItem)
+        //Saveすべき変数を注入する
+        public Inventory(InputItem inputItem, InventoryForSave saveData = null)
         {
-            maxNum.multiplier.AddAddtiveMultiplier(() => expandNum);
-            for (int i = 0; i < maxNum.GetValue(); i++)
+            this.saveData = saveData == null ? new InventoryForSave() : saveData;
+            for (int i = 0; i < totalInventoryNum; i++)
             {
                 items.Add(new Item(-1));
             }
@@ -45,7 +55,6 @@ namespace IdleLibrary.Inventory
         //とりあえず何も考えずに...
         public void ExpandInventory()
         {
-            Debug.Log("expandしたよ");
             items.Add(new Item(-1));
             expandNum++;
         }
@@ -53,7 +62,7 @@ namespace IdleLibrary.Inventory
         //function
         public Item GetItem(int index)
         {
-            if (index < 0 || index >= maxNum.GetValue())
+            if (index < 0 || index >= totalInventoryNum)
             {
                 Debug.LogError("その場所からgetできません");
                 return new Item(-1);
@@ -67,12 +76,15 @@ namespace IdleLibrary.Inventory
         }
         public int GetInventoryLength()
         {
-            return (int)maxNum.GetValue();
+            Debug.Log("ExpandNum" + expandNum);
+            Debug.Log("baseNum" + initialInventoryNum);
+
+            return totalInventoryNum;
         }
 
         public void SetItem(Item item, int index)
         {
-            if(index < 0 || index >= maxNum.GetValue())
+            if(index < 0 || index >= totalInventoryNum)
             {
                 Debug.LogError("セットできません");
                 return;
@@ -134,9 +146,10 @@ namespace IdleLibrary.Inventory
         }
     }
 
+    [System.Serializable]
     public struct Item
     {
-        public int id { get; }
+        public int id;
         public bool isSet => id >= 0;
         public Item(int id)
         {
