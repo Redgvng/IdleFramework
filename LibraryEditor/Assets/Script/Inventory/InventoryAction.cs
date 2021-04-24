@@ -36,7 +36,6 @@ namespace IdleLibrary.Inventory
         }
         public void Action(int index)
         {
-            Debug.Log(inventory.inputItem.inputItem.id);
             if (inventory.inputItem.inputItem.id != -1)
             {
                 inventory.SwapItem(index, inventory.inputItem);

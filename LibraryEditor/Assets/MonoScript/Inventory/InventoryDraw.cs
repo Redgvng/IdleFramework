@@ -48,6 +48,7 @@ namespace IdleLibrary.Inventory
                 }
                 if(inventory_mono.inputItem.inputItem.id == -1)
                 {
+                    Debug.Log("ここよばれてる");
                     _itemIconWithMouse.SetActive(false);
                 }
                 else

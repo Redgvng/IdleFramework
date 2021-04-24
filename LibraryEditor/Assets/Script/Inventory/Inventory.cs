@@ -10,6 +10,7 @@ namespace IdleLibrary.Inventory
         public Item inputItem { get; set; }
         public int index { get { if (!inputItem.isSet) return -1; else return _index; } set => _index = value; }
         public Inventory inputInventory { get { if (!inputItem.isSet) return null; else return _inventory; } set => _inventory = value; }
+        public int cursorId;
         private int _index;
         private Inventory _inventory;
         public void ReleaseItem()
@@ -19,6 +20,7 @@ namespace IdleLibrary.Inventory
         public InputItem()
         {
             inputItem = new Item(-1);
+            cursorId = -1;
         }
     }
 

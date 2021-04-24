@@ -20,6 +20,7 @@ namespace IdleLibrary.Inventory
 		private GameObject itemPre;
 		private List<(IInventoryAction action, KeyCode key)> _leftActions = new List<(IInventoryAction action, KeyCode key)>();
 		private List<(IInventoryAction action, KeyCode key)> _rightActions = new List<(IInventoryAction action, KeyCode key)>();
+		private IInventoryAction[] _holdAction = new IInventoryAction[3];
 		public void AddLeftAction(IInventoryAction action, KeyCode key = KeyCode.None)
 		{
 			_leftActions.Add((action,key));
@@ -28,6 +29,12 @@ namespace IdleLibrary.Inventory
         {
 			_rightActions.Add((action, key));
         }
+		public void RegisterHoldAction(IInventoryAction holdAction, IInventoryAction cancelAction, IInventoryAction releaseAction)
+        {
+			_holdAction[0] = holdAction;
+			_holdAction[1] = cancelAction;
+			_holdAction[2] = releaseAction;
+        }
 		public InventoryInfo(Inventory inventory, Transform canvas, List<GameObject> items, GameObject itemPre)
         {
 			this.inventory = inventory;
@@ -35,10 +42,10 @@ namespace IdleLibrary.Inventory
 			this.items = items;
 			this.itemPre = itemPre;
 			Initialize();
-        }
+
+		}
 		void Initialize()
         {
-			Debug.Log(inventory.GetInventoryLength());
 			for (int i = 0; i < inventory.GetInventoryLength(); i++)
 			{
 				InstantiateItem();
@@ -65,11 +72,10 @@ namespace IdleLibrary.Inventory
 				{
 					int index = items.IndexOf(item);
 					bool hasKey = false;
-					if (obj.pointerId == -1)
-					{
-						//_leftActions.ForEach((action) => action.Action(index));
+					void DoAction(List<(IInventoryAction action, KeyCode key)> list)
+                    {
 						//keyが登録されているものから探索する。
-						_leftActions.Where((pair) => pair.key != KeyCode.None).ToList().ForEach((pair) =>
+						list.Where((pair) => pair.key != KeyCode.None).ToList().ForEach((pair) =>
 						{
 							if (Input.GetKey(pair.key))
 							{
@@ -79,32 +85,36 @@ namespace IdleLibrary.Inventory
 							}
 						});
 						if (hasKey) return;
-						_leftActions.Where((pair) => pair.key == KeyCode.None).ToList().ForEach((pair) =>
+						list.Where((pair) => pair.key == KeyCode.None).ToList().ForEach((pair) =>
 						{
 							pair.action.Action(index);
 							return;
 						});
+					}
+					if (obj.pointerId == -1)
+					{
+						DoAction(_leftActions);
 					}
 					if (obj.pointerId == -2)
 					{
-						//_rightActions.ForEach((action) => action.Action(index));
-						_rightActions.Where((pair) => pair.key != KeyCode.None).ToList().ForEach((pair) =>
-						{
-							if (Input.GetKey(pair.key))
-							{
-								hasKey = true;
-								pair.action.Action(index);
-								return;
-							}
-						});
-						if (hasKey) return;
-						_rightActions.Where((pair) => pair.key == KeyCode.None).ToList().ForEach((pair) =>
-						{
-							pair.action.Action(index);
-							return;
-						});
+						DoAction(_rightActions);
 					}
 				});
+			item.GetOrAddComponent<ObservableEventTrigger>().OnPointerEnterAsObservable()
+				.Subscribe(_ => inventory.inputItem.cursorId = items.IndexOf(item));
+			item.GetOrAddComponent<ObservableEventTrigger>().OnBeginDragAsObservable()
+				.Subscribe(_ => _holdAction[0].Action(items.IndexOf(item)));
+			item.GetOrAddComponent<ObservableEventTrigger>().OnDropAsObservable()
+				.Subscribe(_ => {
+					if (inventory.inputItem.cursorId == -1) 
+					{
+						_holdAction[1].Action(items.IndexOf(item));
+                    }
+                    else
+                    {
+						_holdAction[2].Action(items.IndexOf(item));
+                    }
+						});
 			items.Add(item);
 
         }
@@ -146,12 +156,21 @@ namespace IdleLibrary.Inventory
 			UIInfoList.Add(equipmentInventory);
 
 			//アクションを設定
-			inventory.AddLeftAction(new SwapItem(inventory.inventory));
+			//inventory.AddLeftAction(new SwapItem(inventory.inventory));
+			//クリックじゃなくてドラッグアンドドロップにもできる
+			var swap = new SwapItem(inventory.inventory);
+			inventory.RegisterHoldAction(swap, new Releaseitem(inputItem), swap);
 			inventory.AddLeftAction(new LockItem(inventory.inventory), KeyCode.L);
 			inventory.AddRightaction(new DeleteItem(inventory.inventory));
 
-			equipmentInventory.AddLeftAction(new SwapItem(equipmentInventory.inventory));
+			//equipmentInventory.AddLeftAction(new SwapItem(equipmentInventory.inventory));
+			var swap2 = new SwapItem(equipmentInventory.inventory);
+			equipmentInventory.RegisterHoldAction(swap2, new Releaseitem(inputItem), swap2);
 			equipmentInventory.AddRightaction(new RevertItemToOtherInventory(equipmentInventory.inventory, inventory.inventory));
+
+			//Canvasの外に出たらcursorIdを-1にする
+			//canvas.gameObject.GetOrAddComponent<ObservableEventTrigger>().OnPointerExitAsObservable()
+			//	.Subscribe(_ => inputItem.cursorId = -1);
 
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
 				inventory.inventory.SetItemByOrder(new Item(UnityEngine.Random.Range(0, 5)));
