@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-//UI
-using UnityEngine.UI;
-using TMPro;
-using static UsefulMethod;
-using static UsefulStatic;
 
 namespace IdleLibrary {
 
     public interface IExpedition
     {
-        bool CanStart();
-        bool CanClaim();
+        bool IsStarted();
+        float CurrentTimesec();
+        float RequiredTime(bool isSec);
         void SelectTime(float hour);
+        void StartOrClaim();
         void StartExpedition();
         void Claim();
     }
@@ -35,9 +32,20 @@ namespace IdleLibrary {
             this.reward = reward == null ? new NullReward() : reward;
             Progress();
         }
+        public bool IsStarted()
+        {
+            return isStarted;
+        }
+        public void StartOrClaim()
+        {
+            if (IsStarted())
+                Claim();
+            else
+                StartExpedition();
+        }
         public bool CanClaim()
         {
-            return currentTimesec >= RequiredTimesec();
+            return currentTimesec >= RequiredTime(true);
         }
         public bool CanStart()
         {
@@ -47,9 +55,16 @@ namespace IdleLibrary {
         {
             requiredHour = hour;
         }
-        public float RequiredTimesec()
+        public float CurrentTimesec()
         {
-            return requiredHour * 3600f;
+            return currentTimesec;
+        }
+        public float RequiredTime(bool isSec)
+        {
+            if (isSec)
+                return requiredHour * 3600f;
+            else
+                return requiredHour;
         }
         public void StartExpedition()
         {
@@ -74,7 +89,7 @@ namespace IdleLibrary {
         {
             while (true)
             {
-                if (isStarted && currentTimesec < RequiredTimesec())
+                if (isStarted && currentTimesec < RequiredTime(true))
                     IncreaseCurrentTime(1);
                 await UniTask.Delay(1000);
             }
@@ -85,52 +100,8 @@ namespace IdleLibrary {
         }
         public float ProgressPercent()
         {
-            return currentTimesec / RequiredTimesec();
+            return currentTimesec / RequiredTime(true);
         }
 
-        //以下UI
-        public Button startClaimButton;
-        public TextMeshProUGUI startClaimText, requiredHourText, progressPercentText, rewardText;
-        public Slider progressBar;
-
-        public void UpdateStartClaimButton()
-        {
-            if (isStarted)
-            {
-                startClaimText.text = "Claim";
-                startClaimButton.interactable = CanClaim();
-            }
-            else
-            {
-                startClaimText.text = "Start";
-                startClaimButton.interactable = CanStart();
-            }
-        }
-        public void UpdateProgress()
-        {
-            progressPercentText.text = percent(ProgressPercent());
-            progressBar.value = ProgressPercent();
-        }
-        public void UpdateRequiredHour()
-        {
-            requiredHourText.text = requiredHour.ToString("F1") + " h";
-        }
-
-        //使用例
-        public Button rightButton, leftButton;
-        float[] requiredHours = new float[] { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 24.0f };
-        int hourId;
-        public void SwitchRequiredHour(bool isRight)
-        {
-            if (isStarted)
-                return;
-            if (isRight)
-                hourId = hourId < requiredHours.Length - 1 ? hourId + 1 : 0;
-            else
-                hourId = hourId > 0 ? hourId - 1 : requiredHours.Length - 1;
-            SelectTime(requiredHours[hourId]);
-            UpdateRequiredHour();
-        }
-        
     }
 }
