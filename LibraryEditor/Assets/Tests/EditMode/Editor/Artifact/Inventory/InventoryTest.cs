@@ -127,14 +127,16 @@ namespace Tests
         [Test]
         public void CanReleaseItem()
         {
-            var inventory = new Inventory(input);
+            var Input = new InputItem();
+            var inventory = new Inventory(Input);
             var item = new Item(3);
             inventory.SetItem(item, 1);
             inventory.RegisterItem(1);
+            Assert.AreEqual(3, Input.inputItem.id);
 
-            inventory.ReleaseItem();
+            Input.ReleaseItem();
 
-            Assert.AreEqual(-1, inventory.inputItem.inputItem.id);
+            Assert.AreEqual(-1, Input.inputItem.id);
         }
 
         [Test]

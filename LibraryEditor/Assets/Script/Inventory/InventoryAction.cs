@@ -21,7 +21,7 @@ namespace IdleLibrary.Inventory
             if (inventory.inputItem.inputItem.id != -1)
             {
                 inventory.SwapItem(index, inventory.inputItem);
-                inventory.ReleaseItem();
+                inventory.inputItem.ReleaseItem();
                 return;
             }
             inventory.RegisterItem(index);
@@ -52,7 +52,7 @@ namespace IdleLibrary.Inventory
 
                 Debug.Log("ん");
                 originalInventory.SwapItemFromOtherInventory(otherInventory, index, originalInventory.inputItem);
-              　 originalInventory.ReleaseItem();
+              　input.ReleaseItem();
                return;
             }
             //同じインベントリ内でやってるのであれば
@@ -61,7 +61,7 @@ namespace IdleLibrary.Inventory
 
                 Debug.Log("こ");
                 originalInventory.SwapItem(index, originalInventory.inputItem);
-                originalInventory.ReleaseItem();
+                input.ReleaseItem();
                 return;
             }
         }
@@ -83,16 +83,16 @@ namespace IdleLibrary.Inventory
 
     public class Releaseitem : IInventoryAction
     {
-        private readonly Inventory inventory;
-        public Releaseitem(Inventory inventory)
+        private readonly InputItem input;
+        public Releaseitem(InputItem input)
         {
-            this.inventory = inventory;
+            this.input = input;
         }
         public void Action(int index)
         {
-            if(inventory.inputItem.inputItem.id != -1)
+            if(input.inputItem.id != -1)
             {
-                inventory.ReleaseItem();
+                input.ReleaseItem();
             }
         } 
     }

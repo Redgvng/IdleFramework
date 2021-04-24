@@ -7,9 +7,14 @@ namespace IdleLibrary.Inventory
     public class InputItem
     {
         public Item inputItem { get; set; }
-        public int index { get { if (inputItem.id == -1) return -1; else return _index; } set => _index = value; }
-        public Inventory inputInventory { get; set; }
-        int _index;
+        public int index { get { if (!inputItem.isSet) return -1; else return _index; } set => _index = value; }
+        public Inventory inputInventory { get { if (!inputItem.isSet) return null; else return _inventory; } set => _inventory = value; }
+        private int _index;
+        private Inventory _inventory;
+        public void ReleaseItem()
+        {
+            inputItem = new Item(-1);
+        }
         public InputItem()
         {
             inputItem = new Item(-1);
@@ -107,11 +112,6 @@ namespace IdleLibrary.Inventory
                 inputItem.index = index;
                 inputItem.inputInventory = this;
             }
-        }
-        public void ReleaseItem()
-        {
-            inputItem.inputItem = new Item(-1);
-
         }
     }
 
