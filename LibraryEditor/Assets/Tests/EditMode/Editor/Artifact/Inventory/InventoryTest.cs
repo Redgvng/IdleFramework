@@ -24,6 +24,18 @@ namespace Tests
         }
 
         [Test]
+        public void CanSetItemAfterExpandInventory()
+        {
+            var inventory = new Inventory(input);
+            inventory.ExpandInventory();
+            Debug.Log(inventory.GetInventoryLength());
+
+            inventory.SetItem(new Item(0), 10);
+
+            Assert.AreEqual(inventory.GetItem(10).id, 0);
+        }
+
+        [Test]
         public void CanSetItemByOrder()
         {
             var inventory = new Inventory(input);
@@ -53,8 +65,24 @@ namespace Tests
 
             inventory.SwapItem(1, 2);
 
-            Assert.AreEqual(inventory.GetItem(1).id, 3);
-            Assert.AreEqual(inventory.GetItem(2).id, -1);
+            Assert.AreEqual(3,inventory.GetItem(1).id);
+            Assert.AreEqual(-1,inventory.GetItem(2).id);
+        }
+        [Test]
+        public void CanSwapItemAfterExpand()
+        {
+            var Input = new InputItem();
+            var inventory = new Inventory(Input);
+            var item = new Item(3);
+            inventory.ExpandInventory();
+            inventory.SetItem(item, 2);
+            var swap = new SwapItem(inventory);
+
+            inventory.RegisterItem(2);
+            swap.Action(10);
+
+            Assert.AreEqual(-1,inventory.GetItem(2).id);
+            Assert.AreEqual(3,inventory.GetItem(10).id);
         }
         [Test]
         public void CanSwapItemToNotEmpty()

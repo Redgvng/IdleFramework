@@ -45,6 +45,7 @@ namespace IdleLibrary.Inventory
         //Ç∆ÇËÇ†Ç¶Ç∏âΩÇ‡çlÇ¶Ç∏Ç…...
         public void ExpandInventory()
         {
+            Debug.Log("expandÇµÇΩÇÊ");
             items.Add(new Item(-1));
             expandNum++;
         }

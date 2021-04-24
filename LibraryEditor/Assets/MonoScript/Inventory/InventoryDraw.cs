@@ -12,6 +12,7 @@ namespace IdleLibrary.Inventory
         public Sprite[] sprites;
         //public Sprite defaultSprite;
         public Sprite lockedSprite;
+        public Transform MouseImageCanvas;
         GameObject _itemIconWithMouse;
 
         void Awake()
@@ -30,6 +31,8 @@ namespace IdleLibrary.Inventory
                     int index = 0;
                     foreach (var item in info.inventory.GetItems())
                     {
+                        var it = info.items[index];
+                        if (it == null) continue;
                         if (item.isSet)
                         {
                             info.items[index].transform.GetChild(0).GetComponent<Image>().sprite = sprites[item.id];
@@ -45,7 +48,7 @@ namespace IdleLibrary.Inventory
                 //マウスにくっつくウインドウの設定(後々柔軟に変えられるようにしたい)
                 if(_itemIconWithMouse == null)
                 {
-                    _itemIconWithMouse = Instantiate(inventory_mono.item, inventory_mono.canvas);
+                    _itemIconWithMouse = Instantiate(inventory_mono.item, MouseImageCanvas);
                     _itemIconWithMouse.GetComponent<Image>().raycastTarget = false;
                     _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().raycastTarget = false;
                 }

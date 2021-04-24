@@ -15,7 +15,7 @@ namespace IdleLibrary.Inventory
     {
 		public Inventory inventory;
 		public Transform canvas;
-		public GameObject[] items;
+		public List<GameObject> items = new List<GameObject>();
 		private GameObject itemPre;
 		private List<IInventoryAction> _leftActions = new List<IInventoryAction>();
 		private List<IInventoryAction> _rightActions = new List<IInventoryAction>();
@@ -27,7 +27,7 @@ namespace IdleLibrary.Inventory
         {
 			_rightActions.Add(action);
         }
-		public InventoryInfo(Inventory inventory, Transform canvas, GameObject[] items, GameObject itemPre)
+		public InventoryInfo(Inventory inventory, Transform canvas, List<GameObject> items, GameObject itemPre)
         {
 			this.inventory = inventory;
 			this.canvas = canvas;
@@ -37,15 +37,12 @@ namespace IdleLibrary.Inventory
         }
 		void Initialize()
         {
-			//インスタンス化
-			items = new GameObject[inventory.GetInventoryLength()];
-			for (int i = 0; i < items.Length; i++)
+			for (int i = 0; i < inventory.GetInventoryLength(); i++)
 			{
-				items[i] = GameObject.Instantiate(itemPre, canvas);
+				InstantiateItem();
 			}
 
-			//AddRightaction(new DeleteItem(inventory));
-
+			/*
 			items.Select((game, index) => new { game, index })
 				.ToList()
 				.ForEach(x => x.game.GetOrAddComponent<ObservableEventTrigger>().OnPointerDownAsObservable()
@@ -59,23 +56,60 @@ namespace IdleLibrary.Inventory
 						_rightActions.ForEach((action) => action.Action(x.index));
 					}
 				}));
+			*/
+
+			//inventoryLength()の値が変化したら、それに応じてInstantiateする.,
+			this.ObserveEveryValueChanged(_ => inventory.GetInventoryLength()).Subscribe(_ =>
+			{
+				int diff = inventory.GetInventoryLength() - items.Count;
+				if (diff <= 0) return;
+                for (int i = 0; i < diff; i++)
+                {
+					InstantiateItem();
+				}
+			});
 		}
+
+		//Instantiateして、Observableをつける処理をする関数
+		void InstantiateItem()
+        {
+			var item = GameObject.Instantiate(itemPre, canvas);
+			item.GetOrAddComponent<ObservableEventTrigger>().OnPointerDownAsObservable()
+				.Subscribe((UnityEngine.EventSystems.PointerEventData obj) =>
+				{
+					int index = items.IndexOf(item);
+					if (obj.pointerId == -1)
+					{
+						_leftActions.ForEach((action) => action.Action(index));
+					}
+					if (obj.pointerId == -2)
+					{
+						_rightActions.ForEach((action) => action.Action(index));
+					}
+				});
+			items.Add(item);
+
+        }
 		
     }
 	public class Inventory_Mono : Subject
 	{
 		[SerializeField]
 		Button GenerateItemButton;
+		[SerializeField]
+		Button ExpandInventory;
+		[SerializeField]
+		Button ExpandEquipmentInventory;
 
 		public GameObject item;
 
 		public Transform canvas;
 		[NonSerialized]
-		public GameObject[] items;
+		public List<GameObject> items = new List<GameObject>();
 
 		public Transform EquipmentCanvas;
 		[NonSerialized]
-		public GameObject[] EquippedItems;
+		public List<GameObject> EquippedItems = new List<GameObject>();
 
 		public List<InventoryInfo> UIInfoList = new List<InventoryInfo>();
 		public InputItem inputItem = new InputItem();
@@ -104,6 +138,15 @@ namespace IdleLibrary.Inventory
 				inventory.inventory.SetItemByOrder(new Item(UnityEngine.Random.Range(0, 5)));
 				equipmentInventory.inventory.SetItemByOrder(new Item(UnityEngine.Random.Range(0, 5)));
 				});
+			ExpandInventory.OnClickAsObservable().Subscribe(_ =>
+			{
+				inventory.inventory.ExpandInventory();
+			});
+			ExpandEquipmentInventory.OnClickAsObservable().Subscribe(_ =>
+			{
+				equipmentInventory.inventory.ExpandInventory();
+			});
+
 			Notify();
 		}
         private void Update()
@@ -115,7 +158,7 @@ namespace IdleLibrary.Inventory
             }
 			if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
             {
-				//Notify();
+				Notify();
             }
         }
     }
