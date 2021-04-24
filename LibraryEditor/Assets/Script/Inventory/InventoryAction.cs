@@ -9,6 +9,24 @@ namespace IdleLibrary.Inventory
         void Action(int index);
     }
 
+    public class DoActionWithSomeKey : IInventoryAction
+    {
+        private readonly IInventoryAction action;
+        private readonly KeyCode key;
+        public DoActionWithSomeKey(IInventoryAction action, KeyCode key)
+        {
+            this.action = action;
+            this.key = key;
+        }
+        public void Action(int index)
+        {
+            if (!Input.GetKey(key))
+                return;
+
+            action.Action(index);
+        }
+    }
+
     public class SwapItem : IInventoryAction
     {
         private readonly Inventory inventory;
@@ -62,6 +80,22 @@ namespace IdleLibrary.Inventory
         {
             if (inventory.inputItem.inputItem.id == -1)
                 inventory.DeleteItem(index);
+        }
+    }
+
+    public class LockItem : IInventoryAction
+    {
+        private readonly Inventory inventory;
+        public LockItem(Inventory inventory)
+        {
+            this.inventory = inventory;
+        }
+        public void Action(int index)
+        {
+            if (inventory.inputItem.inputItem.id == -1)
+            {
+                inventory.GetItem(index).isLocked = true;
+            }
         }
     }
 

@@ -64,7 +64,6 @@ namespace IdleLibrary.Inventory
         {
             if (index < 0 || index >= totalInventoryNum)
             {
-                Debug.LogError("‚»‚ÌêŠ‚©‚çget‚Å‚«‚Ü‚¹‚ñ");
                 return new Item(-1);
             }
 
@@ -76,9 +75,6 @@ namespace IdleLibrary.Inventory
         }
         public int GetInventoryLength()
         {
-            Debug.Log("ExpandNum" + expandNum);
-            Debug.Log("baseNum" + initialInventoryNum);
-
             return totalInventoryNum;
         }
 
@@ -144,16 +140,19 @@ namespace IdleLibrary.Inventory
                 inputItem.inputInventory = this;
             }
         }
+
     }
 
     [System.Serializable]
-    public struct Item
+    public class Item
     {
         public int id;
+        public bool isLocked;
         public bool isSet => id >= 0;
         public Item(int id)
         {
             this.id = id;
+            this.isLocked = false;
         }
     }
 }
