@@ -34,7 +34,7 @@ namespace IdleLibrary.Inventory
     public class Inventory 
     {
         //Needed to Save
-        public List<Item> items => saveData.items;
+        public List<Item> items { get => saveData.items; set => saveData.items = value; }
         public int expandNum { get => saveData.expandNum; set => saveData.expandNum = value; }
         public InventoryForSave saveData;
 
@@ -47,9 +47,12 @@ namespace IdleLibrary.Inventory
         public Inventory(InputItem inputItem, InventoryForSave saveData = null)
         {
             this.saveData = saveData == null ? new InventoryForSave() : saveData;
-            for (int i = 0; i < totalInventoryNum; i++)
+            if (items.Count == 0)
             {
-                items.Add(new Item(-1));
+                for (int i = 0; i < totalInventoryNum; i++)
+                {
+                    items.Add(new Item(-1));
+                }
             }
             this.inputItem = inputItem;
         }
@@ -59,6 +62,13 @@ namespace IdleLibrary.Inventory
         {
             items.Add(new Item(-1));
             expandNum++;
+        }
+
+        public void SortById()
+        {
+            var tempItems = items.Select(item => { if (item.id == -1) item.id = 9999; return item; }).OrderBy((x) => x.id).ToList();
+            tempItems.ForEach((x) => { if (x.id == 9999) x.id = -1; });
+            items = tempItems;
         }
 
         //function
