@@ -163,7 +163,8 @@ namespace IdleLibrary.Inventory
 			var swap = new SwapItem(inventory.inventory);
 			inventory.RegisterHoldAction(swap, new Releaseitem(inputItem), swap);
 			inventory.AddLeftAction(new LockItem(inventory.inventory), KeyCode.L);
-			inventory.AddRightaction(new DeleteItem(inventory.inventory));
+			inventory.AddLeftAction(new DeleteItem(inventory.inventory), KeyCode.D);
+			inventory.AddRightaction(new RevertItemToOtherInventory(inventory.inventory,equipmentInventory.inventory));
 
 			//equipmentInventory.AddLeftAction(new SwapItem(equipmentInventory.inventory));
 			var swap2 = new SwapItem(equipmentInventory.inventory);
