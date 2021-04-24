@@ -110,6 +110,7 @@ namespace Tests
             inventory.RegisterItem(1);
 
             Assert.AreEqual(1, inventory.inputItem.index);
+            Assert.IsTrue(inventory.inputItem.inputInventory == inventory);
         }
 
         [Test]
@@ -144,27 +145,32 @@ namespace Tests
             var inventory2 = new Inventory(Input);
             inventory2.SetItemByOrder(new Item(5));
             inventory.SetItemByOrder(new Item(3));
+            var swap = new SwapItemWithOtherInventory(inventory, inventory2);
 
             inventory.RegisterItem(0);
             inventory.SwapItemFromOtherInventory(inventory2, 0, Input);
 
-            Assert.AreEqual(inventory2.GetItem(0).id, 3);
-            Assert.AreEqual(inventory.GetItem(0).id, 5);
+            Assert.AreEqual(3,inventory2.GetItem(0).id);
+            Assert.AreEqual(5,inventory.GetItem(0).id);
         }
 
+        //inventory2を不要に代入しなければいけない問題
         [Test]
-        public void CannotSwapItemWithOtherInventoryForSameInventorySwap()
+        public void CannotSwapItemWithinSameInventory()
         {
             var Input = new InputItem();
             var inventory = new Inventory(Input);
             var inventory2 = new Inventory(Input);
             inventory2.SetItemByOrder(new Item(5));
             inventory.SetItemByOrder(new Item(3));
-            var action = new SwapItemWithSameInventory(inventory);
-            var action2 = new SwapItemWithSameInventory(inventory2);
+            inventory.SetItemByOrder(new Item(4));
 
-            inventory.RegisterItem(0);
+            inventory.RegisterItem(1);
+            var swap = new SwapItemWithOtherInventory(inventory, inventory2);
+            swap.Action(0);
 
+            Assert.AreEqual(4,inventory.GetItem(0).id);
+            Assert.AreEqual(3, inventory.GetItem(1).id);
         }
 
     }

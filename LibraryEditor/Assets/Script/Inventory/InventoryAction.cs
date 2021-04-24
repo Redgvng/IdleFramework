@@ -32,16 +32,35 @@ namespace IdleLibrary.Inventory
     {
         private readonly Inventory originalInventory;
         private readonly Inventory otherInventory;
+        private InputItem input;
         public SwapItemWithOtherInventory(Inventory originalInventory, Inventory otherInventory)
         {
             this.originalInventory = originalInventory;
             this.otherInventory = otherInventory;
+            input = originalInventory.inputItem;
         }
         public void Action(int index)
         {
-            if(originalInventory.inputItem.inputItem.id != -1)
+            if (!input.inputItem.isSet)
+                return;
+
+            Debug.Log("う");
+
+            //もしinputアイテムとswap先が違うインベントリだったら
+            if (input.inputInventory != originalInventory)
             {
+
+                Debug.Log("ん");
                 originalInventory.SwapItemFromOtherInventory(otherInventory, index, originalInventory.inputItem);
+              　 originalInventory.ReleaseItem();
+               return;
+            }
+            //同じインベントリ内でやってるのであれば
+            else
+            {
+
+                Debug.Log("こ");
+                originalInventory.SwapItem(index, originalInventory.inputItem);
                 originalInventory.ReleaseItem();
                 return;
             }

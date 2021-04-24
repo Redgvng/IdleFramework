@@ -8,6 +8,7 @@ namespace IdleLibrary.Inventory
     {
         public Item inputItem { get; set; }
         public int index { get { if (inputItem.id == -1) return -1; else return _index; } set => _index = value; }
+        public Inventory inputInventory { get; set; }
         int _index;
         public InputItem()
         {
@@ -104,6 +105,7 @@ namespace IdleLibrary.Inventory
             {
                 inputItem.inputItem = GetItem(index);
                 inputItem.index = index;
+                inputItem.inputInventory = this;
             }
         }
         public void ReleaseItem()
