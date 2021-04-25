@@ -64,6 +64,7 @@ namespace IdleLibrary.Inventory
 		}
 
 		//Instantiateして、Observableをつける処理をする関数
+		//最終的にはこの中身もカプセル化すべきか？
 		void InstantiateItem()
         {
 			var item = GameObject.Instantiate(itemPre, canvas);
@@ -101,7 +102,9 @@ namespace IdleLibrary.Inventory
 					}
 				});
 			item.GetOrAddComponent<ObservableEventTrigger>().OnPointerEnterAsObservable()
-				.Subscribe(_ => inventory.inputItem.cursorId = items.IndexOf(item));
+				.Subscribe(_ => {
+					inventory.inputItem.cursorId = items.IndexOf(item);
+					});
 			item.GetOrAddComponent<ObservableEventTrigger>().OnBeginDragAsObservable()
 				.Subscribe(_ => _holdAction[0].Action(items.IndexOf(item)));
 			item.GetOrAddComponent<ObservableEventTrigger>().OnDropAsObservable()
@@ -132,6 +135,7 @@ namespace IdleLibrary.Inventory
 		Button SortByIdButton;
 
 		public GameObject item;
+		public TextMeshProUGUI inventoryItemInfoText;
 
 		public Transform canvas;
 		[NonSerialized]
@@ -162,6 +166,7 @@ namespace IdleLibrary.Inventory
 			//クリックじゃなくてドラッグアンドドロップにもできる
 			var swap = new SwapItem(inventory.inventory);
 			inventory.RegisterHoldAction(swap, new Releaseitem(inputItem), swap);
+			inventory.AddLeftAction(new ShowInfoToTextField(inventory.inventory, inventoryItemInfoText));
 			inventory.AddLeftAction(new LockItem(inventory.inventory), KeyCode.L);
 			inventory.AddLeftAction(new DeleteItem(inventory.inventory), KeyCode.D);
 			inventory.AddRightaction(new RevertItemToOtherInventory(inventory.inventory,equipmentInventory.inventory));
@@ -174,6 +179,18 @@ namespace IdleLibrary.Inventory
 			//Canvasの外に出たらcursorIdを-1にする
 			//canvas.gameObject.GetOrAddComponent<ObservableEventTrigger>().OnPointerExitAsObservable()
 			//	.Subscribe(_ => inputItem.cursorId = -1);
+
+			//PopUpの設定
+			var transform = canvas.GetComponent<RectTransform>();
+			//Expandしたら出てこなくなる問題は解決すべき。やはり初めからInstantiateが丸いか？
+			/*
+			for (int i = 0; i < inventory.items.Count; i++)
+            {
+				var count = i;
+				var pop = popUp.StartPopUp(inventory.items[i], transform);
+				pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.text.text = inventory.inventory.GetItem(count).Text());
+			}
+			*/
 
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
 				inventory.inventory.SetItemByOrder(new Item(UnityEngine.Random.Range(0, 5)));

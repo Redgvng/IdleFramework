@@ -154,17 +154,4 @@ namespace IdleLibrary.Inventory
         }
 
     }
-
-    [System.Serializable]
-    public class Item
-    {
-        public int id;
-        public bool isLocked;
-        public bool isSet => id >= 0;
-        public Item(int id)
-        {
-            this.id = id;
-            this.isLocked = false;
-        }
-    }
 }

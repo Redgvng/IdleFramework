@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 namespace IdleLibrary.Inventory
 {
@@ -113,4 +114,21 @@ namespace IdleLibrary.Inventory
             }
         } 
     }
+
+    public class ShowInfoToTextField : IInventoryAction
+    {
+        private readonly Inventory inventory;
+        private readonly TextMeshProUGUI textField;
+        public ShowInfoToTextField(Inventory inventory, TextMeshProUGUI textField)
+        {
+            this.inventory = inventory;
+            this.textField = textField;
+            textField.text = "";
+        }
+        public void Action(int index)
+        {
+            textField.text = inventory.GetItem(index).Text();
+        }
+    }
+
 }
