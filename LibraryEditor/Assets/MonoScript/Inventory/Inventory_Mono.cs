@@ -154,8 +154,8 @@ namespace IdleLibrary.Inventory
 		// Use this for initialization
 		void Awake()
 		{
-			inventory = new InventoryInfo(new Inventory(inputItem, Main.main.S.inventory), canvas, items, item);
-			equipmentInventory = new InventoryInfo(new Inventory(inputItem, Main.main.S.equipmentInventory), EquipmentCanvas, EquippedItems, item);
+			inventory = new InventoryInfo(new Inventory(inputItem, Main.main.S.inventory, new Artifact(-1)), canvas, items, item);
+			equipmentInventory = new InventoryInfo(new Inventory(inputItem, Main.main.S.equipmentInventory, new Artifact(-1)), EquipmentCanvas, EquippedItems, item);
 
 			//UIと紐づける
 			UIInfoList.Add(inventory);
@@ -193,8 +193,8 @@ namespace IdleLibrary.Inventory
 			*/
 
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
-				inventory.inventory.SetItemByOrder(new Item(UnityEngine.Random.Range(0, 5)));
-				equipmentInventory.inventory.SetItemByOrder(new Item(UnityEngine.Random.Range(0, 5)));
+				inventory.inventory.GenerateItemRandomly();
+				equipmentInventory.inventory.GenerateItemRandomly();
 				});
 			ExpandInventory.OnClickAsObservable().Subscribe(_ =>
 			{
