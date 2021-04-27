@@ -23,6 +23,7 @@ public class Popup_UI : MonoBehaviour
     }
     public void Show()
     {
+        SetWindowLocation();
         setActive(gameObject);
     }
     public void Hide()
