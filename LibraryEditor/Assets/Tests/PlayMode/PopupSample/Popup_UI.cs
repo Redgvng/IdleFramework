@@ -72,17 +72,21 @@ public class Popup_UI : MonoBehaviour
                 break;
         }
     }
+    Vector3 screenSize = new Vector2(Screen.width, Screen.height);
     private void SetMouseFollow()
     {
-        Vector3 position = Input.mousePosition;
-        if (position.y >= Screen.height / 2 && position.x >= Screen.width / 2)//第一象限
-            thisRect.anchoredPosition = position + new Vector3(-thisRect.sizeDelta.x, -thisRect.sizeDelta.y);
-        else if (position.y >= Screen.height / 2 && position.x < Screen.width / 2)//第二象限
-            thisRect.anchoredPosition = position + new Vector3(thisRect.sizeDelta.x, -thisRect.sizeDelta.y);
-        else if (position.y < Screen.height / 2 && position.x > Screen.width / 2)//第四象限
-            thisRect.anchoredPosition = position + new Vector3(-thisRect.sizeDelta.x, thisRect.sizeDelta.y);
-        else if (position.y < Screen.height / 2 && position.x < Screen.width / 2)//第三象限
-            thisRect.anchoredPosition = position + new Vector3(thisRect.sizeDelta.x, thisRect.sizeDelta.y);
+        thisRect.anchorMin = Vector2.one * 0.5f;
+        thisRect.anchorMax = Vector2.one * 0.5f;
+        thisRect.pivot = Vector2.one * 0.5f;
+        Vector3 position = Input.mousePosition - screenSize * 0.5f;
+        if (position.y >= 0 && position.x >= 0)//第一象限
+            thisRect.anchoredPosition = position + new Vector3(-thisRect.sizeDelta.x, -thisRect.sizeDelta.y) * 0.6f;
+        else if (position.y >= 0 && position.x < 0)//第二象限
+            thisRect.anchoredPosition = position + new Vector3(thisRect.sizeDelta.x, -thisRect.sizeDelta.y) * 0.6f;
+        else if (position.y < 0 && position.x >= 0)//第四象限
+            thisRect.anchoredPosition = position + new Vector3(-thisRect.sizeDelta.x, thisRect.sizeDelta.y) * 0.6f;
+        else if (position.y < 0 && position.x < 0)//第三象限
+            thisRect.anchoredPosition = position + new Vector3(thisRect.sizeDelta.x, thisRect.sizeDelta.y) * 0.6f;
     }
     private void SetCorner()
     {

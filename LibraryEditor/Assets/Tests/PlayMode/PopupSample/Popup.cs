@@ -13,7 +13,7 @@ namespace IdleLibrary.UI
 {
     public interface IPopup
     {
-        void UpdateText(string description);//popupのテキストを更新したいときによぶ
+        void UpdateText(WindowKind windowKind, string description, Sprite iconSprite);//popupのテキストを更新したいときによぶ
     }
     public enum ShowWay
     {
@@ -36,14 +36,10 @@ namespace IdleLibrary.UI
     {
         public void SetPopup(GameObject targetObject, WindowKind windowKind, string description, Sprite iconSprite = null)
         {
-            this.windowKind = windowKind;
-            this.description = description;
-            this.iconSprite = iconSprite;
-            SetLocationKind();
-            SetShowWay(targetObject);
+            SetShowWay(targetObject, windowKind, description, iconSprite);
         }
 
-        public void UpdateText(string description)
+        public void UpdateText(WindowKind windowKind, string description, Sprite iconSprite = null)
         {
             switch (windowKind)
             {
@@ -51,7 +47,7 @@ namespace IdleLibrary.UI
                     popupTextOnly.UpdateUI(description);
                     break;
                 case WindowKind.IconAndText:
-                    popupTextOnly.UpdateUI(description, iconSprite);
+                    popupIconAndText.UpdateUI(description, iconSprite);
                     break;
             }
         }
@@ -59,15 +55,13 @@ namespace IdleLibrary.UI
         [SerializeField] ShowWay showWay;
         [SerializeField] LocationKind locationKind;
         public Popup_UI popupTextOnly, popupIconAndText;
-        private WindowKind windowKind;
-        private string description;
-        private Sprite iconSprite;
 
         private void Awake()
         {
             popup = this;
+            SetLocationKind();
         }
-        private Popup_UI PopupWindow()
+        private Popup_UI PopupWindow(WindowKind windowKind)
         {
             switch (windowKind)
             {
@@ -80,19 +74,22 @@ namespace IdleLibrary.UI
         }
         private void SetLocationKind()
         {
-            PopupWindow().locationKind = locationKind;
+            for (int i = 0; i < Enum.GetNames(typeof(WindowKind)).Length; i++)
+            {
+                PopupWindow((WindowKind)i).locationKind = locationKind;
+            }
         }
-        private void SetShowWay(GameObject targetObject)
+        private void SetShowWay(GameObject targetObject, WindowKind windowKind, string description, Sprite iconSprite)
         {
             var eventTrigger = targetObject.AddComponent<ObservableEventTrigger>();
             switch (showWay)
             {
                 case ShowWay.Hover:
-                    eventTrigger.OnPointerEnterAsObservable().Subscribe(data => { PopupWindow().Show(); UpdateText(description); });
-                    eventTrigger.OnPointerExitAsObservable().Subscribe(data => PopupWindow().Hide());
+                    eventTrigger.OnPointerEnterAsObservable().Subscribe(data => { PopupWindow(windowKind).Show(); UpdateText(windowKind, description, iconSprite); });
+                    eventTrigger.OnPointerExitAsObservable().Subscribe(data => PopupWindow(windowKind).Hide());
                     break;
                 case ShowWay.Click:
-                    eventTrigger.OnPointerDownAsObservable().Subscribe(data => PopupWindow().SwitchShowAndHide());
+                    eventTrigger.OnPointerDownAsObservable().Subscribe(data => { PopupWindow(windowKind).SwitchShowAndHide(); UpdateText(windowKind, description, iconSprite); });
                     break;
             }
 
