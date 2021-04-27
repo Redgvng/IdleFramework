@@ -5,7 +5,8 @@ using UnityEngine;
 namespace IdleLibrary.Inventory
 {
     //íäè€ÉNÉâÉX
-    public abstract class ITEM
+    [System.Serializable]
+    public class ITEM
     {
         public int id;
         public bool isLocked;
@@ -15,8 +16,8 @@ namespace IdleLibrary.Inventory
             this.id = id;
             this.isLocked = false;
         }
-        public abstract string Text();
-        public abstract ITEM CreateNullItem(); 
+        public virtual string Text() { return ""; }
+        public virtual ITEM CreateNullItem() { return null; }
     }
     public class NullItem : ITEM
     {
