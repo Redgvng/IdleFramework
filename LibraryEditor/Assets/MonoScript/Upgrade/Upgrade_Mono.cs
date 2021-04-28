@@ -119,10 +119,10 @@ namespace IdleLibrary.Upgrade {
             switch (calway)
             {
                 case CalculateWay.additive:
-                    targetMultiplier.AddAddtiveMultiplier(() => valuePerLevel * level);
+                    targetMultiplier.RegisterMultiplier(new MultiplierInfo(addMultiplier : () => valuePerLevel * level) );
                     break;
                 case CalculateWay.multiplicative:
-                    targetMultiplier.AddAddtiveMultiplier(() => 1.0 + valuePerLevel * level);
+                    targetMultiplier.RegisterMultiplier(new MultiplierInfo(mulMultiplier: () => valuePerLevel * level));
                     break;
                 default:
                     break;

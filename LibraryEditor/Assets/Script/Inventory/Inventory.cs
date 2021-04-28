@@ -49,18 +49,17 @@ namespace IdleLibrary.Inventory
         public Inventory(InputItem inputItem, InventoryForSave saveData = null, ITEM item = null)
         {
             this.saveData = saveData == null ? new InventoryForSave() : saveData;
+            originalItem = item == null ? new Item(-1) : item;
             if (items.Count == 0)
             {
                 for (int i = 0; i < totalInventoryNum; i++)
                 {
                     if (item == null)
                     {
-                        originalItem = new Item(-1);
-                        items.Add(new Item(-1));
+                        items.Add(originalItem);
                     }
                     else
                     {
-                        originalItem = item;
                         items.Add(item.CreateNullItem());
                     }
                 }

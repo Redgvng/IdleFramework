@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace IdleLibrary.Inventory
 {
-    //抽象クラス
+    //抽象クラスにするとシリアライズできない
     [System.Serializable]
-    public class ITEM
+    public class ITEM : IText
     {
         public int id;
         public bool isLocked;

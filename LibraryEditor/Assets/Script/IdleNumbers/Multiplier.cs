@@ -6,20 +6,50 @@ using UnityEngine.UI;
 using static UsefulMethod;
 using TMPro;
 
+public class MultiplierInfo
+{
+    public Func<double> addMultiplier { get; }
+    public Func<double> mulMultiplier { get; }
+    public Func<bool> trigger { get; }
+    public MultiplierInfo(Func<bool> trigger = null, Func<double> addMultiplier = null, Func<double> mulMultiplier = null)
+    {
+        this.addMultiplier = addMultiplier;
+        this.mulMultiplier = mulMultiplier;
+        this.trigger = trigger == null ? () => true : trigger;
+    }
+}
+
 public class Multiplier
 {
-    public void AddAddtiveMultiplier(Func<double> multiplier)
+    public void RegisterMultiplier(MultiplierInfo multiplierInfo)
     {
-        AddMultiplier.Add(multiplier);
+        if(multiplierInfo.addMultiplier != null)
+        {
+            AddMultiplier.Add(() =>
+            {
+                if (!multiplierInfo.trigger())
+                    return 0;
+
+                return multiplierInfo.addMultiplier();
+            });
+        }
+        if(multiplierInfo.mulMultiplier != null)
+        {
+            MulMultiplier.Add(() =>
+            {
+                if (!multiplierInfo.trigger())
+                    return 1.0;
+
+                return multiplierInfo.mulMultiplier();
+            });
+        }
     }
+
     public double CaluculatedNumber(double original)
     {
         return (original + add()) * mul();
     }
-    public void AddMultiplicativeMultiplier(Func<double> multiplier)
-    {
-        MulMultiplier.Add(multiplier);
-    }
+
     double mul()
     {
         double temp = 1.0;
@@ -40,6 +70,6 @@ public class Multiplier
         return temp;
     }
 
-    List<Func<double>> AddMultiplier = new List<Func<double>>();
-    List<Func<double>> MulMultiplier = new List<Func<double>>();
+    private readonly List<Func<double>> AddMultiplier = new List<Func<double>>();
+    private readonly List<Func<double>> MulMultiplier = new List<Func<double>>();
 }

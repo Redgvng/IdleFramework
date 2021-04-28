@@ -10,6 +10,14 @@ using UniRx;
 using UniRx.Triggers;
 using Cysharp.Threading.Tasks;
 using System.Linq;
+
+
+public partial class Save
+{
+	public IdleLibrary.Inventory.InventoryForSave inventory, equipmentInventory;
+}
+
+
 namespace IdleLibrary.Inventory
 {
 	public class InventoryInfo
