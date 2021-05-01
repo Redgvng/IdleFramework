@@ -6,6 +6,11 @@ using UnityEngine.UI;
 using static UsefulMethod;
 using TMPro;
 
+public class IMultipliable
+{
+    Multiplier multiplier { get; }
+}
+
 public class MultiplierInfo
 {
     public Func<double> addMultiplier { get; }

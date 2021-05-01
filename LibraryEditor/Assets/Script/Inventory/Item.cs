@@ -17,7 +17,7 @@ namespace IdleLibrary.Inventory
             this.isLocked = false;
         }
         public virtual string Text() { return ""; }
-        public virtual ITEM CreateNullItem() { return null; }
+        public virtual ITEM CreateNullItem() { return new NullItem(-1); }
     }
     public class NullItem : ITEM
     {

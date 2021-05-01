@@ -46,7 +46,9 @@ namespace IdleLibrary.Inventory
                     _itemIconWithMouse.GetComponent<Image>().raycastTarget = false;
                     _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().raycastTarget = false;
                 }
-                if(inventory_mono.inputItem.inputItem.id == -1)
+                Debug.Log($"1 : {inventory_mono.inputItem == null}");
+                Debug.Log($"2 : {inventory_mono.inputItem.inputItem == null}");
+                if (inventory_mono.inputItem.inputItem.id == -1)
                 {
                     _itemIconWithMouse.SetActive(false);
                 }
