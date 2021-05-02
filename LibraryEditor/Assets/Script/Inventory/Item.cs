@@ -33,6 +33,7 @@ namespace IdleLibrary.Inventory
             return "Null Itemです。これは入ってちゃいけません";
         }
     }
+
     [System.Serializable]
     public class Item : ITEM
     {
@@ -47,7 +48,8 @@ namespace IdleLibrary.Inventory
         }
     }
 
-    //Itemを継承して自作のアイテムを作ります
+    //Itemを継承して自作のアイテムを作ります(セーブ関係上厳しい)
+    /*
     [System.Serializable]
     public class Artifact : ITEM
     {
@@ -70,4 +72,5 @@ namespace IdleLibrary.Inventory
         public int quality;
         public double antimagicPower;
     }
+    */
 }

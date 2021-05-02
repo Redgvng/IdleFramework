@@ -43,25 +43,17 @@ namespace IdleLibrary.Inventory
         public bool isFull => items.All((item) => item.isSet);
         public readonly int initialInventoryNum = 10;
         int totalInventoryNum => expandNum + initialInventoryNum;
-        private ITEM originalItem;
         //Saveすべき変数を注入する
         //使うアイテムのインスタンスを何でもいいので渡します。
-        public Inventory(InputItem inputItem, InventoryForSave saveData = null, ITEM item = null)
+        public Inventory(InputItem inputItem, InventoryForSave saveData = null)
         {
             this.saveData = saveData == null ? new InventoryForSave() : saveData;
-            originalItem = item == null ? new Item(-1) : item;
+            var originalItem = new ITEM(-1);
             if (items.Count == 0)
             {
                 for (int i = 0; i < totalInventoryNum; i++)
                 {
-                    if (item == null)
-                    {
-                        items.Add(originalItem);
-                    }
-                    else
-                    {
-                        items.Add(item.CreateNullItem());
-                    }
+                    items.Add(originalItem);
                 }
             }
             this.inputItem = inputItem;
@@ -70,7 +62,7 @@ namespace IdleLibrary.Inventory
         //とりあえず何も考えずに...
         public void ExpandInventory()
         {
-            items.Add(new Item(-1));
+            items.Add(new ITEM(-1));
             expandNum++;
         }
 
@@ -83,7 +75,7 @@ namespace IdleLibrary.Inventory
 
         public void GenerateItemRandomly()
         {
-            var item = originalItem.CreateNullItem();
+            var item = new ITEM(-1);
             item.id = UnityEngine.Random.Range(0, 5);
             SetItemByOrder(item);
         }
@@ -93,7 +85,7 @@ namespace IdleLibrary.Inventory
         {
             if (index < 0 || index >= totalInventoryNum)
             {
-                return originalItem.CreateNullItem();
+                return new ITEM(-1);
             }
 
             return items[index];
@@ -157,7 +149,7 @@ namespace IdleLibrary.Inventory
 
         public void DeleteItem(int index)
         {
-            var nullItem = originalItem.CreateNullItem();
+            var nullItem = new ITEM(-1);
             SetItem(nullItem, index);
         }
         public void RegisterItem(int index)
