@@ -8,39 +8,24 @@ namespace IdleLibrary.Inventory
     [System.Serializable]
     public class InputInfo
     {
-        //入っているアイテムです
-        public ITEM inputItem { get; set; }
         //どこに入っているか？
-        public int index { get { if (!isSet) return -1; else return _index; } set => _index = value; }
+        public int index;
         //どのインベントリに入っているか？
-        public Inventory inputInventory { get { if (!isSet) return null; else return _inventory; } set => _inventory = value; }
+        public Inventory inputInventory;
         public bool isLocked;
-        public bool isSet => inputItem.id >= 0;
-
-        //private
-        private int _index;
-        private Inventory _inventory;
     }
     public class InputItem
     {
-        /*
-        public ITEM inputItem { get; set; }
-        public int index { get { if (!inputItem.isSet) return -1; else return _index; } set => _index = value; }
-        public Inventory inputInventory { get { if (!inputItem.isSet) return null; else return _inventory; } set => _inventory = value; }
-        private int _index;
-        private Inventory _inventory;
-        */
-
-        public InputInfo info;
+        public ITEM inputItem;
+        //public InputInfo info;
         public int cursorId;
         public void ReleaseItem()
         {
-            info.inputItem = info.inputItem.CreateNullItem();
+            inputItem = ITEM.CreateNullItem();
         }
         public InputItem()
         {
-            info = new InputInfo();
-            info.inputItem = new NullItem(-1);
+            inputItem = new ITEM(-1);
             cursorId = -1;
         }
     }
@@ -60,13 +45,13 @@ namespace IdleLibrary.Inventory
         public int expandNum { get => saveData.expandNum; set => saveData.expandNum = value; }
         public InventoryForSave saveData;
 
-        public InputInfo inputItem;
-        public bool isFull => items.All((item) => item.inputInfo.isSet);
+        public InputItem inputItem;
+        public bool isFull => items.All((item) => item.isSet);
         public readonly int initialInventoryNum = 10;
         int totalInventoryNum => expandNum + initialInventoryNum;
         //Saveすべき変数を注入する
         //使うアイテムのインスタンスを何でもいいので渡します。
-        public Inventory(InputInfo inputItem, InventoryForSave saveData = null)
+        public Inventory(InputItem inputItem, InventoryForSave saveData = null)
         {
             this.saveData = saveData == null ? new InventoryForSave() : saveData;
             var originalItem = new ITEM(-1);
@@ -134,7 +119,7 @@ namespace IdleLibrary.Inventory
         {
             for (int i = 0; i < items.Count; i++)
             {
-                if (!items[i].inputInfo.isSet)
+                if (!items[i].isSet)
                 {
                     SetItem(item, i);
                     return;
@@ -151,20 +136,20 @@ namespace IdleLibrary.Inventory
             SetItem(item, swapping);
         }
         //こいつに、他のインベントリのswapも任せられるか？
-        public void SwapItem(int swapped, InputInfo input)
+        public void SwapItem(int swapped, InputItem input)
         {
-            if (this == input.inputInventory)
+            if (this == input.inputItem.inputInfo.inputInventory)
             {
                 var item = GetItem(swapped);
                 SetItem(input.inputItem, swapped);
-                SetItem(item, input.index);
+                SetItem(item, input.inputItem.inputInfo.index);
             }
             //inventoryが違った場合
             else
             {
                 var item = GetItem(swapped);
                 SetItem(input.inputItem, swapped);
-                input.inputInventory.SetItem(item, input.index);
+                input.inputItem.inputInfo.inputInventory.SetItem(item, input.inputItem.inputInfo.index);
             }
         }
 
@@ -175,11 +160,11 @@ namespace IdleLibrary.Inventory
         }
         public void RegisterItem(int index)
         {
-            if (GetItem(index).inputInfo.isSet)
+            if (GetItem(index).isSet)
             {
                 inputItem.inputItem = GetItem(index);
-                inputItem.index = index;
-                inputItem.inputInventory = this;
+                inputItem.inputItem.inputInfo.index = index;
+                inputItem.inputItem.inputInfo.inputInventory = this;
             }
         }
 

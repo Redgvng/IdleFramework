@@ -97,7 +97,7 @@ namespace IdleLibrary.Inventory
         }
         public void Action(int index)
         {
-            if (!inventory.GetItem(index).inputInfo.isSet)
+            if (!inventory.GetItem(index).isSet)
             {
                 return;
             }
@@ -118,7 +118,7 @@ namespace IdleLibrary.Inventory
         }
         public void Action(int index)
         {
-            if(input.info.inputItem.id != -1)
+            if(input.inputItem.id != -1)
             {
                 input.ReleaseItem();
             }

@@ -11,25 +11,19 @@ namespace IdleLibrary.Inventory
         //InputInfoを持ちます。
         public InputInfo inputInfo;
         public int id;
-        //public bool isSet => id >= 0;
+        public bool isSet => id >= 0;
         public ITEM(int id)
         {
             inputInfo = new InputInfo();
-            inputInfo.inputItem = this;
             this.id = id;
         }
         public virtual string Text() { return $"----ITEM----\n\n- ID : {id}"; }
-        public virtual ITEM CreateNullItem() { return new NullItem(-1); }
+        public static ITEM CreateNullItem() { return new NullItem(-1); }
     }
 
     public class NullItem : ITEM
     {
         public NullItem(int id) : base(id) { }
-        public override ITEM CreateNullItem()
-        {
-            var nullItem =  new NullItem(-1);
-            return nullItem;
-        }
 
         public override string Text()
         {
@@ -41,10 +35,6 @@ namespace IdleLibrary.Inventory
     public class Item : ITEM
     {
         public Item(int id) : base(id) { }
-        public override ITEM CreateNullItem()
-        {
-            return new Item(-1);
-        }
     }
 
     //Itemを継承して自作のアイテムを作ります(セーブ関係上厳しい)
