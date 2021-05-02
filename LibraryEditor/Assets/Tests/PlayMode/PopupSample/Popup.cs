@@ -14,7 +14,7 @@ namespace IdleLibrary.UI
 {
     public interface IPopup
     {
-        //void UpdateText(WindowKind windowKind, string description, Sprite iconSprite);//popupのテキストを更新したいときによぶ
+
     }
     public enum ShowWay
     {
@@ -35,27 +35,25 @@ namespace IdleLibrary.UI
 
     public class Popup : MonoBehaviour, IPopup
     {
-        Func<bool> isShowCondition;
+        Func<bool> showCondition;
         GameObject windowObject;
-
-        public Popup(Func<bool> isShowCondition, GameObject windowObject)
+        public Popup(Func<bool> showCondition, GameObject windowObject)
         {
-            this.isShowCondition = isShowCondition;
+            this.showCondition = showCondition;
             this.windowObject = windowObject;
             ShowWindow();
         }
-
         async void ShowWindow()
         {
             bool tempBool = false;
             while (true)
             {
-                if (isShowCondition() && !tempBool)
+                if (showCondition() && !tempBool)
                 {
                     setActive(windowObject);
                     tempBool = true;
                 }
-                else if (!isShowCondition() && tempBool)
+                else if (!showCondition() && tempBool)
                 {
                     setFalse(windowObject);
                     tempBool = false;
@@ -63,63 +61,5 @@ namespace IdleLibrary.UI
                 await UniTask.DelayFrame(1);
             }
         }
-        //public void SetPopup(GameObject targetObject, WindowKind windowKind, string description, Sprite iconSprite = null)
-        //{
-        //    SetShowWay(targetObject, windowKind, description, iconSprite);
-        //}
-        //public void UpdateText(WindowKind windowKind, string description, Sprite iconSprite = null)
-        //{
-        //    switch (windowKind)
-        //    {
-        //        case WindowKind.TextOnly:
-        //            popupTextOnly.UpdateUI(description);
-        //            break;
-        //        case WindowKind.IconAndText:
-        //            popupIconAndText.UpdateUI(description, iconSprite);
-        //            break;
-        //    }
-        //}
-        //    [SerializeField] ShowWay showWay;
-        //    [SerializeField] LocationKind locationKind;
-        //    public Popup_UI popupTextOnly, popupIconAndText;
-
-        //    private void Awake()
-        //    {
-        //        SetLocationKind();
-        //    }
-        //    private Popup_UI PopupWindow(WindowKind windowKind)
-        //    {
-        //        switch (windowKind)
-        //        {
-        //            case WindowKind.TextOnly:
-        //                return popupTextOnly;
-        //            case WindowKind.IconAndText:
-        //                return popupIconAndText;
-        //        }
-        //        return popupTextOnly;
-        //    }
-        //    private void SetLocationKind()
-        //    {
-        //        for (int i = 0; i < Enum.GetNames(typeof(WindowKind)).Length; i++)
-        //        {
-        //            PopupWindow((WindowKind)i).locationKind = locationKind;
-        //        }
-        //    }
-        //    private void SetShowWay(GameObject targetObject, WindowKind windowKind, string description, Sprite iconSprite)
-        //    {
-        //        var eventTrigger = targetObject.AddComponent<ObservableEventTrigger>();
-        //        switch (showWay)
-        //        {
-        //            case ShowWay.Hover:
-        //                eventTrigger.OnPointerEnterAsObservable().Subscribe(data => { PopupWindow(windowKind).Show(); UpdateText(windowKind, description, iconSprite); });
-        //                eventTrigger.OnPointerExitAsObservable().Subscribe(data => PopupWindow(windowKind).Hide());
-        //                break;
-        //            case ShowWay.Click:
-        //                eventTrigger.OnPointerDownAsObservable().Subscribe(data => { PopupWindow(windowKind).SwitchShowAndHide(); UpdateText(windowKind, description, iconSprite); });
-        //                break;
-        //        }
-
-        //    }
-        //}
     }
 }

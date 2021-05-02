@@ -13,37 +13,38 @@ using IdleLibrary.UI;
 
 public class PopupSample : MonoBehaviour
 {
-    [SerializeField] Popup_UI popup_ui;
-    bool isShowCondition;
-    // Start is called before the first frame update
+    [SerializeField] private bool isWithIcon;
+    [SerializeField] private Popup_UI popup_ui;
+    private bool isOver;
 
     void Start()
     {
-        var Popup = new Popup(IsShowCondition, popup_ui.gameObject);
-        SetShowWay(gameObject, ShowWay.Hover, "Sample Text");
+        var Popup = new Popup(ShowCondition, popup_ui.gameObject);
+
+        //Popup_UIを使った例
+        Sprite iconSprite = isWithIcon ? gameObject.GetComponent<Image>().sprite : null;
+        SetUI(gameObject, popup_ui, ShowWay.Hover, Description, iconSprite);
     }
-    bool IsShowCondition()
-    {
-        return isShowCondition;
-    }
-    //HoverOrClick
-    void SetShowWay(GameObject targetObject, ShowWay showWay, string description, Sprite iconSprite = null)
+    void SetUI(GameObject targetObject, Popup_UI popup_ui, ShowWay showWay, Func<string> description, Sprite iconSprite = null)
     {
         var eventTrigger = targetObject.AddComponent<ObservableEventTrigger>();
         switch (showWay)
         {
             case ShowWay.Hover:
-                eventTrigger.OnPointerEnterAsObservable().Subscribe(data => { isShowCondition = true; popup_ui.UpdateUI(description, iconSprite); });
-                eventTrigger.OnPointerExitAsObservable().Subscribe(data => { isShowCondition = false; }) ;
+                eventTrigger.OnPointerEnterAsObservable().Subscribe(data => { isOver = true; popup_ui.UpdateUI(description, iconSprite); });
+                eventTrigger.OnPointerExitAsObservable().Subscribe(data => { isOver = false; });
                 break;
             case ShowWay.Click:
-                eventTrigger.OnPointerDownAsObservable().Subscribe(data => { isShowCondition = !isShowCondition; popup_ui.UpdateUI(description, iconSprite); });
+                eventTrigger.OnPointerDownAsObservable().Subscribe(data => { isOver = !isOver; popup_ui.UpdateUI(description, iconSprite); });
                 break;
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    bool ShowCondition()
     {
+        return isOver;
+    }
+    string Description()
+    {
+        return "Sample Description\n- Sample 1\n- Sample 2\n- Sample 3";
     }
 }

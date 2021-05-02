@@ -30,14 +30,14 @@ public class Popup_UI : MonoBehaviour
     {
         setFalse(gameObject);
     }
-    public void UpdateUI(string descriptionString, Sprite iconSprite = null)
+    public void UpdateUI(Func<string> descriptionString, Sprite iconSprite = null)
     {
         UpdateText(descriptionString);
         if (iconSprite != null) UpdateIcon(iconSprite);
     }
-    private void UpdateText(string str)
+    private void UpdateText(Func<string> str)
     {
-        descriptionText.text = str;
+        descriptionText.text = str();
     }
     private void UpdateIcon(Sprite spr)
     {
