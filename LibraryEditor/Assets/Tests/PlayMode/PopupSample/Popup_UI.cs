@@ -11,9 +11,9 @@ using IdleLibrary.UI;
 
 public class Popup_UI : MonoBehaviour
 {
-    public Image windowImage;
-    public Image iconImage;
-    public TextMeshProUGUI descriptionText;
+    [SerializeField] private Image windowImage;
+    [SerializeField] private Image iconImage;
+    [SerializeField] private TextMeshProUGUI descriptionText;
     [NonSerialized] public LocationKind locationKind;
     private RectTransform thisRect;
     public void SwitchShowAndHide()
@@ -30,8 +30,9 @@ public class Popup_UI : MonoBehaviour
     {
         setFalse(gameObject);
     }
-    public void UpdateUI(Func<string> descriptionString, Sprite iconSprite = null)
+    public void UpdateUI(LocationKind locationKind, Func<string> descriptionString, Sprite iconSprite = null)
     {
+        this.locationKind = locationKind;
         UpdateText(descriptionString);
         if (iconSprite != null) UpdateIcon(iconSprite);
     }
@@ -60,7 +61,6 @@ public class Popup_UI : MonoBehaviour
     {
         if (gameObject.activeSelf) SetWindowLocation();
     }
-
     private void SetWindowLocation()
     {
         switch (locationKind)

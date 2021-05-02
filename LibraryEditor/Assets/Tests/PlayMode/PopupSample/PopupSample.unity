@@ -453,6 +453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWithIcon: 0
+  locationKind: 1
   popup_ui: {fileID: 1439550923}
 --- !u!114 &293562228
 MonoBehaviour:
@@ -589,6 +590,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWithIcon: 0
+  locationKind: 1
   popup_ui: {fileID: 1439550923}
 --- !u!114 &464276382
 MonoBehaviour:
@@ -1360,6 +1362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWithIcon: 1
+  locationKind: 0
   popup_ui: {fileID: 124898624}
 --- !u!1 &1131122633
 GameObject:
@@ -1801,6 +1804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWithIcon: 1
+  locationKind: 1
   popup_ui: {fileID: 124898624}
 --- !u!1 &1186644147
 GameObject:
@@ -1936,6 +1940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWithIcon: 1
+  locationKind: 1
   popup_ui: {fileID: 124898624}
 --- !u!1 &1193235206
 GameObject:
@@ -2071,6 +2076,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWithIcon: 1
+  locationKind: 0
   popup_ui: {fileID: 124898624}
 --- !u!1 &1279007363
 GameObject:
@@ -2206,6 +2212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWithIcon: 1
+  locationKind: 0
   popup_ui: {fileID: 124898624}
 --- !u!1 &1336014296
 GameObject:
@@ -2260,6 +2267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWithIcon: 0
+  locationKind: 1
   popup_ui: {fileID: 1439550923}
 --- !u!114 &1336014299
 MonoBehaviour:
@@ -3041,6 +3049,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWithIcon: 0
+  locationKind: 0
   popup_ui: {fileID: 1439550923}
 --- !u!114 &1697803387
 MonoBehaviour:
@@ -3273,6 +3282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWithIcon: 0
+  locationKind: 0
   popup_ui: {fileID: 1439550923}
 --- !u!114 &1864383378
 MonoBehaviour:
@@ -3557,6 +3567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWithIcon: 0
+  locationKind: 0
   popup_ui: {fileID: 1439550923}
 --- !u!1 &2049881809
 GameObject:
@@ -3909,4 +3920,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWithIcon: 1
+  locationKind: 1
   popup_ui: {fileID: 124898624}

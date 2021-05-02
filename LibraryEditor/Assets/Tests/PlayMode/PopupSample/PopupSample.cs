@@ -14,6 +14,7 @@ using IdleLibrary.UI;
 public class PopupSample : MonoBehaviour
 {
     [SerializeField] private bool isWithIcon;
+    [SerializeField] private LocationKind locationKind;
     [SerializeField] private Popup_UI popup_ui;
     private bool isOver;
 
@@ -23,21 +24,13 @@ public class PopupSample : MonoBehaviour
 
         //Popup_UIを使った例
         Sprite iconSprite = isWithIcon ? gameObject.GetComponent<Image>().sprite : null;
-        SetUI(gameObject, popup_ui, ShowWay.Hover, Description, iconSprite);
+        SetUI(gameObject, popup_ui, locationKind, Description, iconSprite);
     }
-    void SetUI(GameObject targetObject, Popup_UI popup_ui, ShowWay showWay, Func<string> description, Sprite iconSprite = null)
+    void SetUI(GameObject targetObject, Popup_UI popup_ui, LocationKind locationKind, Func<string> description, Sprite iconSprite = null)
     {
         var eventTrigger = targetObject.AddComponent<ObservableEventTrigger>();
-        switch (showWay)
-        {
-            case ShowWay.Hover:
-                eventTrigger.OnPointerEnterAsObservable().Subscribe(data => { isOver = true; popup_ui.UpdateUI(description, iconSprite); });
-                eventTrigger.OnPointerExitAsObservable().Subscribe(data => { isOver = false; });
-                break;
-            case ShowWay.Click:
-                eventTrigger.OnPointerDownAsObservable().Subscribe(data => { isOver = !isOver; popup_ui.UpdateUI(description, iconSprite); });
-                break;
-        }
+        eventTrigger.OnPointerEnterAsObservable().Subscribe(data => { isOver = true; popup_ui.UpdateUI(locationKind, description, iconSprite); });
+        eventTrigger.OnPointerExitAsObservable().Subscribe(data => { isOver = false; });
     }
     bool ShowCondition()
     {

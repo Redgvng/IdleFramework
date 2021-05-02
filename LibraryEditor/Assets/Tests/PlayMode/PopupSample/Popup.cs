@@ -16,11 +16,6 @@ namespace IdleLibrary.UI
     {
 
     }
-    public enum ShowWay
-    {
-        Hover,
-        Click,
-    }
     public enum WindowKind
     {
         TextOnly,
