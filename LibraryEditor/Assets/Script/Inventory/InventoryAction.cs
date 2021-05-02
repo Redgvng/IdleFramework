@@ -39,9 +39,9 @@ namespace IdleLibrary.Inventory
         }
         public void Action(int index)
         {
-            if (inventory.inputItem.inputItem.id != -1)
+            if (inventory.input.inputItem.id != -1)
             {
-                inventory.SwapItem(index, inventory.inputItem);
+                inventory.SwapItem(index, inventory.input);
                 inputItem.ReleaseItem();
                 return;
             }
@@ -83,7 +83,7 @@ namespace IdleLibrary.Inventory
             if (inventory.GetItem(index).inputInfo.isLocked)
                 return;
 
-            if (inventory.inputItem.inputItem.id == -1)
+            if (inventory.input.inputItem.id == -1)
                 inventory.DeleteItem(index);
         }
     }
@@ -102,7 +102,7 @@ namespace IdleLibrary.Inventory
                 return;
             }
 
-            if (inventory.inputItem.inputItem.id == -1)
+            if (inventory.input.inputItem.id == -1)
             {
                 inventory.GetItem(index).inputInfo.isLocked = true;
             }

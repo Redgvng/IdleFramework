@@ -45,13 +45,13 @@ namespace IdleLibrary.Inventory
         public int expandNum { get => saveData.expandNum; set => saveData.expandNum = value; }
         public InventoryForSave saveData;
 
-        public InputItem inputItem;
+        public InputItem input;
         public bool isFull => items.All((item) => item.isSet);
         public readonly int initialInventoryNum = 10;
         int totalInventoryNum => expandNum + initialInventoryNum;
         //Saveすべき変数を注入する
         //使うアイテムのインスタンスを何でもいいので渡します。
-        public Inventory(InputItem inputItem, InventoryForSave saveData = null)
+        public Inventory(InputItem input, InventoryForSave saveData = null)
         {
             this.saveData = saveData == null ? new InventoryForSave() : saveData;
             var originalItem = new ITEM(-1);
@@ -62,7 +62,7 @@ namespace IdleLibrary.Inventory
                     items.Add(originalItem);
                 }
             }
-            this.inputItem = inputItem;
+            this.input = input;
         }
 
         //とりあえず何も考えずに...
@@ -162,9 +162,9 @@ namespace IdleLibrary.Inventory
         {
             if (GetItem(index).isSet)
             {
-                inputItem.inputItem = GetItem(index);
-                inputItem.inputItem.inputInfo.index = index;
-                inputItem.inputItem.inputInfo.inputInventory = this;
+                input.inputItem = GetItem(index);
+                input.inputItem.inputInfo.index = index;
+                input.inputItem.inputInfo.inputInventory = this;
             }
         }
 

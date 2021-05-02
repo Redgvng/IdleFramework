@@ -136,8 +136,8 @@ namespace Tests
 
             inventory.RegisterItem(1);
 
-            Assert.AreEqual(1, inventory.inputItem.inputItem.inputInfo.index);
-            Assert.IsTrue(inventory.inputItem.inputItem.inputInfo.inputInventory == inventory);
+            Assert.AreEqual(1, inventory.input.inputItem.inputInfo.index);
+            Assert.IsTrue(inventory.input.inputItem.inputInfo.inputInventory == inventory);
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace Tests
 
             inventory.RegisterItem(1);
 
-            Assert.AreEqual(-1, inventory.inputItem.inputItem.id);
+            Assert.AreEqual(-1, inventory.input.inputItem.id);
         }
 
         [Test]
