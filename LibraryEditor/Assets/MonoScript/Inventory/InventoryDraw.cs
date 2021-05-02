@@ -33,8 +33,8 @@ namespace IdleLibrary.Inventory
                     {
                         if (index >= info.items.Count) continue;
                         //アイテム画像
-                        info.items[index].transform.GetChild(0).GetComponent<Image>().sprite = item.isSet ? sprites[item.id] : lockedSprite;
-                        info.items[index].transform.GetChild(1).gameObject.SetActive(item.isLocked);
+                        info.items[index].transform.GetChild(0).GetComponent<Image>().sprite = item.inputInfo.isSet ? sprites[item.id] : lockedSprite;
+                        info.items[index].transform.GetChild(1).gameObject.SetActive(item.inputInfo.isLocked);
                         index++;
                     }
                 }
@@ -46,16 +46,14 @@ namespace IdleLibrary.Inventory
                     _itemIconWithMouse.GetComponent<Image>().raycastTarget = false;
                     _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().raycastTarget = false;
                 }
-                Debug.Log($"1 : {inventory_mono.inputItem == null}");
-                Debug.Log($"2 : {inventory_mono.inputItem.inputItem == null}");
-                if (inventory_mono.inputItem.inputItem.id == -1)
+                if (inventory_mono.inputItem.info.inputItem.id == -1)
                 {
                     _itemIconWithMouse.SetActive(false);
                 }
                 else
                 {
                     _itemIconWithMouse.SetActive(true);
-                    _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().sprite = sprites[inventory_mono.inputItem.inputItem.id];
+                    _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().sprite = sprites[inventory_mono.inputItem.info.inputItem.id];
                     _itemIconWithMouse.transform.position = Input.mousePosition;
                 }
             }

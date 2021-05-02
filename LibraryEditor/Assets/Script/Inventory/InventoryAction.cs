@@ -31,16 +31,18 @@ namespace IdleLibrary.Inventory
     public class SwapItem : IInventoryAction
     {
         private readonly Inventory inventory;
-        public SwapItem(Inventory inventory)
+        private readonly InputItem inputItem;
+        public SwapItem(Inventory inventory, InputItem inputItem)
         {
             this.inventory = inventory;
+            this.inputItem = inputItem;
         }
         public void Action(int index)
         {
             if (inventory.inputItem.inputItem.id != -1)
             {
                 inventory.SwapItem(index, inventory.inputItem);
-                inventory.inputItem.ReleaseItem();
+                inputItem.ReleaseItem();
                 return;
             }
             inventory.RegisterItem(index);
@@ -78,6 +80,9 @@ namespace IdleLibrary.Inventory
         }
         public void Action(int index)
         {
+            if (inventory.GetItem(index).inputInfo.isLocked)
+                return;
+
             if (inventory.inputItem.inputItem.id == -1)
                 inventory.DeleteItem(index);
         }
@@ -92,9 +97,14 @@ namespace IdleLibrary.Inventory
         }
         public void Action(int index)
         {
+            if (!inventory.GetItem(index).inputInfo.isSet)
+            {
+                return;
+            }
+
             if (inventory.inputItem.inputItem.id == -1)
             {
-                inventory.GetItem(index).isLocked = true;
+                inventory.GetItem(index).inputInfo.isLocked = true;
             }
         }
     }
@@ -108,7 +118,7 @@ namespace IdleLibrary.Inventory
         }
         public void Action(int index)
         {
-            if(input.inputItem.id != -1)
+            if(input.info.inputItem.id != -1)
             {
                 input.ReleaseItem();
             }

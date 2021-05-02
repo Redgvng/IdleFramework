@@ -26,6 +26,7 @@ namespace IdleLibrary.Inventory
 		public Transform canvas;
 		public List<GameObject> items = new List<GameObject>();
 		private GameObject itemPre;
+		private InputItem inputItem;
 		private List<(IInventoryAction action, KeyCode key)> _leftActions = new List<(IInventoryAction action, KeyCode key)>();
 		private List<(IInventoryAction action, KeyCode key)> _rightActions = new List<(IInventoryAction action, KeyCode key)>();
 		private IInventoryAction[] _holdAction = new IInventoryAction[3];
@@ -43,12 +44,13 @@ namespace IdleLibrary.Inventory
 			_holdAction[1] = cancelAction;
 			_holdAction[2] = releaseAction;
         }
-		public InventoryInfo(Inventory inventory, Transform canvas, List<GameObject> items, GameObject itemPre)
+		public InventoryInfo(Inventory inventory, Transform canvas, List<GameObject> items, GameObject itemPre, InputItem inputItem)
         {
 			this.inventory = inventory;
 			this.canvas = canvas;
 			this.items = items;
 			this.itemPre = itemPre;
+			this.inputItem = inputItem;
 			Initialize();
 
 		}
@@ -111,13 +113,13 @@ namespace IdleLibrary.Inventory
 				});
 			item.GetOrAddComponent<ObservableEventTrigger>().OnPointerEnterAsObservable()
 				.Subscribe(_ => {
-					inventory.inputItem.cursorId = items.IndexOf(item);
+					inputItem.cursorId = items.IndexOf(item);
 					});
 			item.GetOrAddComponent<ObservableEventTrigger>().OnBeginDragAsObservable()
 				.Subscribe(_ => _holdAction[0].Action(items.IndexOf(item)));
 			item.GetOrAddComponent<ObservableEventTrigger>().OnDropAsObservable()
 				.Subscribe(_ => {
-					if (inventory.inputItem.cursorId == -1) 
+					if (inputItem.cursorId == -1) 
 					{
 						_holdAction[1].Action(items.IndexOf(item));
                     }
@@ -162,8 +164,8 @@ namespace IdleLibrary.Inventory
 		// Use this for initialization
 		void Awake()
 		{
-			inventory = new InventoryInfo(new Inventory(inputItem, Main.main.S.inventory), canvas, items, item);
-			equipmentInventory = new InventoryInfo(new Inventory(inputItem, Main.main.S.equipmentInventory), EquipmentCanvas, EquippedItems, item);
+			inventory = new InventoryInfo(new Inventory(inputItem.info, Main.main.S.inventory), canvas, items, item, inputItem);
+			equipmentInventory = new InventoryInfo(new Inventory(inputItem.info, Main.main.S.equipmentInventory), EquipmentCanvas, EquippedItems, item, inputItem);
 
 			//UIと紐づける
 			UIInfoList.Add(inventory);
@@ -172,7 +174,7 @@ namespace IdleLibrary.Inventory
 			//アクションを設定
 			//inventory.AddLeftAction(new SwapItem(inventory.inventory));
 			//クリックじゃなくてドラッグアンドドロップにもできる
-			var swap = new SwapItem(inventory.inventory);
+			var swap = new SwapItem(inventory.inventory, inputItem);
 			inventory.RegisterHoldAction(swap, new Releaseitem(inputItem), swap);
 			inventory.AddLeftAction(new ShowInfoToTextField(inventory.inventory, inventoryItemInfoText));
 			inventory.AddLeftAction(new LockItem(inventory.inventory), KeyCode.L);
@@ -180,7 +182,7 @@ namespace IdleLibrary.Inventory
 			inventory.AddRightaction(new RevertItemToOtherInventory(inventory.inventory,equipmentInventory.inventory));
 
 			//equipmentInventory.AddLeftAction(new SwapItem(equipmentInventory.inventory));
-			var swap2 = new SwapItem(equipmentInventory.inventory);
+			var swap2 = new SwapItem(equipmentInventory.inventory, inputItem);
 			equipmentInventory.RegisterHoldAction(swap2, new Releaseitem(inputItem), swap2);
 			equipmentInventory.AddRightaction(new RevertItemToOtherInventory(equipmentInventory.inventory, inventory.inventory));
 
@@ -188,17 +190,6 @@ namespace IdleLibrary.Inventory
 			//canvas.gameObject.GetOrAddComponent<ObservableEventTrigger>().OnPointerExitAsObservable()
 			//	.Subscribe(_ => inputItem.cursorId = -1);
 
-			//PopUpの設定
-			var transform = canvas.GetComponent<RectTransform>();
-			//Expandしたら出てこなくなる問題は解決すべき。やはり初めからInstantiateが丸いか？
-			/*
-			for (int i = 0; i < inventory.items.Count; i++)
-            {
-				var count = i;
-				var pop = popUp.StartPopUp(inventory.items[i], transform);
-				pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.text.text = inventory.inventory.GetItem(count).Text());
-			}
-			*/
 
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
 				inventory.inventory.GenerateItemRandomly();
