@@ -9,6 +9,7 @@ using UniRx;
 using UniRx.Triggers;
 using static UsefulMethod;
 using static UsefulStatic;
+using static Popup_UI;
 using IdleLibrary.UI;
 
 public class PopupSample : MonoBehaviour

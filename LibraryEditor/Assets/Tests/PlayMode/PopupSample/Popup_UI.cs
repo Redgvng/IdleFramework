@@ -15,6 +15,11 @@ public class Popup_UI : MonoBehaviour
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [NonSerialized] public LocationKind locationKind;
+    public enum LocationKind
+    {
+        MouseFollow,//マウスに追従
+        Corner,//キャンバスの四隅
+    }
     private RectTransform thisRect;
     public void SwitchShowAndHide()
     {

@@ -16,18 +16,6 @@ namespace IdleLibrary.UI
     {
 
     }
-    public enum WindowKind
-    {
-        TextOnly,
-        IconAndText,
-    }
-
-    public enum LocationKind
-    {
-        MouseFollow,//マウスに追従
-        Corner,//キャンバスの四隅
-    }
-
     public class Popup : MonoBehaviour, IPopup
     {
         Func<bool> showCondition;
