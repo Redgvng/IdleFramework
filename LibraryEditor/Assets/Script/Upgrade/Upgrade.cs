@@ -12,7 +12,7 @@ namespace IdleLibrary.Upgrade {
         void MaxPay();
         void FixedAmountPay(int num);
     }
-
+    
     //外部からは買った時の処理と、買えるかどうかが必要(ITransactionでアップグレードも表現しよう。)
     //UpgradeからCostの情報が取れないのは明らかにおかしい
     public class Upgrade : IUpgrade
