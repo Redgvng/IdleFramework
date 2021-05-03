@@ -8,16 +8,14 @@ namespace IdleLibrary.Inventory
     [System.Serializable]
     public class InputInfo
     {
-        //どこに入っているか？
+        //indexだけは、itemの情報ではない？
         public int index;
-        //どのインベントリに入っているか？
         public Inventory inputInventory;
         public bool isLocked;
     }
     public class InputItem
     {
         public ITEM inputItem;
-        //public InputInfo info;
         public int cursorId;
         public void ReleaseItem()
         {

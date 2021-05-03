@@ -8,7 +8,7 @@ namespace IdleLibrary.Inventory
     [System.Serializable]
     public class ITEM : IText
     {
-        //InputInfoを持ちます。
+        //こいつがinput infoもつのは良くない。。。？
         public InputInfo inputInfo;
         public int id;
         public bool isSet => id >= 0;
