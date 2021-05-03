@@ -30,7 +30,7 @@ public class PopUp : MonoBehaviour
         var tmp_PopUp = Instantiate(this, parent);
         tmp_PopUp.parent_rect = parent;
         text = GetComponentInChildren<TextMeshProUGUI>();
-        var eventtrigger = hoverObject.AddComponent<ObservableEventTrigger>();
+        var eventtrigger = hoverObject.GetOrAddComponent<ObservableEventTrigger>();
         eventtrigger.OnPointerEnterAsObservable().Subscribe(data => { tmp_PopUp.gameObject.SetActive(true);});
         eventtrigger.OnPointerExitAsObservable().Subscribe(data => tmp_PopUp.gameObject.SetActive(false));
         tmp_PopUp.UpdateAsObservable().Where(_ => tmp_PopUp.gameObject.activeSelf).Subscribe(_ => {
