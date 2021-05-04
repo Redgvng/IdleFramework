@@ -6,6 +6,7 @@ using UniRx.Triggers;
 
 namespace IdleLibrary
 {
+    /*
     public class ClickProduce : IMultiplier
     {
         public Multiplier multiplier { get; }
@@ -23,4 +24,5 @@ namespace IdleLibrary
             targetResourse.IncrementNumber(multiplier.CaluculatedNumber(1), true);
         }
     }
+    */
 }

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using static UsefulMethod;
-using static UsefulStatic;
 using IdleLibrary;
+using static IdleLibrary.UsefulMethod;
 
 //‚±‚ê‚ÍExpedition‚ÌÀ‘•‚ÌÚ×‚ÉˆË‘¶‚µ‚È‚¢
 public class Expedition_UI : MonoBehaviour

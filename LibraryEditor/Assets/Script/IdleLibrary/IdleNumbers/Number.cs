@@ -36,9 +36,9 @@ namespace IdleLibrary
         }
 
         //本番用コンストラクタ
-        public NUMBER(NumbersName Name, IDataContainer<NUMBER> dataContainer, ISetItem<double> setNumber = null)
+        public NUMBER(IDataContainer<NUMBER> dataContainer, ISetItem<double> setNumber = null)
         {
-            dataContainer.SetDataByName(this, Name);  
+            //dataContainer.SetDataByName(this, Name);  
             multiplier = new Multiplier();
             this.setNumber = setNumber == null ? new NullSetItem<double>() : setNumber;
         }

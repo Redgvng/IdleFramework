@@ -40,11 +40,13 @@ namespace IdleLibrary
         {
             this.initialValue = initialValue;
         }
+        /*
         public Cal(double initialValue, CalsName Name)
         {
             this.initialValue = initialValue;
             DataContainer<Cal>.GetInstance().SetDataByName(this, Name);
         }
+        */
         public virtual double GetValue() => multiplier.CaluculatedNumber(initialValue);
     }
 

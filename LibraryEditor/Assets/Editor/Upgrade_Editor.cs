@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -63,8 +64,6 @@ public class Upgrade_Editor : Editor
             EditorGUILayout.EndVertical();
         }
 
-        //コストの計算方法を指定させます。
-        /*
         var costkind = serializedObject.FindProperty("costkind");
         costkind.enumValueIndex = EditorGUILayout.Popup(
             "コストの計算方法",
@@ -79,7 +78,6 @@ public class Upgrade_Editor : Editor
             linearInfo.arraySize = resourseNum.intValue;
             EditorGUILayout.PropertyField(linearInfo);
         }
-        */
 
         EditorGUILayout.Space();
 
@@ -133,4 +131,5 @@ public class Upgrade_Editor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
+*/
 

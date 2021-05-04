@@ -32,11 +32,13 @@ namespace IdleLibrary
             this.initialFunc = initialFunc;
             this.level = level;
         }
+        /*
         public CalDL(Func<long, double> initialFunc, ILevel level, CalsName Name) : base(0, Name)
         {
             this.initialFunc = initialFunc;
             this.level = level;
         }
+        */
         public override double GetValue() => multiplier.CaluculatedNumber(initialFunc(level.level));
         public double GetValue(long level) => multiplier.CaluculatedNumber(initialFunc(level));
     }
@@ -84,7 +86,7 @@ namespace IdleLibrary
             this.initialValue = initialValue;
             this.steep = steep;
             this.level = level;
-            cost = new CalDL((level) => initialValue + level * steep, level);
+            cost = new CalDL((l) => initialValue + l * steep, level);
         }
 
         public long LevelAtMaxCost(NUMBER number)
@@ -145,7 +147,7 @@ namespace IdleLibrary
             this.initialValue = initialValue;
             this.factor = factor;
             this.level = level;
-            cost = new CalDL((level) => Math.Pow(factor, level), level);
+            cost = new CalDL((l) => Math.Pow(factor, l), level);
         }
         public long LevelAtMaxCost(NUMBER number)
         {

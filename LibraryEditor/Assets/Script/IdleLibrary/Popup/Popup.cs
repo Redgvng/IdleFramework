@@ -7,9 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
-using static UsefulMethod;
-using static UsefulStatic;
-
+using static IdleLibrary.UsefulMethod;
 namespace IdleLibrary.UI
 {
     public interface IPopup

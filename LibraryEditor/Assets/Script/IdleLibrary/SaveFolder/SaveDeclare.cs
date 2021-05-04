@@ -4,9 +4,9 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using static UsefulMethod;
-using static UsefulStatic;
-using static Main;
+using static IdleLibrary.UsefulMethod;
+using static IdleLibrary.UsefulStatic;
+using static IdleLibrary.Main;
 using IdleLibrary;
 
 /// <summary>
@@ -15,22 +15,28 @@ using IdleLibrary;
 /// のようにして初期化する。アップデートなどで途中から変更することも可能。
 /// 初期化はAwake()のAwakeBASE();のあとに書くことを推奨。
 /// </summary>
-public class SaveDeclare :MonoBehaviour {
 
-	// Use this for initialization
-	void Awake () {
-		//NUMBER
-		InitializeArray(ref main.S.numbers, Enum.GetValues(typeof(NumbersName)).Length);
+namespace IdleLibrary
+{
+	public class SaveDeclare : MonoBehaviour
+	{
 
-	}
+		// Use this for initialization
+		void Awake()
+		{
+			//NUMBER
+			
+		}
 
-	// Use this for initialization
-	void Start () {
+		// Use this for initialization
+		void Start()
+		{
 
-	}
+		}
 
-	void Update()
-    {
-		
+		void Update()
+		{
+
+		}
 	}
 }

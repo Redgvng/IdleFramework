@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using static UsefulMethod;
-using static UsefulStatic;
 using IdleLibrary;
 using System.Linq;
 

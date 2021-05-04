@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
 using static UsefulMethod;
+
 namespace IdleLibrary.Upgrade {
     public enum EffectKind
     {
@@ -157,3 +159,4 @@ namespace IdleLibrary.Upgrade {
 
     }
 }
+*/

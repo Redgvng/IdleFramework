@@ -7,8 +7,8 @@ namespace IdleLibrary
 {
     public interface IDataContainer<T>
     {
-        public T GetDataByName(Enum name);
-        public void SetDataByName(T instance, Enum name);
+        T GetDataByName(Enum name);
+        void SetDataByName(T instance, Enum name);
     }
     //Singleton
     public class DataContainer<T> : IDataContainer<T>

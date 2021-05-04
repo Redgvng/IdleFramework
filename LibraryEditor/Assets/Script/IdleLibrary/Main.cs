@@ -34,7 +34,7 @@ namespace IdleLibrary
 
 
         public AudioSource SoundEffectSource;
-        public Sound sound;
+        //public Sound sound;
         public GameObject plainPopText;
 
 

@@ -324,30 +324,6 @@ namespace IdleLibrary
             targetUI.GetComponent<RectTransform>().localScale = Vector3.zero;
         }
 
-        //ポジティブな音
-        public static void playPositiveSound()
-        {
-            GameObject tempObject = GameObject.FindWithTag("mainCtrl");
-            Main tempMain = tempObject.GetComponent<Main>();
-            tempMain.SoundEffectSource.PlayOneShot(tempMain.sound.positiveClip);
-        }
-
-        //ネガティブな音
-        public static void playNegativeSound()
-        {
-            GameObject tempObject = GameObject.FindWithTag("mainCtrl");
-            Main tempMain = tempObject.GetComponent<Main>();
-            tempMain.SoundEffectSource.PlayOneShot(tempMain.sound.negativeClip);
-        }
-
-        //なんでもいい音
-        public static void playClip(AudioClip Clip)
-        {
-            GameObject tempObject = GameObject.FindWithTag("mainCtrl");
-            Main tempMain = tempObject.GetComponent<Main>();
-            tempMain.SoundEffectSource.PlayOneShot(Clip);
-        }
-
         //
         public static Main GetMain()
         {

@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
-using static Main;
-using static UsefulMethod;
+using static IdleLibrary.Main;
+using static IdleLibrary.UsefulMethod;
 using Cysharp.Threading.Tasks;
 
 

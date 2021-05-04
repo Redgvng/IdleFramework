@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using static UsefulMethod;
+using static IdleLibrary.UsefulMethod;
 using IdleLibrary.UI;
 
 public class Popup_UI : MonoBehaviour

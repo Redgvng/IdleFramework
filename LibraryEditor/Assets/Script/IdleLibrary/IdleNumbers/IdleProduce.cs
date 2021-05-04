@@ -7,6 +7,7 @@ using System;
 
 namespace IdleLibrary
 {
+    /*
     public class IdleProduce : IMultiplier
     {
         public Multiplier multiplier { get; }
@@ -23,4 +24,5 @@ namespace IdleLibrary
             targetResourse.IncrementNumber(multiplier.CaluculatedNumber(0), true);
         }
     }
+    */
 }

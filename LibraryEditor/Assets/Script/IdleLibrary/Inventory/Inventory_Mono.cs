@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using static UsefulMethod;
-using static Main;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
 using Cysharp.Threading.Tasks;
 using System.Linq;
 
-
-public partial class Save
+namespace IdleLibrary
 {
-	public IdleLibrary.Inventory.InventoryForSave inventory, equipmentInventory;
+	public partial class Save
+	{
+		public Inventory.InventoryForSave inventory, equipmentInventory;
+	}
 }
-
-
 namespace IdleLibrary.Inventory
 {
+
 	public class InventoryInfo
     {
 		public Inventory inventory;
@@ -133,6 +132,7 @@ namespace IdleLibrary.Inventory
         }
 		
     }
+
 	public class Inventory_Mono : Subject
 	{
 		[SerializeField]
