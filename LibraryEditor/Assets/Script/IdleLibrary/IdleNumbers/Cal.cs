@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using static UsefulMethod;
+using static IdleLibrary.UsefulMethod;
 using TMPro;
 
 namespace IdleLibrary
