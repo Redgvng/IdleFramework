@@ -47,13 +47,13 @@ namespace IdleLibrary.Upgrade {
         [SerializeField]
         EffectKind effectKind;
 
-        //ウインドウ
-        [SerializeField]
-        PopUp popUp;
-        [SerializeField]
-        string windowText;
-        [SerializeField]
-        RectTransform canvas;
+        ////ウインドウ
+        //[SerializeField]
+        //PopUp popUp;
+        //[SerializeField]
+        //string windowText;
+        //[SerializeField]
+        //RectTransform canvas;
 
         //private variable
         IMaxableCost[] cost;
@@ -128,20 +128,20 @@ namespace IdleLibrary.Upgrade {
                     break;
             }
 
-            //ウインドウの設定
-            var pop = popUp.StartPopUp(this.gameObject, canvas);
-            string Text()
-            {
-                var text = $"- Current Level : {level}\n\n";
-                text += "<cost>\n";
-                for (int i = 0; i < resourceNum; i++)
-                {
-                    text += $"{costInfo[i].resource} : {cost[i].Cost} " +
-                        $"(Currently you have {tDigit(DataContainer<NUMBER>.GetInstance().GetDataByName(costInfo[i].resource).Number)})";
-                }
-                return text;
-            }
-            pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.text.text = Text());
+            ////ウインドウの設定
+            //var pop = popUp.StartPopUp(this.gameObject, canvas);
+            //string Text()
+            //{
+            //    var text = $"- Current Level : {level}\n\n";
+            //    text += "<cost>\n";
+            //    for (int i = 0; i < resourceNum; i++)
+            //    {
+            //        text += $"{costInfo[i].resource} : {cost[i].Cost} " +
+            //            $"(Currently you have {tDigit(DataContainer<NUMBER>.GetInstance().GetDataByName(costInfo[i].resource).Number)})";
+            //    }
+            //    return text;
+            //}
+            //pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.text.text = Text());
         }
 
         //倍率によって変えるやつ
