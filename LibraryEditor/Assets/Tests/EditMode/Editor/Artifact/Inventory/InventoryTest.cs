@@ -28,7 +28,6 @@ namespace Tests
         {
             var inventory = new Inventory(input);
             inventory.ExpandInventory();
-            Debug.Log(inventory.GetInventoryLength());
 
             inventory.SetItem(new Item(0), 10);
 

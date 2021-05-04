@@ -1,32 +1,35 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-public interface IObserver
+namespace IdleLibrary
 {
-    void _Update(ISubject subject);
-}
-public interface ISubject
-{
-    void Attach(IObserver observer);
-    void Detach(IObserver observer);
-    void Notify();
-}
-public abstract class Subject : MonoBehaviour, ISubject
-{
-    public void Attach(IObserver observer)
+    public interface IObserver
     {
-        observers.Add(observer);
+        void _Update(ISubject subject);
     }
-    public void Detach(IObserver observer)
+    public interface ISubject
     {
-        observers.Remove(observer);
+        void Attach(IObserver observer);
+        void Detach(IObserver observer);
+        void Notify();
     }
-    public void Notify()
+    public abstract class Subject : MonoBehaviour, ISubject
     {
-        if (observers.Count == 0) return;
-        foreach (var item in observers)
+        public void Attach(IObserver observer)
         {
-            item._Update(this);
+            observers.Add(observer);
         }
+        public void Detach(IObserver observer)
+        {
+            observers.Remove(observer);
+        }
+        public void Notify()
+        {
+            if (observers.Count == 0) return;
+            foreach (var item in observers)
+            {
+                item._Update(this);
+            }
+        }
+        protected List<IObserver> observers = new List<IObserver>();
     }
-    protected List<IObserver> observers = new List<IObserver>();
 }

@@ -54,7 +54,6 @@ public class ExpeditionTest
         expedition.IncreaseCurrentTime(1 * 3600);
         expedition.Claim();
 
-        Debug.Log(reward.Text());
         Assert.AreEqual(100, gold.Number);
         Assert.AreEqual(50, stone.Number);
     }
