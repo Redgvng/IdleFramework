@@ -1,87 +1,135 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace IdleLibrary.Upgrade {
 
-    //外部からは買った時の処理と、買えるかどうかが必要(ITransactionでアップグレードも表現しよう。)
-    public class Upgrade : ITransaction
+    public interface IUpgrade
     {
-        ILevel level;
-        ITransaction transaction;
-        public Upgrade(ILevel level, ITransaction transaction)
+        bool CanBuy();
+        void Pay();
+        void MaxPay();
+        void FixedAmountPay(int num);
+    }
+
+    //外部からは買った時の処理と、買えるかどうかが必要(ITransactionでアップグレードも表現しよう。)
+    //UpgradeからCostの情報が取れないのは明らかにおかしい
+    public class Upgrade : IUpgrade
+    {
+        private ILevel level;
+        public NUMBER number;
+        public IMaxableCost cost;
+        public Upgrade(ILevel level, NUMBER number, IMaxableCost cost)
         {
             this.level = level;
-            this.transaction = transaction;
+            this.number = number;
+            this.cost = cost;
         }
 
         public bool CanBuy()
         {
-            return transaction.CanBuy();
+            return number.Number >= cost.Cost;
         }
 
         public void Pay()
         {
-            if (!transaction.CanBuy())
+            if (!CanBuy())
                 return;
-            transaction.Pay();
+            number.DecrementNumber(cost.Cost);
             level.level++;
         }
-    }
-    public class MaxUpgrade : ITransaction
-    {
-        ITransaction upgrade;
-        public MaxUpgrade(ITransaction upgrade)
-        {
-            this.upgrade = upgrade;
-        }
 
-        public bool CanBuy()
+        public void MaxPay()
         {
-            return upgrade.CanBuy();
-        }
-
-        public void Pay()
-        {
-            if (!upgrade.CanBuy())
+            if (!CanBuy())
                 return;
 
-            //買えなくなるまで買います。 
-            int count = 0;
-            while(upgrade.CanBuy() && count <= 10000)
+            long tempLevel = cost.LevelAtMaxCost(number);
+            number.DecrementNumber(cost.MaxCost(number));
+            level.level = tempLevel;
+        }
+
+        public void FixedAmountPay(int fixedNum)
+        {
+            if (!CanBuy())
+                return;
+
+            if(cost.LevelAtMaxCost(number) > fixedNum)
             {
-                count++;
-                upgrade.Pay();
+                number.DecrementNumber(cost.FixedNumCost(number,fixedNum));
+                level.level += fixedNum;
+            }
+            else
+            {
+                long tempLevel = cost.LevelAtMaxCost(number);
+                number.DecrementNumber(cost.MaxCost(number));
+                level.level = tempLevel;
             }
         }
     }
 
-    public class FixedNumberUpgrade : ITransaction
+    //Upgradeと同じようにふるまってほしい
+    public class MultipleUpgrade : IUpgrade
     {
-        private ITransaction upgrade;
-        private readonly int fixedNum = 1;
-        public FixedNumberUpgrade(ITransaction upgrade, int fixedNum)
+        private readonly IEnumerable<(NUMBER number, IMaxableCost cost)> info;
+        private readonly ILevel level;
+        public MultipleUpgrade(ILevel level, params (NUMBER number, IMaxableCost cost)[] info)
         {
-            this.upgrade = upgrade;
-            this.fixedNum = fixedNum;
+            this.info = info;
+            this.level = level;
         }
-
         public bool CanBuy()
         {
-            return upgrade.CanBuy();
+            return info.All((info) => info.number.Number >= info.cost.Cost);
         }
 
         public void Pay()
         {
-            if (!upgrade.CanBuy())
+            if (!CanBuy())
                 return;
 
-            //買えなくなるまで買います。
-            int count = 0;
-            while (upgrade.CanBuy() && count < fixedNum)
+            foreach (var item in info)
             {
-                count++;
-                upgrade.Pay();
+                item.number.DecrementNumber(item.cost.Cost);
+            }
+            level.level++;
+        }
+
+        public void MaxPay()
+        {
+            if (!CanBuy())
+                return;
+
+            var minLevel = info.Select((x) => x.cost.LevelAtMaxCost(x.number)).Min();
+            foreach (var item in info)
+            {
+                item.number.DecrementNumber(item.cost.MaxCost(item.number));
+            }
+            level.level = minLevel;
+        }
+
+        public void FixedAmountPay(int fixedNum)
+        {
+            if (!CanBuy())
+                return;
+
+            var minLevel = info.Select((x) => x.cost.LevelAtMaxCost(x.number)).Min();
+            if (minLevel > fixedNum)
+            {
+                foreach (var item in info)
+                {
+                    item.number.DecrementNumber(item.cost.FixedNumCost(item.number, fixedNum));
+                }
+                level.level += fixedNum;
+            }
+            else
+            {
+                foreach (var item in info)
+                {
+                    item.number.DecrementNumber(item.cost.MaxCost(item.number));
+                }
+                level.level = minLevel;
             }
         }
     }

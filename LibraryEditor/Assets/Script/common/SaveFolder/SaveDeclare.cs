@@ -21,9 +21,6 @@ public class SaveDeclare :MonoBehaviour {
 	void Awake () {
 		//NUMBER
 		InitializeArray(ref main.S.numbers, Enum.GetValues(typeof(NumbersName)).Length);
-		//Inventory
-		InitializeArray(ref main.S.items, 100);
-		InitializeArray(ref main.S.equippedItems, 100);
 
 	}
 

@@ -10,43 +10,52 @@ namespace IdleLibrary.Inventory
     public class InventoryDraw : MonoBehaviour, IObserver
     {
         public Sprite[] sprites;
-        public Sprite defaultSprite;
+        //public Sprite defaultSprite;
         public Sprite lockedSprite;
+        public Transform MouseImageCanvas;
+        GameObject _itemIconWithMouse;
 
         void Awake()
         {
-            GameObject.FindObjectsOfType<Subject>().ToList().ForEach(x => x.Attach(this));
+            GameObject.FindObjectsOfType<Subject>().ToList().ForEach(x => x.Attach(this)); 
         }
 
         //itemの状態を更新します。
         public void _Update(ISubject subject)
         {
-            if (subject is Item_Mono)
-            {
-                Debug.Log(subject);
-                var item = subject as Item_Mono;
-                item.gameObject.GetComponent<Image>().sprite = sprites[item.GetItem().id];
-            }
             if(subject is Inventory_Mono)
             {
-                var item = subject as Inventory_Mono;
-                var indexedItem = item.items.ToList().Select((c, i) => new { Content = c, index = i });
-                indexedItem.ToList().ForEach(a =>
+                var inventory_mono = subject as Inventory_Mono;
+                foreach(var info in inventory_mono.UIInfoList)
                 {
-                    if (item.SlotNum.GetValue() <= a.index)
+                    int index = 0;
+                    foreach (var item in info.inventory.GetItems())
                     {
-                        a.Content.transform.GetChild(0).GetComponent<Image>().sprite = lockedSprite;
-                        a.Content.gameObject.GetComponent<Image>().raycastTarget = false;
-                        a.Content.transform.GetChild(0).GetComponent<Image>().raycastTarget = false;
-                        a.Content.transform.GetChild(0).gameObject.SetActive(true);
+                        if (index >= info.items.Count) continue;
+                        //アイテム画像
+                        info.items[index].transform.GetChild(0).GetComponent<Image>().sprite = item.isSet ? sprites[item.id] : lockedSprite;
+                        info.items[index].transform.GetChild(1).gameObject.SetActive(item.inputInfo.isLocked);
+                        index++;
                     }
-                    else
-                    {
-                        a.Content.gameObject.GetComponent<Image>().raycastTarget = true;
-                        a.Content.transform.GetChild(0).GetComponent<Image>().raycastTarget = true;
-                        a.Content.transform.GetChild(0).gameObject.SetActive(false);
-                    }
-                });
+                }
+
+                //マウスにくっつくウインドウの設定(後々柔軟に変えられるようにしたい)
+                if(_itemIconWithMouse == null)
+                {
+                    _itemIconWithMouse = Instantiate(inventory_mono.item, MouseImageCanvas);
+                    _itemIconWithMouse.GetComponent<Image>().raycastTarget = false;
+                    _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().raycastTarget = false;
+                }
+                if (inventory_mono.inputItem.inputItem.id == -1)
+                {
+                    _itemIconWithMouse.SetActive(false);
+                }
+                else
+                {
+                    _itemIconWithMouse.SetActive(true);
+                    _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().sprite = sprites[inventory_mono.inputItem.inputItem.id];
+                    _itemIconWithMouse.transform.position = Input.mousePosition;
+                }
             }
         }
     }

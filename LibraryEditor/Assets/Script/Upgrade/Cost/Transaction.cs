@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-namespace IdleLibrary.Upgrade{
+namespace IdleLibrary{
     
-    //levelをここから消そう。
     public interface ITransaction
     {
         bool CanBuy();
@@ -16,11 +15,11 @@ namespace IdleLibrary.Upgrade{
         public NUMBER resource { get; }
         public bool CanBuy()
         {
-            return resource.Number >= cost.Cost.GetValue();
+            return resource.Number >= cost.Cost;
         }
         public void Pay()
         {
-            resource.DecrementNumber(cost.Cost.GetValue());
+            resource.DecrementNumber(cost.Cost);
         }
         public Transaction(NUMBER resource, ICost cost)
         {
@@ -69,4 +68,5 @@ namespace IdleLibrary.Upgrade{
             return;
         }
     }
+
 }

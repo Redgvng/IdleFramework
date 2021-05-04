@@ -11,100 +11,233 @@ namespace Tests
 {
     public class InventoryTest
     {
+        InputItem input = new InputItem();
         [Test]
-        public void CanCreateItemFromInventoryByOrder()
+        public void CanSetItem()
         {
-            var creates  = Enumerable.Range(0, 100).Select(_ => new CreateItem<ItemTest>(new NullSetItem<ItemTest>())).ToArray();
-            var create = new CreateItemByOrder<ItemTest>(creates, new Cal(10));
-            creates[0].SetItem(new ItemTest(1));
-            creates[1].SetItem(new ItemTest(1));
-            create.SetItem(new ItemTest(2));
-            Assert.IsTrue(creates[2] != null);
-            Assert.IsFalse(creates[2].CanSet);
-            Assert.IsTrue(creates[3].GetItem().id != 2);
-        }
-        [Test]
-        public void CanCreateItemFromInventoryByOrderWithSaveArray()
-        {
-            var saveArray = new Item[100];
-            var creates = Enumerable.Range(0, 100).Select(id => new CreateItem<Item>(new SetItemToSave<Item>(id,saveArray))).ToArray();
-            var create = new CreateItemByOrder<Item>(creates, new Cal(10));
-            creates[0].SetItem(new Item(1));
-            creates[1].SetItem(new Item(1));
-            create.SetItem(new Item(2));
-            Assert.AreEqual(1, saveArray[0].id);
-            Assert.AreEqual(1, saveArray[1].id);
-            Assert.AreEqual(2, saveArray[2].id);
-        }
-        [Test]
-        public void CanSwapItem()
-        {
-            var items = Enumerable.Range(0, 100).Select(id => new NullSetItem<ItemTest>()).ToArray();
-            items[3].SetItem(new ItemTest(1));
-            items[5].SetItem(new ItemTest(2));
-            //3と5を入れ替えます。
-            var swap = new SwapItem<ItemTest>(items[3]);
-            swap.Stack(items[5]);
-            Assert.AreEqual(1, items[5].GetItem().id);
-            Assert.AreEqual(2, items[3].GetItem().id);
-        }
-        class dummy : IStackItem<ItemTest>, ISetItem<ItemTest>
-        {
-            IStackItem<ItemTest> stack;
-            ISetItem<ItemTest> set;
-            public bool CanSet => true;
-            public dummy(IStackItem<ItemTest> stack , ISetItem<ItemTest> set)
-            {
-                this.stack = stack;
-                this.set = set;
-            }
-            public void Stack(ISetItem<ItemTest> item)
-            {
-                stack.Stack(item);
-            }
+            var inventory = new Inventory(input);
 
-            public void SetItem(ItemTest item)
-            {
-                set.SetItem(item);
-            }
+            inventory.SetItem(new Item(3), 2);
 
-            public ItemTest GetItem()
-            {
-                return set.GetItem();
-            }
+            Assert.IsTrue(inventory.GetItem(2).id != -1);
+            Assert.AreEqual(inventory.GetItem(2).id ,3);
         }
-        [Test]
-        public void CanSwapItemFromInventory()
-        {
-            var set1 = new NullSetItem<ItemTest>();
-            var set2 = new NullSetItem<ItemTest>();
-            //var swap = new SwapItemFromInventory<ItemTest>();
-            var item1 = new dummy(new SwapItem<ItemTest>(set1), set1);
-            var item2 = new dummy(new SwapItem<ItemTest>(set2), set2);
-            item1.SetItem(new ItemTest(1));
-            item2.SetItem(new ItemTest(2));
-            //swap.Click(item1);
-            //これで1が登録された。
-            //swap.Click(item2);
-            //1と2がひっくり返るはず
-            Assert.AreEqual(1, item2.GetItem().id);
-            Assert.AreEqual(2, item1.GetItem().id);
-        }
-        [Test]
-        public void CanSwapItemWithNullItem()
-        {
-            var items = Enumerable.Range(0, 100).Select(id => new NullSetItem<ItemTest>()).ToArray();
-            items[3].SetItem(new ItemTest(1));
-            //3と5を入れ替えます。ただし、5は何も入ってません。
-            var swap = new SwapItem<ItemTest>(items[3]);
-            swap.Stack(items[5]);
-            Assert.AreEqual(1, items[5].GetItem().id);
-            Assert.AreEqual(0, items[3].GetItem().id);
-        }
-        [Test]
-        public void ShouldNotDuplicateWhenSwap()
-        {
 
+        [Test]
+        public void CanSetItemAfterExpandInventory()
+        {
+            var inventory = new Inventory(input);
+            inventory.ExpandInventory();
+            Debug.Log(inventory.GetInventoryLength());
+
+            inventory.SetItem(new Item(0), 10);
+
+            Assert.AreEqual(inventory.GetItem(10).id, 0);
         }
+
+        [Test]
+        public void CanSetItemByOrder()
+        {
+            var inventory = new Inventory(input);
+            var item = new Item(1);
+
+            inventory.SetItem(item, 0);
+            inventory.SetItem(item, 3);
+            inventory.SetItem(item, 4);
+            inventory.SetItem(item, 6);
+            inventory.SetItemByOrder(item);
+            inventory.SetItemByOrder(item);
+            inventory.SetItemByOrder(item);
+            inventory.SetItemByOrder(item);
+
+            Assert.AreEqual(inventory.GetItem(1).id, 1);
+            Assert.AreEqual(inventory.GetItem(2).id, 1);
+            Assert.AreEqual(inventory.GetItem(5).id, 1);
+            Assert.AreEqual(inventory.GetItem(7).id, 1);
+        }
+
+        [Test]
+        public void CanSwapItemToEmpty()
+        {
+            var inventory = new Inventory(input);
+            var item = new Item(3);
+            inventory.SetItem(item, 2);
+
+            inventory.SwapItem(1, 2);
+
+            Assert.AreEqual(3,inventory.GetItem(1).id);
+            Assert.AreEqual(-1,inventory.GetItem(2).id);
+        }
+        [Test]
+        public void CanSwapItemAfterExpand()
+        {
+            var Input = new InputItem();
+            var inventory = new Inventory(Input);
+            var item = new Item(3);
+            inventory.ExpandInventory();
+            inventory.SetItem(item, 2);
+            var swap = new SwapItem(inventory,Input);
+
+            inventory.RegisterItem(2);
+            swap.Action(10);
+
+            Assert.AreEqual(-1,inventory.GetItem(2).id);
+            Assert.AreEqual(3,inventory.GetItem(10).id);
+        }
+        [Test]
+        public void CanSwapItemToNotEmpty()
+        {
+            var inventory = new Inventory(input);
+            var item = new Item(3);
+            var item2 = new Item(1);
+            inventory.SetItem(item, 2);
+            inventory.SetItem(item2, 1);
+
+            inventory.SwapItem(1, 2);
+
+            Assert.AreEqual(inventory.GetItem(1).id, 3);
+            Assert.AreEqual(inventory.GetItem(2).id, 1);
+        }
+        [Test]
+        public void CanSwapItemFromInputItem()
+        {
+            var Input = new InputItem();
+            var inventory = new Inventory(Input);
+            var item = new Item(3);
+            var item2 = new Item(1);
+            inventory.SetItem(item, 2);
+            inventory.SetItem(item2, 1);
+            inventory.RegisterItem(2);
+
+            inventory.SwapItem(1, Input);
+
+            Assert.AreEqual(inventory.GetItem(1).id, 3);
+            Assert.AreEqual(inventory.GetItem(2).id, 1);
+        }
+
+        [Test]
+        public void CanDeleteItem()
+        {
+            var inventory = new Inventory(input);
+            var item = new Item(3);
+            inventory.SetItem(item, 1);
+
+            inventory.DeleteItem(1);
+
+            Assert.IsFalse(inventory.GetItem(1).isSet);
+        }
+
+        [Test]
+        public void CanRegisterItem()
+        {
+            var inventory = new Inventory(input);
+            var item = new Item(3);
+            inventory.SetItem(item, 1);
+
+            inventory.RegisterItem(1);
+
+            Assert.AreEqual(1, inventory.input.inputItem.inputInfo.index);
+            Assert.IsTrue(inventory.input.inputItem.inputInfo.inputInventory == inventory);
+        }
+
+        [Test]
+        public void CannotRegisterItemIfItemIsEmpty()
+        {
+            var inventory = new Inventory(input);
+            var item = new Item(3);
+
+            inventory.RegisterItem(1);
+
+            Assert.AreEqual(-1, inventory.input.inputItem.id);
+        }
+
+        [Test]
+        public void CanReleaseItem()
+        {
+            var Input = new InputItem();
+            var inventory = new Inventory(Input);
+            var item = new Item(3);
+            inventory.SetItem(item, 1);
+            inventory.RegisterItem(1);
+            Assert.AreEqual(3, Input.inputItem.id);
+
+            Input.ReleaseItem();
+
+            Assert.AreEqual(-1, Input.inputItem.id);
+        }
+
+        [Test]
+        public void CanSetItemFromOtherInventory()
+        {
+            var Input = new InputItem();
+            var inventory = new Inventory(Input);
+            var inventory2 = new Inventory(Input);
+            inventory2.SetItemByOrder(new Item(5));
+            inventory.SetItemByOrder(new Item(3));
+            var swap = new SwapItem(inventory,Input);
+
+            inventory2.RegisterItem(0);
+            swap.Action(0);
+
+            Assert.AreEqual(3,inventory2.GetItem(0).id);
+            Assert.AreEqual(5,inventory.GetItem(0).id);
+        }
+
+        [Test]
+        public void CannotSwapItemWithinSameInventory()
+        {
+            var Input = new InputItem();
+            var inventory = new Inventory(Input);
+            inventory.SetItemByOrder(new Item(3));
+            inventory.SetItemByOrder(new Item(4));
+            var swap = new SwapItem(inventory, Input);
+
+            inventory.RegisterItem(1);
+            swap.Action(0);
+
+            Assert.AreEqual(4,inventory.GetItem(0).id);
+            Assert.AreEqual(3, inventory.GetItem(1).id);
+        }
+
+        [Test]
+        public void CanRevertItemToOtherInventory()
+        {
+            var inventory = new Inventory(input);
+            var inventory2 = new Inventory(input);
+            inventory2.SetItemByOrder(new Item(1));
+            var revert = new RevertItemToOtherInventory(inventory2, inventory);
+
+            revert.Action(0);
+
+            Assert.AreEqual(-1, inventory2.GetItem(0).id);
+            Assert.AreEqual(1, inventory.GetItem(0).id);    
+        }
+
+        [Test]
+        public void CannotDeleteWhenItemIsLocked()
+        {
+            var inventory = new Inventory(input);
+            var item = new Item(0);
+            var lockItem = new LockItem(inventory);
+            inventory.SetItemByOrder(item);
+            var deleteItem = new DeleteItem(inventory);
+
+            lockItem.Action(0);
+            deleteItem.Action(0);
+
+            Assert.AreEqual(0, inventory.GetItem(0).id);
+        }
+
+        [Test]
+        public void CannotLockWithNullItem()
+        {
+            var inventory = new Inventory(input);
+            var lockItem = new LockItem(inventory);
+
+            lockItem.Action(0);
+
+            Assert.IsFalse(inventory.GetItem(0).inputInfo.isLocked);
+        }
+
     }
 }
