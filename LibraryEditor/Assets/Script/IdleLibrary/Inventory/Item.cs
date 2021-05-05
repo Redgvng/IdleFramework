@@ -8,13 +8,11 @@ namespace IdleLibrary.Inventory
     [System.Serializable]
     public class ITEM : IText
     {
-        //こいつがinput infoもつのは良くない。。。？
-        public InputInfo inputInfo;
         public int id;
         public bool isSet => id >= 0;
+        public bool isLocked;
         public ITEM(int id)
         {
-            inputInfo = new InputInfo();
             this.id = id;
         }
         public virtual string Text() { return $"----ITEM----\n\n- ID : {id}"; }

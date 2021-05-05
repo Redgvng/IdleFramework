@@ -5,17 +5,11 @@ using System.Linq;
 
 namespace IdleLibrary.Inventory
 {
-    [System.Serializable]
-    public class InputInfo
-    {
-        //indexだけは、itemの情報ではない？
-        public int index;
-        public Inventory inputInventory;
-        public bool isLocked;
-    }
     public class InputItem
     {
         public ITEM inputItem;
+        public int index;
+        public Inventory inputInventory;
         public int cursorId;
         public void ReleaseItem()
         {
@@ -136,18 +130,18 @@ namespace IdleLibrary.Inventory
         //こいつに、他のインベントリのswapも任せられるか？
         public void SwapItem(int swapped, InputItem input)
         {
-            if (this == input.inputItem.inputInfo.inputInventory)
+            if (this == input.inputInventory)
             {
                 var item = GetItem(swapped);
                 SetItem(input.inputItem, swapped);
-                SetItem(item, input.inputItem.inputInfo.index);
+                SetItem(item, input.index);
             }
             //inventoryが違った場合
             else
             {
                 var item = GetItem(swapped);
                 SetItem(input.inputItem, swapped);
-                input.inputItem.inputInfo.inputInventory.SetItem(item, input.inputItem.inputInfo.index);
+                input.inputInventory.SetItem(item, input.index);
             }
         }
 
@@ -161,8 +155,8 @@ namespace IdleLibrary.Inventory
             if (GetItem(index).isSet)
             {
                 input.inputItem = GetItem(index);
-                input.inputItem.inputInfo.index = index;
-                input.inputItem.inputInfo.inputInventory = this;
+                input.index = index;
+                input.inputInventory = this;
             }
         }
 

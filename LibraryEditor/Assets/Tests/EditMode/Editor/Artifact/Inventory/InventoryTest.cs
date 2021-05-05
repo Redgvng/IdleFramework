@@ -135,8 +135,8 @@ namespace Tests
 
             inventory.RegisterItem(1);
 
-            Assert.AreEqual(1, inventory.input.inputItem.inputInfo.index);
-            Assert.IsTrue(inventory.input.inputItem.inputInfo.inputInventory == inventory);
+            Assert.AreEqual(1, inventory.input.index);
+            Assert.IsTrue(inventory.input.inputInventory == inventory);
         }
 
         [Test]
@@ -235,7 +235,7 @@ namespace Tests
 
             lockItem.Action(0);
 
-            Assert.IsFalse(inventory.GetItem(0).inputInfo.isLocked);
+            Assert.IsFalse(inventory.GetItem(0).isLocked);
         }
 
     }

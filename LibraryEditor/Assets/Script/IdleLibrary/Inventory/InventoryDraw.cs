@@ -34,7 +34,7 @@ namespace IdleLibrary.Inventory
                         if (index >= info.items.Count) continue;
                         //アイテム画像
                         info.items[index].transform.GetChild(0).GetComponent<Image>().sprite = item.isSet ? sprites[item.id] : lockedSprite;
-                        info.items[index].transform.GetChild(1).gameObject.SetActive(item.inputInfo.isLocked);
+                        info.items[index].transform.GetChild(1).gameObject.SetActive(item.isLocked);
                         index++;
                     }
                 }

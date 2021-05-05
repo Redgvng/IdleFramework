@@ -21,7 +21,7 @@ namespace IdleLibrary.Inventory
 
 	public class Inventory_Mono : Subject
 	{
-		/*
+		
 		[SerializeField]
 		Button GenerateItemButton;
 		[SerializeField]
@@ -30,7 +30,7 @@ namespace IdleLibrary.Inventory
 		Button ExpandEquipmentInventory;
 		[SerializeField]
 		Button SortByIdButton;
-		*/
+		
 
 		public GameObject item;
 		public TextMeshProUGUI inventoryItemInfoText;
@@ -78,7 +78,7 @@ namespace IdleLibrary.Inventory
 			//canvas.gameObject.GetOrAddComponent<ObservableEventTrigger>().OnPointerExitAsObservable()
 			//	.Subscribe(_ => inputItem.cursorId = -1);
 
-			/*
+			
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
 				inventory.inventory.GenerateItemRandomly();
 				equipmentInventory.inventory.GenerateItemRandomly();
@@ -95,7 +95,7 @@ namespace IdleLibrary.Inventory
 			{
 				inventory.inventory.SortById();
 			});
-			*/
+			
 
 			SaveInventory();
 			Notify();

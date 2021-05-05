@@ -80,7 +80,7 @@ namespace IdleLibrary.Inventory
         }
         public void Action(int index)
         {
-            if (inventory.GetItem(index).inputInfo.isLocked)
+            if (inventory.GetItem(index).isLocked)
                 return;
 
             if (inventory.input.inputItem.id == -1)
@@ -104,7 +104,7 @@ namespace IdleLibrary.Inventory
 
             if (inventory.input.inputItem.id == -1)
             {
-                inventory.GetItem(index).inputInfo.isLocked = true;
+                inventory.GetItem(index).isLocked = true;
             }
         }
     }
