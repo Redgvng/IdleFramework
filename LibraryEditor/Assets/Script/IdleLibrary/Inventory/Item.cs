@@ -17,6 +17,19 @@ namespace IdleLibrary.Inventory
         }
         public virtual string Text() { return $"----ITEM----\n\n- ID : {id}"; }
         public static ITEM CreateNullItem() { return new NullItem(-1); }
+
+        //Item‚ÌŒø‰Ê‚ğ...
+        //Gold‚¾‚Á‚½‚ç‚Ç‚¤‚·‚é‚©A
+
+        //TargetNumber
+        NUMBER targetNumber;
+        MultiplierType multiplierType;
+
+        void ItemEffect()
+        {
+            var number = new NUMBER();
+            //number.multiplier.RegisterMultiplier(new MultiplierInfo())
+        }
     }
 
     public class NullItem : ITEM

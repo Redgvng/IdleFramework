@@ -13,16 +13,22 @@ namespace IdleLibrary
         Multiplier multiplier { get; }
     }
 
+    public enum MultiplierType
+    {
+        add,
+        mul
+    }
+
     public class MultiplierInfo
     {
-        public Func<double> addMultiplier { get; }
-        public Func<double> mulMultiplier { get; }
+        public Func<double> multiplier { get; }
         public Func<bool> trigger { get; }
-        public MultiplierInfo(Func<bool> trigger = null, Func<double> addMultiplier = null, Func<double> mulMultiplier = null)
+        public MultiplierType multiplierType { get; }
+        public MultiplierInfo(Func<double> multiplier, MultiplierType type, Func<bool> trigger = null)
         {
-            this.addMultiplier = addMultiplier;
-            this.mulMultiplier = mulMultiplier;
+            this.multiplier = multiplier;
             this.trigger = trigger == null ? () => true : trigger;
+            this.multiplierType = type;
         }
     }
 
@@ -30,24 +36,24 @@ namespace IdleLibrary
     {
         public void RegisterMultiplier(MultiplierInfo multiplierInfo)
         {
-            if (multiplierInfo.addMultiplier != null)
+            if (multiplierInfo.multiplierType == MultiplierType.add)
             {
                 AddMultiplier.Add(() =>
                 {
                     if (!multiplierInfo.trigger())
                         return 0;
 
-                    return multiplierInfo.addMultiplier();
+                    return multiplierInfo.multiplier();
                 });
             }
-            if (multiplierInfo.mulMultiplier != null)
+            if (multiplierInfo.multiplierType == MultiplierType.mul)
             {
                 MulMultiplier.Add(() =>
                 {
                     if (!multiplierInfo.trigger())
                         return 1.0;
 
-                    return multiplierInfo.mulMultiplier();
+                    return multiplierInfo.multiplier();
                 });
             }
         }
