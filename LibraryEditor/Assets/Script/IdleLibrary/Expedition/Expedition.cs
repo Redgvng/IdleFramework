@@ -29,16 +29,16 @@ namespace IdleLibrary {
      * - Claimするための条件がある？
      * これくらい？これをinterfaceに反映
      */
-    public interface IStartIdleAction
+    public interface IIdleAction : ITimeInterval
     {
         void Start();
         bool CanStart();
-    }
-    public interface IClaimIdleAction
-    {
+
         bool CanClaim();
         void Claim();
     }
+
+    //↓これはいろんなところで使うはず
     public interface ITimeInterval
     {
         float CurrentTime { get; }
@@ -46,21 +46,19 @@ namespace IdleLibrary {
     }
     //Expeditionから、純粋にアイドル時間で何かをする処理を抜き出します。
     [Serializable]
-    public class IdleAction : IClaimIdleAction, IStartIdleAction, ITimeInterval
+    public class IdleAction : IIdleAction
     {
         [OdinSerialize] private NUMBER currentTime { get; set; }
         [SerializeField] private bool isStarted;
-        [OdinSerialize] private readonly Action OnClaim;
         [OdinSerialize] public float initHour { get; private set; }
 
         public float CurrentTime => (float)currentTime.Number;
         public float RequiredTime => initHour;
 
-        public IdleAction(float initHour, Action OnClaim = null)
+        public IdleAction(float initHour)
         {
             this.initHour = initHour;
             currentTime = new NUMBER();
-            this.OnClaim = OnClaim == null ? () => { } : OnClaim;
             Progress();
         }
         public bool CanClaim()
@@ -84,11 +82,6 @@ namespace IdleLibrary {
                 return;
             isStarted = false;
             currentTime.Number = 0;
-            OnClaimCallback();
-        }
-        private void OnClaimCallback()
-        {
-            OnClaim();
         }
         async void Progress()
         {
@@ -112,23 +105,35 @@ namespace IdleLibrary {
 
     //Levelを持つIdleActionです。
     [Serializable]
-    public class IdleActionWithlevel : IClaimIdleAction, ILevel
+    public class IdleActionWithlevel : IIdleAction, ILevel
     {
         [OdinSerialize]
-        private readonly IClaimIdleAction idleAction;
+        private readonly IIdleAction idleAction;
         public long level { get; set; }
 
-        public IdleActionWithlevel(IClaimIdleAction idleAction)
+        public float CurrentTime => idleAction.CurrentTime;
+        public float RequiredTime => idleAction.RequiredTime;
+        public bool CanClaim() => idleAction.CanClaim();
+
+        public IdleActionWithlevel(IIdleAction idleAction)
         {
             if(this.idleAction == null) this.idleAction = idleAction;
         }
-        public bool CanClaim() => idleAction.CanClaim();
         public void Claim()
         {
             idleAction.Claim();
             level++;
         }
 
+        public void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CanStart()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     //IdleActionとの違いは？
