@@ -31,6 +31,7 @@ namespace IdleLibrary
         }
     }
 
+    [Serializable]
     public class Cal
     {
         public Multiplier multiplier;

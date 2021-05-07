@@ -32,6 +32,7 @@ namespace IdleLibrary
         }
     }
 
+    [Serializable]
     public class Multiplier
     {
         public void RegisterMultiplier(MultiplierInfo multiplierInfo)
