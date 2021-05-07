@@ -19,32 +19,36 @@ namespace IdleLibrary
     {
         public double cookie;
         public Dictionary<Resource, int> dic;
+        public GameObject ball;
     }
     public class SaveTest : MonoBehaviour
     {
         public Button Cookie;
         public TextMeshProUGUI cookieText;
         Dictionary<Resource, int> dic { get => Main.main.S.dic; set => Main.main.S.dic = value; }
+        GameObject ball { get => Main.main.S.ball; set => Main.main.S.ball = value; }
+        public GameObject ballPre;
+        public Transform window;
         // Start is called before the first frame update
         void Start()
         {
             if (dic == null) dic = new Dictionary<Resource, int>();
+            if (ball == null) ball = Instantiate(ballPre, window);
             Cookie.onClick.AddListener(() =>
             {
                 IdleLibrary.Main.main.S.cookie++;
             });
             this.ObserveEveryValueChanged(_ => Main.main.S.cookie).Subscribe(_ => cookieText.text = UsefulMethod.tDigit(Main.main.S.cookie));
-            AddItemToDictionary();
+            Move();
         }
 
-        async void AddItemToDictionary()
+        async void Move()
         {
-            await UniTask.Delay(1000);
-            dic[Resource.cookie] = 3;
-            await UniTask.Delay(1000);
-            dic[Resource.gold] = 10;
-            await UniTask.Delay(1000);
-            dic[Resource.stone] = 100;
+            while (true)
+            {
+                ball.GetComponent<RectTransform>().anchoredPosition += new Vector2(0, 1);
+                await UniTask.Delay(20);
+            }
         }
     }
 }
