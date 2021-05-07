@@ -145,6 +145,8 @@ namespace IdleLibrary {
         public void IncreaseCurrentTime(float timesec) 
         {
             currentTimesec += timesec;
+            if (currentTimesec > RequiredTime(true))
+                currentTimesec = RequiredTime(true);
         }
         public float ProgressPercent()
         {
