@@ -926,6 +926,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ExpeditionSample
       objectReference: {fileID: 0}
+    - target: {fileID: 7628404571559146596, guid: 86a5f1844772d4dd8bd2c11dfc8228fc,
+        type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 55
+      objectReference: {fileID: 0}
     - target: {fileID: 7628404571559146597, guid: 86a5f1844772d4dd8bd2c11dfc8228fc,
         type: 3}
       propertyPath: m_Pivot.x
