@@ -15,11 +15,12 @@ namespace IdleLibrary
         Multiplier multiplier { get; }
     }
     //こいつら一旦統計量持てない
+    [Serializable]
     public class NUMBER : IComparable<NUMBER>, IMultiplier
     {
         //Public
         public int NumberAsInt => (int)Number;
-        public virtual double Number { get => setNumber.GetItem(); set => setNumber.SetItem(value); }
+        public virtual double Number { get; set; }
         public virtual double TotalNumber { get; set; }
         public Multiplier multiplier { get; }
         public bool CanSet => true;
@@ -31,16 +32,13 @@ namespace IdleLibrary
         public NUMBER(double initialValue = 0)
         {
             multiplier = new Multiplier();
-            this.setNumber = new NullSetItem<double>();
             Number = initialValue;
         }
 
         //本番用コンストラクタ
-        public NUMBER(IDataContainer<NUMBER> dataContainer, ISetItem<double> setNumber = null)
+        public NUMBER()
         {
-            //dataContainer.SetDataByName(this, Name);  
             multiplier = new Multiplier();
-            this.setNumber = setNumber == null ? new NullSetItem<double>() : setNumber;
         }
         public virtual void IncrementNumber(double increment = 1, bool isNetValue = false)
         {

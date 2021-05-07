@@ -72,15 +72,17 @@ namespace IdleLibrary.Inventory
 			var swap2 = new SwapItem(equipmentInventory.inventory, inputItem);
 			equipmentInventory.RegisterHoldAction(swap2, new Releaseitem(inputItem), swap2);
 			equipmentInventory.AddRightaction(new RevertItemToOtherInventory(equipmentInventory.inventory, inventory.inventory));
+			equipmentInventory.AddLeftAction(new ShowInfoToTextField(equipmentInventory.inventory, inventoryItemInfoText));
 
 			//Canvasの外に出たらcursorIdを-1にする
 			//canvas.gameObject.GetOrAddComponent<ObservableEventTrigger>().OnPointerExitAsObservable()
 			//	.Subscribe(_ => inputItem.cursorId = -1);
 
-			
+			//ItemFactoryを作ります
+			var itemFactory = new ItemFactory();
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
-				inventory.inventory.GenerateItemRandomly();
-				equipmentInventory.inventory.GenerateItemRandomly();
+				var item = itemFactory.CreateRandomItem();
+				inventory.inventory.SetItemByOrder(item);
 				});
 			ExpandInventory.OnClickAsObservable().Subscribe(_ =>
 			{

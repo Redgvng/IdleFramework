@@ -1545,8 +1545,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2092,25 +2092,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf57a7fc64d82444b477e900f2859e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: S
+      Entry: 6
+      Data: 
+    - Name: SO
+      Entry: 6
+      Data: 
   tick: 0.05
   SR:
     ascendTime: 
-  S:
-    inventory:
-      items: []
-      expandNum: 0
-    equipmentInventory:
-      items: []
-      expandNum: 0
-    lastTime: 
-    birthDate: 
-    isContinuePlay: 0
-    allTime: 0
-    SEVolume: 0
-    BGMVolume: 0
-    ascendPoint: 0
-    UpgradeLevels: 
-    numbers: []
   SD: {fileID: 0}
   SoundEffectSource: {fileID: 0}
   plainPopText: {fileID: 0}

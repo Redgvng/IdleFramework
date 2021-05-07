@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using System;
 
 namespace IdleLibrary {
 
+    /*
     public interface IExpedition
     {
         bool IsStarted();
@@ -16,8 +18,95 @@ namespace IdleLibrary {
         void StartExpedition();
         void Claim();
     }
+    */
 
-    public class Expedition : IExpedition
+    /*
+     * IdleActionの要件は何か？
+     * - 開始という概念がある
+     * - Calimという概念がある
+     * - 開始するための条件がある
+     * - Claimするための条件がある？
+     * これくらい？これをinterfaceに反映
+     */
+    public interface IIdleAction
+    {
+        bool CanStart();
+        bool CanClaim();
+        void Start();
+        void Claim();
+    }
+
+    //Expeditionから、純粋にアイドル時間で何かをする処理を抜き出します。
+    [Serializable]
+    public class IdleAction
+    {
+        [SerializeField] private NUMBER currentTime { get; set; }
+        [SerializeField] private bool isStarted;
+        private Action OnClaim { get; }
+        private Func<bool> canClaim { get; }
+        private Cal requiredHour { get; set; }
+
+        public IdleAction(float initHour, Action OnClaim = null, Func<bool> canClaim = null)
+        {
+            this.requiredHour = new Cal(initHour);
+            if (currentTime == null) currentTime = new NUMBER();
+            this.OnClaim = OnClaim == null ? () => { } : OnClaim;
+            this.canClaim = canClaim == null ? () => true : canClaim;
+            Progress();
+        }
+        public bool CanClaim()
+        {
+            return currentTime.Number >= requiredHour.GetValue();
+        }
+        public bool CanStart()
+        {
+            return !isStarted;
+        }
+        public void Start()
+        {
+            if (!CanStart())
+                return;
+
+            isStarted = true;
+        }
+        public void Claim()
+        {
+            if (!CanClaim())
+                return;
+            isStarted = false;
+            currentTime.Number = 0;
+            OnClaimCallback();
+        }
+        private void OnClaimCallback()
+        {
+            OnClaim();
+        }
+        async void Progress()
+        {
+            while (true)
+            {
+                if (isStarted && !CanClaim())
+                    IncreaseCurrentTime(1);
+                await UniTask.Delay(1000);
+            }
+        }
+
+        public void IncreaseCurrentTime(float timesec)
+        {
+            currentTime.IncrementNumber(timesec);
+        }
+        public float ProgressPercent()
+        {
+            return (float)(currentTime.Number / requiredHour.GetValue());
+        }
+    }
+
+    //IdleActionとの違いは？
+    //- transactionを持つ
+    //- rewardを持つ
+    //- 時間が選べる
+    //↑これらは別々のクラスとして実装すべき
+    public class Expedition
     {
         private readonly ITransaction transaction;
         private readonly IReward reward;

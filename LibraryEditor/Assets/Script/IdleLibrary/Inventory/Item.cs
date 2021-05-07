@@ -5,6 +5,15 @@ using Sirenix.Serialization;
 
 namespace IdleLibrary.Inventory
 {
+    public enum ItemId
+    {
+        sample1,
+        sample2,
+        sample3,
+        sample4,
+        sample5,
+
+    }
     //抽象クラスにするとシリアライズできない
     [System.Serializable]
     public abstract class ITEM : IText
@@ -29,7 +38,7 @@ namespace IdleLibrary.Inventory
         }
         public override string Text()
         {
-            return "Null Itemです。これは入ってちゃいけません";
+            return "This is the null item. Text should not be shown.";
         }
     }
 
@@ -49,7 +58,7 @@ namespace IdleLibrary.Inventory
 
 
     [System.Serializable]
-    public class Artifact : ITEM
+    public class Artifact : ITEM, ILevel
     {
         public Artifact(int id) : base(id)
         {
@@ -57,16 +66,16 @@ namespace IdleLibrary.Inventory
         }
         public override string Text()
         {
-            return $"----ITEM----\n\n- ID : {id}\n\n - Level : {level} \n- Quality : {quality} \n\n\n[Effects in Hidden Challenge]\n- Anti-Magid Power : {antimagicPower}";
+            return $"----ITEM----\n- ID : {id}\n\n - Level : {level} \n- Quality : {quality} \n[Effects in Hidden Challenge]\n- Anti-Magid Power : {antimagicPower}";
         }
         public override ITEM CreateNullItem()
         {
             return new Artifact(-1);
         }
 
-        public int level;
-        public int quality;
-        public double antimagicPower;
+        public long level { get; set; }
+        public int quality { get; set; }
+        public double antimagicPower { get; set; }
     }
     
 }
