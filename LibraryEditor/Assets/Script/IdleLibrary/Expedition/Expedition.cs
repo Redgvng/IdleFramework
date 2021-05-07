@@ -29,39 +29,43 @@ namespace IdleLibrary {
      * - Claimするための条件がある？
      * これくらい？これをinterfaceに反映
      */
-    public interface IIdleAction
+    public interface IStartIdleAction
     {
-        bool CanStart();
-        bool CanClaim();
         void Start();
+        bool CanStart();
+    }
+    public interface IClaimIdleAction
+    {
+        bool CanClaim();
         void Claim();
-        float currentTime { get; }
-        float requiredTime { get; }
+    }
+    public interface ITimeInterval
+    {
+        float CurrentTime { get; }
+        float RequiredTime { get; }
     }
     //Expeditionから、純粋にアイドル時間で何かをする処理を抜き出します。
     [Serializable]
-    public class IdleAction : IIdleAction
+    public class IdleAction : IClaimIdleAction, IStartIdleAction, ITimeInterval
     {
         [OdinSerialize] private NUMBER currentTime { get; set; }
         [SerializeField] private bool isStarted;
         [OdinSerialize] private readonly Action OnClaim;
-        [OdinSerialize] private readonly Func<bool> canClaim;
         [OdinSerialize] public float initHour { get; private set; }
 
-        float IIdleAction.currentTime => (float)currentTime.Number;
-        public float requiredTime => initHour;
+        public float CurrentTime => (float)currentTime.Number;
+        public float RequiredTime => initHour;
 
-        public IdleAction(float initHour, Action OnClaim = null, Func<bool> canClaim = null)
+        public IdleAction(float initHour, Action OnClaim = null)
         {
             this.initHour = initHour;
             currentTime = new NUMBER();
             this.OnClaim = OnClaim == null ? () => { } : OnClaim;
-            this.canClaim = canClaim == null ? () => true : canClaim;
             Progress();
         }
         public bool CanClaim()
         {
-            return currentTime.Number >= requiredTime;
+            return currentTime.Number >= RequiredTime;
         }
         public bool CanStart()
         {
@@ -102,27 +106,23 @@ namespace IdleLibrary {
         }
         public float ProgressPercent()
         {
-            return (float)(currentTime.Number / requiredTime);
+            return (float)(currentTime.Number / RequiredTime);
         }
     }
 
     //Levelを持つIdleActionです。
     [Serializable]
-    public class IdleActionWithlevel : IIdleAction, ILevel
+    public class IdleActionWithlevel : IClaimIdleAction, ILevel
     {
         [OdinSerialize]
-        private readonly IIdleAction idleAction;
+        private readonly IClaimIdleAction idleAction;
         public long level { get; set; }
 
-        public float currentTime => idleAction.currentTime;
-        public float requiredTime => idleAction.requiredTime;
-        public IdleActionWithlevel(IIdleAction idleAction)
+        public IdleActionWithlevel(IClaimIdleAction idleAction)
         {
             if(this.idleAction == null) this.idleAction = idleAction;
         }
         public bool CanClaim() => idleAction.CanClaim();
-        public bool CanStart() => idleAction.CanStart();
-        public void Start() => idleAction.Start();
         public void Claim()
         {
             idleAction.Claim();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.Serialization;
 using Cysharp.Threading.Tasks;
+using System;
 
 namespace IdleLibrary.Inventory
 {
@@ -63,7 +64,7 @@ namespace IdleLibrary.Inventory
     {
         public Artifact(int id) : base(id)
         {
-            DelayedInitialize();
+
         }
         public override string Text()
         {
@@ -93,6 +94,7 @@ namespace IdleLibrary.Inventory
                 await UniTask.Delay(1000);
             }
         }
+        public Action StartIdleAction => () => { if (idleAction != null) DelayedInitialize(); };
         [OdinSerialize]
         public IdleActionWithlevel idleAction { get; set; }
         [OdinSerialize]
