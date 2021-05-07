@@ -11,11 +11,10 @@ namespace Tests
 {
     public class InventoryTest
     {
-        InputItem input = new InputItem();
         [Test]
         public void CanSetItem()
         {
-            var inventory = new Inventory(input);
+            var inventory = new Inventory();
 
             inventory.SetItem(new Item(3), 2);
 
@@ -26,7 +25,7 @@ namespace Tests
         [Test]
         public void CanSetItemAfterExpandInventory()
         {
-            var inventory = new Inventory(input);
+            var inventory = new Inventory();
             inventory.ExpandInventory();
 
             inventory.SetItem(new Item(0), 10);
@@ -37,7 +36,7 @@ namespace Tests
         [Test]
         public void CanSetItemByOrder()
         {
-            var inventory = new Inventory(input);
+            var inventory = new Inventory();
             var item = new Item(1);
 
             inventory.SetItem(item, 0);
@@ -58,7 +57,7 @@ namespace Tests
         [Test]
         public void CanSwapItemToEmpty()
         {
-            var inventory = new Inventory(input);
+            var inventory = new Inventory();
             var item = new Item(3);
             inventory.SetItem(item, 2);
 
@@ -70,12 +69,11 @@ namespace Tests
         [Test]
         public void CanSwapItemAfterExpand()
         {
-            var Input = new InputItem();
-            var inventory = new Inventory(Input);
+            var inventory = new Inventory();
             var item = new Item(3);
             inventory.ExpandInventory();
             inventory.SetItem(item, 2);
-            var swap = new SwapItem(inventory,Input);
+            var swap = new SwapItem(inventory,inventory.input);
 
             inventory.RegisterItem(2);
             swap.Action(10);
@@ -86,7 +84,7 @@ namespace Tests
         [Test]
         public void CanSwapItemToNotEmpty()
         {
-            var inventory = new Inventory(input);
+            var inventory = new Inventory();
             var item = new Item(3);
             var item2 = new Item(1);
             inventory.SetItem(item, 2);
@@ -100,15 +98,14 @@ namespace Tests
         [Test]
         public void CanSwapItemFromInputItem()
         {
-            var Input = new InputItem();
-            var inventory = new Inventory(Input);
+            var inventory = new Inventory();
             var item = new Item(3);
             var item2 = new Item(1);
             inventory.SetItem(item, 2);
             inventory.SetItem(item2, 1);
             inventory.RegisterItem(2);
 
-            inventory.SwapItem(1, Input);
+            inventory.SwapItem(1, inventory.input);
 
             Assert.AreEqual(inventory.GetItem(1).id, 3);
             Assert.AreEqual(inventory.GetItem(2).id, 1);
@@ -117,7 +114,7 @@ namespace Tests
         [Test]
         public void CanDeleteItem()
         {
-            var inventory = new Inventory(input);
+            var inventory = new Inventory();
             var item = new Item(3);
             inventory.SetItem(item, 1);
 
@@ -129,7 +126,7 @@ namespace Tests
         [Test]
         public void CanRegisterItem()
         {
-            var inventory = new Inventory(input);
+            var inventory = new Inventory();
             var item = new Item(3);
             inventory.SetItem(item, 1);
 
@@ -142,7 +139,7 @@ namespace Tests
         [Test]
         public void CannotRegisterItemIfItemIsEmpty()
         {
-            var inventory = new Inventory(input);
+            var inventory = new Inventory();
             var item = new Item(3);
 
             inventory.RegisterItem(1);
@@ -153,27 +150,25 @@ namespace Tests
         [Test]
         public void CanReleaseItem()
         {
-            var Input = new InputItem();
-            var inventory = new Inventory(Input);
+            var inventory = new Inventory();
             var item = new Item(3);
             inventory.SetItem(item, 1);
             inventory.RegisterItem(1);
-            Assert.AreEqual(3, Input.inputItem.id);
+            Assert.AreEqual(3, inventory.input.inputItem.id);
 
-            Input.ReleaseItem();
+            inventory.input.ReleaseItem();
 
-            Assert.AreEqual(-1, Input.inputItem.id);
+            Assert.AreEqual(-1, inventory.input.inputItem.id);
         }
 
         [Test]
         public void CanSetItemFromOtherInventory()
         {
-            var Input = new InputItem();
-            var inventory = new Inventory(Input);
-            var inventory2 = new Inventory(Input);
+            var inventory = new Inventory();
+            var inventory2 = new Inventory();
             inventory2.SetItemByOrder(new Item(5));
             inventory.SetItemByOrder(new Item(3));
-            var swap = new SwapItem(inventory,Input);
+            var swap = new SwapItem(inventory,inventory2.input);
 
             inventory2.RegisterItem(0);
             swap.Action(0);
@@ -185,11 +180,10 @@ namespace Tests
         [Test]
         public void CannotSwapItemWithinSameInventory()
         {
-            var Input = new InputItem();
-            var inventory = new Inventory(Input);
+            var inventory = new Inventory();
             inventory.SetItemByOrder(new Item(3));
             inventory.SetItemByOrder(new Item(4));
-            var swap = new SwapItem(inventory, Input);
+            var swap = new SwapItem(inventory, inventory.input);
 
             inventory.RegisterItem(1);
             swap.Action(0);
@@ -201,8 +195,8 @@ namespace Tests
         [Test]
         public void CanRevertItemToOtherInventory()
         {
-            var inventory = new Inventory(input);
-            var inventory2 = new Inventory(input);
+            var inventory = new Inventory();
+            var inventory2 = new Inventory();
             inventory2.SetItemByOrder(new Item(1));
             var revert = new RevertItemToOtherInventory(inventory2, inventory);
 
@@ -215,7 +209,7 @@ namespace Tests
         [Test]
         public void CannotDeleteWhenItemIsLocked()
         {
-            var inventory = new Inventory(input);
+            var inventory = new Inventory();
             var item = new Item(0);
             var lockItem = new LockItem(inventory);
             inventory.SetItemByOrder(item);
@@ -230,7 +224,7 @@ namespace Tests
         [Test]
         public void CannotLockWithNullItem()
         {
-            var inventory = new Inventory(input);
+            var inventory = new Inventory();
             var lockItem = new LockItem(inventory);
 
             lockItem.Action(0);

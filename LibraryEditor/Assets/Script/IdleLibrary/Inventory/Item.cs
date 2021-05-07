@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.Serialization;
 
 namespace IdleLibrary.Inventory
 {
@@ -16,7 +17,20 @@ namespace IdleLibrary.Inventory
             this.id = id;
         }
         public virtual string Text() { return $"----ITEM----\n\n- ID : {id}"; }
-        public static ITEM CreateNullItem() { return new NullItem(-1); }
+        public static ITEM CreateNullItem() { return new ITEM(-1); }
+
+        //Itemの効果を...
+        //Goldだったらどうするか、
+
+        //TargetNumber
+        NUMBER targetNumber;
+        MultiplierType multiplierType;
+
+        void ItemEffect()
+        {
+            var number = new NUMBER();
+            //number.multiplier.RegisterMultiplier(new MultiplierInfo())
+        }
     }
 
     public class NullItem : ITEM
@@ -36,7 +50,7 @@ namespace IdleLibrary.Inventory
     }
 
     //Itemを継承して自作のアイテムを作ります(セーブ関係上厳しい)
-    /*
+    
     [System.Serializable]
     public class Artifact : ITEM
     {
@@ -50,7 +64,7 @@ namespace IdleLibrary.Inventory
             return $"----ITEM----\n\n- ID : {id}\n\n - Level : {level} \n- Quality : {quality} \n\n\n[Effects in Hidden Challenge]\n- Anti-Magid Power : {antimagicPower}";
         }
 
-        public override ITEM CreateNullItem()
+        new public ITEM CreateNullItem()
         {
             return new Artifact(-1);
         }
@@ -59,5 +73,5 @@ namespace IdleLibrary.Inventory
         public int quality;
         public double antimagicPower;
     }
-    */
+    
 }
