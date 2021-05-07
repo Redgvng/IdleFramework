@@ -64,7 +64,7 @@ namespace IdleLibrary.Inventory
 			//クリックじゃなくてドラッグアンドドロップにもできる
 			var swap = new SwapItem(inventory.inventory, inputItem);
 			inventory.RegisterHoldAction(swap, new Releaseitem(inputItem), swap);
-			//inventory.AddLeftAction(new ShowInfoToTextField(inventory.inventory, inventoryItemInfoText));
+			inventory.AddLeftAction(new ShowInfoToTextField(inventory.inventory, inventoryItemInfoText));
 			inventory.AddLeftAction(new LockItem(inventory.inventory), KeyCode.L);
 			inventory.AddLeftAction(new DeleteItem(inventory.inventory), KeyCode.D);
 			inventory.AddRightaction(new RevertItemToOtherInventory(inventory.inventory,equipmentInventory.inventory));
@@ -97,10 +97,11 @@ namespace IdleLibrary.Inventory
 			});
 			
 
-			SaveInventory();
+			//SaveInventory();
 			Notify();
 		}
 
+		/*
 		private async void SaveInventory()
         {
 			while (true)
@@ -110,6 +111,7 @@ namespace IdleLibrary.Inventory
 				await UniTask.DelayFrame(60);
 			}
         }
+		*/
         private void Update()
         {
 			Notify();

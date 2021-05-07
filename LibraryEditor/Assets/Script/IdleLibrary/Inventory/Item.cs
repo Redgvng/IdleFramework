@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.Serialization;
 
 namespace IdleLibrary.Inventory
 {
@@ -49,7 +50,7 @@ namespace IdleLibrary.Inventory
     }
 
     //Itemを継承して自作のアイテムを作ります(セーブ関係上厳しい)
-    /*
+    
     [System.Serializable]
     public class Artifact : ITEM
     {
@@ -63,7 +64,7 @@ namespace IdleLibrary.Inventory
             return $"----ITEM----\n\n- ID : {id}\n\n - Level : {level} \n- Quality : {quality} \n\n\n[Effects in Hidden Challenge]\n- Anti-Magid Power : {antimagicPower}";
         }
 
-        public override ITEM CreateNullItem()
+        new public ITEM CreateNullItem()
         {
             return new Artifact(-1);
         }
@@ -72,5 +73,5 @@ namespace IdleLibrary.Inventory
         public int quality;
         public double antimagicPower;
     }
-    */
+    
 }

@@ -10,6 +10,7 @@ namespace IdleLibrary
     //[DefaultExecutionOrder(-2)]
     public class saveCtrl : MonoBehaviour
     {
+        //ロードの処理
         void getSaveKey()
         {
             //SaveR
@@ -31,12 +32,28 @@ namespace IdleLibrary
             {
                 main.S = saveClass.GetObject<Save>(keyList.permanentSaveKey);
             }
+
+            //SaveOのロード
+            /*
+            if(Save_Odin.Load<SaveO>() == null)
+            {
+                main.SO = new SaveO();
+            }
+            else
+            {
+                main.SO = Save_Odin.Load<SaveO>();
+            }
+            */
+
         }
 
+        //セーブの処理
         public void setSaveKey()
         {
             saveClass.SetObject(keyList.resetSaveKey, main.SR);
             saveClass.SetObject(keyList.permanentSaveKey, main.S);
+            //SaveOのセーブ
+            //saveClass.SetObject(keyList.odinSaveKey, main.SO);
         }
 
 

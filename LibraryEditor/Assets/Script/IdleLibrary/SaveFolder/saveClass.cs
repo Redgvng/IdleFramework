@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Sirenix.Serialization;
+
 
 namespace IdleLibrary
 {
@@ -10,7 +12,9 @@ namespace IdleLibrary
         public static void SetObject<T>(string key, T obj)
         {
             var json = JsonUtility.ToJson(obj);
+            //var json = Save_Odin.GetJsonFromOdinSave<T>(obj);
             PlayerPrefs.SetString(key, json);
+            Debug.Log(json);
         }
 
         /// <summary>
@@ -20,7 +24,9 @@ namespace IdleLibrary
         {
             var json = PlayerPrefs.GetString(key);
             var obj = JsonUtility.FromJson<T>(json);
+            Debug.Log(json);
             return obj;
         }
+
     }
 }

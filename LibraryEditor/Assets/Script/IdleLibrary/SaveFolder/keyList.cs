@@ -8,5 +8,6 @@ namespace IdleLibrary
     {
         public static string resetSaveKey = "saveR";
         public static string permanentSaveKey = "save";
+        public static string odinSaveKey = "saveO";
     }
 }

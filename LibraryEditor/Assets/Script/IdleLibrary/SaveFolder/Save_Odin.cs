@@ -1,0 +1,78 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Sirenix.Serialization;
+using System.IO;
+using System.Text;
+using IdleLibrary.Inventory;
+
+public class SampleClass
+{
+    public ITEM item;
+    //これをシリアライズしたい
+    public ITEM artifact;
+}
+
+//Odin Save
+[System.Serializable]
+public class SaveO
+{
+    public SampleClass sample;
+}
+
+public class Save_Odin : MonoBehaviour
+{
+    public static string GetJsonFromOdinSave<T>(T obj)
+    {
+        //string path = Application.dataPath + "/data.json";
+        List<UnityEngine.Object> unityObjectReferences = new List<UnityEngine.Object>();
+        //DataFormat dataFormat = DataFormat.JSON;
+        DataFormat dataFormat = DataFormat.JSON;
+        var bytes = SerializationUtility.SerializeValue(obj, dataFormat, out unityObjectReferences);
+        string jsonStr = Encoding.UTF8.GetString(bytes);
+        return jsonStr;
+    }
+
+    public static T Load<T>()
+    {
+        string path = Application.dataPath + "/data.json";
+        List<UnityEngine.Object> unityObjectReferences = new List<UnityEngine.Object>();
+        //DataFormat dataFormat = DataFormat.JSON;
+        DataFormat dataFormat = DataFormat.Binary;
+        var bytes = File.ReadAllBytes(path);
+        var data = SerializationUtility.DeserializeValue<T>(bytes, dataFormat, unityObjectReferences);
+
+        return data;
+    }
+    /*
+    // Somewhere, a method to serialize data to json might look something like this
+    private void SerializeData()
+    {
+        // Save to Assets folder
+        string path = Application.dataPath + "/data.json";
+
+        List<UnityEngine.Object> unityObjectReferences = new List<UnityEngine.Object>();
+
+        DataFormat dataFormat = DataFormat.JSON;
+
+        // Serialization
+        {
+            var bytes = SerializationUtility.SerializeValue(originalData, dataFormat, out unityObjectReferences);
+            File.WriteAllBytes(path, bytes);
+
+            // If you want the json string, use UTF8 encoding
+            // var jsonString = System.Text.Encoding.UTF8.GetString(bytes);
+        }
+
+        // Deserialization
+        {
+            var bytes = File.ReadAllBytes(path);
+
+            // If you have a string to deserialize, get the bytes using UTF8 encoding
+            // var bytes = System.Text.Encoding.UTF8.GetBytes(jsonString);
+
+            var data = SerializationUtility.DeserializeValue<MyData>(bytes, dataFormat, unityObjectReferences);
+        }
+    }
+    */
+}

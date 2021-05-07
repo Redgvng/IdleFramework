@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Sirenix.Serialization;
 
 namespace IdleLibrary
 {

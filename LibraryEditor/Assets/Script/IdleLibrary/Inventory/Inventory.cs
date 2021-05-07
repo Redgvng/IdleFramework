@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Sirenix.Serialization;
 
 namespace IdleLibrary.Inventory
 {
@@ -41,12 +42,13 @@ namespace IdleLibrary.Inventory
         public bool isFull => items.All((item) => item.isSet);
         public readonly int initialInventoryNum = 10;
         int totalInventoryNum => expandNum + initialInventoryNum;
+        private ITEM originalItem;
         //Saveすべき変数を注入する
         //使うアイテムのインスタンスを何でもいいので渡します。
-        public Inventory(InputItem input, InventoryForSave saveData = null)
+        public Inventory(InputItem input, InventoryForSave saveData = null, ITEM originalItem = null)
         {
             this.saveData = saveData == null ? new InventoryForSave() : saveData;
-            var originalItem = new ITEM(-1);
+            originalItem = originalItem == null ? new ITEM(-1) : originalItem;
             if (items.Count == 0)
             {
                 for (int i = 0; i < totalInventoryNum; i++)
@@ -73,7 +75,7 @@ namespace IdleLibrary.Inventory
 
         public void GenerateItemRandomly()
         {
-            var item = new ITEM(-1);
+            var item = new Artifact(-1);
             item.id = UnityEngine.Random.Range(0, 5);
             SetItemByOrder(item);
         }
