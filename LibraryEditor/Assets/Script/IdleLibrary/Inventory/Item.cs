@@ -16,7 +16,7 @@ namespace IdleLibrary.Inventory
             this.id = id;
         }
         public virtual string Text() { return $"----ITEM----\n\n- ID : {id}"; }
-        public static ITEM CreateNullItem() { return new NullItem(-1); }
+        public static ITEM CreateNullItem() { return new ITEM(-1); }
 
         //Item‚ÌŒø‰Ê‚ğ...
         //Gold‚¾‚Á‚½‚ç‚Ç‚¤‚·‚é‚©A
