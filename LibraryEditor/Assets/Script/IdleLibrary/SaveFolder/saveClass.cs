@@ -11,8 +11,8 @@ namespace IdleLibrary
         /// </summary>
         public static void SetObject<T>(string key, T obj)
         {
-            var json = JsonUtility.ToJson(obj);
-            //var json = Save_Odin.GetJsonFromOdinSave<T>(obj);
+            //var json = JsonUtility.ToJson(obj);
+            var json = Save_Odin.GetJsonFromOdinSave<T>(obj);
             PlayerPrefs.SetString(key, json);
             Debug.Log(json);
         }
@@ -23,8 +23,9 @@ namespace IdleLibrary
         public static T GetObject<T>(string key)
         {
             var json = PlayerPrefs.GetString(key);
-            var obj = JsonUtility.FromJson<T>(json);
-            Debug.Log(json);
+            //var obj = JsonUtility.FromJson<T>(json);
+            var obj = Save_Odin.Load<T>(json);
+
             return obj;
         }
 

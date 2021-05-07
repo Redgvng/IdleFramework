@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Sirenix.Serialization;
+using System;
 
 namespace IdleLibrary.Inventory
 {
@@ -29,6 +30,7 @@ namespace IdleLibrary.Inventory
     {
         public List<ITEM> items = new List<ITEM>();
         public int expandNum;
+        public Action sampleAction = () => { };
     }
 
     public class Inventory 
@@ -44,10 +46,22 @@ namespace IdleLibrary.Inventory
         int totalInventoryNum => expandNum + initialInventoryNum;
         private ITEM originalItem;
         //Saveすべき変数を注入する
-        //使うアイテムのインスタンスを何でもいいので渡します。
-        public Inventory(InputItem input, InventoryForSave saveData = null, ITEM originalItem = null)
+        //テスト用コンストラクタです
+        public Inventory()
         {
-            this.saveData = saveData == null ? new InventoryForSave() : saveData;
+            saveData = new InventoryForSave();
+            originalItem = new ITEM(-1);
+            for (int i = 0; i < totalInventoryNum; i++)
+            {
+                items.Add(originalItem);
+            }
+            this.input = new InputItem();
+        }
+        public Inventory(InputItem input, ref InventoryForSave saveData, ITEM originalItem = null)
+        {
+            if (saveData == null)
+                saveData = new InventoryForSave();
+            this.saveData = saveData;
             originalItem = originalItem == null ? new ITEM(-1) : originalItem;
             if (items.Count == 0)
             {
@@ -57,6 +71,7 @@ namespace IdleLibrary.Inventory
                 }
             }
             this.input = input;
+            saveData.sampleAction();
         }
 
         //とりあえず何も考えずに...
@@ -76,6 +91,7 @@ namespace IdleLibrary.Inventory
         public void GenerateItemRandomly()
         {
             var item = new Artifact(-1);
+            saveData.sampleAction = () => { Debug.Log("saveされてるよ"); };
             item.id = UnityEngine.Random.Range(0, 5);
             SetItemByOrder(item);
         }

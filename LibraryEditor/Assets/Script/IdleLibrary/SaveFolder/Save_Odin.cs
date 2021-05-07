@@ -22,24 +22,22 @@ public class SaveO
 
 public class Save_Odin : MonoBehaviour
 {
+
     public static string GetJsonFromOdinSave<T>(T obj)
     {
-        //string path = Application.dataPath + "/data.json";
         List<UnityEngine.Object> unityObjectReferences = new List<UnityEngine.Object>();
-        //DataFormat dataFormat = DataFormat.JSON;
         DataFormat dataFormat = DataFormat.JSON;
         var bytes = SerializationUtility.SerializeValue(obj, dataFormat, out unityObjectReferences);
         string jsonStr = Encoding.UTF8.GetString(bytes);
         return jsonStr;
     }
 
-    public static T Load<T>()
+    //Jsonを受け取って、バイト列にする。
+    public static T Load<T>(string json)
     {
-        string path = Application.dataPath + "/data.json";
         List<UnityEngine.Object> unityObjectReferences = new List<UnityEngine.Object>();
-        //DataFormat dataFormat = DataFormat.JSON;
-        DataFormat dataFormat = DataFormat.Binary;
-        var bytes = File.ReadAllBytes(path);
+        DataFormat dataFormat = DataFormat.JSON;
+        var bytes = Encoding.UTF8.GetBytes(json);
         var data = SerializationUtility.DeserializeValue<T>(bytes, dataFormat, unityObjectReferences);
 
         return data;
