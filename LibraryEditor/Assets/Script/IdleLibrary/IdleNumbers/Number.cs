@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
+using Sirenix.Serialization;
 
 namespace IdleLibrary
 {
@@ -20,8 +21,8 @@ namespace IdleLibrary
     {
         //Public
         public int NumberAsInt => (int)Number;
-        public virtual double Number { get; set; }
-        public virtual double TotalNumber { get; set; }
+        [OdinSerialize] public virtual double Number { get; set; }
+        [OdinSerialize] public virtual double TotalNumber { get; set; }
         public Multiplier multiplier { get; }
         public bool CanSet => true;
 

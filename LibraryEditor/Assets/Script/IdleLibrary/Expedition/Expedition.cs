@@ -43,24 +43,25 @@ namespace IdleLibrary {
     public class IdleAction : IIdleAction
     {
         [OdinSerialize] private NUMBER currentTime { get; set; }
-        [OdinSerialize] private bool isStarted;
-        [OdinSerialize] private Action OnClaim { get; }
-        [OdinSerialize] private Func<bool> canClaim { get; }
-        [OdinSerialize] private Cal requiredHour { get; set; }
+        [SerializeField] private bool isStarted;
+        [OdinSerialize] private readonly Action OnClaim;
+        [OdinSerialize] private readonly Func<bool> canClaim;
+        [OdinSerialize] public float initHour { get; private set; }
+
         float IIdleAction.currentTime => (float)currentTime.Number;
-        public float requiredTime => (float)requiredHour.GetValue();
+        public float requiredTime => initHour;
 
         public IdleAction(float initHour, Action OnClaim = null, Func<bool> canClaim = null)
         {
-            if(requiredHour == null) this.requiredHour = new Cal(initHour);
-            if(currentTime == null) currentTime = new NUMBER();
+            this.initHour = initHour;
+            currentTime = new NUMBER();
             this.OnClaim = OnClaim == null ? () => { } : OnClaim;
             this.canClaim = canClaim == null ? () => true : canClaim;
             Progress();
         }
         public bool CanClaim()
         {
-            return currentTime.Number >= requiredHour.GetValue();
+            return currentTime.Number >= requiredTime;
         }
         public bool CanStart()
         {
@@ -101,7 +102,7 @@ namespace IdleLibrary {
         }
         public float ProgressPercent()
         {
-            return (float)(currentTime.Number / requiredHour.GetValue());
+            return (float)(currentTime.Number / requiredTime);
         }
     }
 
