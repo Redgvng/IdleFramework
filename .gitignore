@@ -55,6 +55,12 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+#Odin
+/Assets/Plugins/Sirenix/Odin Inspector/Config/Resources*
+
+#Editor User Settings
+/UserSettings/EditorUserSettings.asset
+
 # Crashlytics generated file
 crashlytics-build.properties
 

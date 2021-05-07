@@ -1130,8 +1130,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   saveButton: {fileID: 26461545}
   gameTitle: 
-  sceneName: 
-  saveFile_Debug: {fileID: 0}
+  sceneName: SaveTestScene
+  saveFile_Debug: {fileID: 4900000, guid: 0687462bb5352f140a923cda458788fc, type: 3}
 --- !u!114 &1136609099
 MonoBehaviour:
   m_ObjectHideFlags: 0

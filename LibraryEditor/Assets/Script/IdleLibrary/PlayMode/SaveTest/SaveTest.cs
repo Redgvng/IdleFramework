@@ -5,35 +5,45 @@ using UnityEngine.UI;
 using UniRx.Triggers;
 using UniRx;
 using TMPro;
-using System;
-using Sirenix.OdinInspector;
+using Cysharp.Threading.Tasks;
 
 namespace IdleLibrary
 {
+    public enum Resource
+    {
+        cookie,
+        gold,
+        stone
+    }
     public partial class Save
     {
         public double cookie;
-        public Action action = () => { };
-        public Dictionary<double, int> dic;
+        public Dictionary<Resource, int> dic;
     }
     public class SaveTest : SerializedMonoBehaviour
     {
-        public Button Cookie, EffectButton;
         public TextMeshProUGUI cookieText;
-        public Dictionary<double, int> dic { get => Main.main.S.dic; set => Main.main.S.dic = value; }
+        Dictionary<Resource, int> dic { get => Main.main.S.dic; set => Main.main.S.dic = value; }
         // Start is called before the first frame update
         void Start()
         {
-            //dic = new Dictionary<double, int>();
-            //dic.Add(2d, 0);
-            //dic.Add(3d, 1);
+            if (dic == null) dic = new Dictionary<Resource, int>();
             Cookie.onClick.AddListener(() =>
             {
                 IdleLibrary.Main.main.S.cookie++;
             });
             this.ObserveEveryValueChanged(_ => Main.main.S.cookie).Subscribe(_ => cookieText.text = UsefulMethod.tDigit(Main.main.S.cookie));
-            Main.main.S.action();
-            EffectButton.onClick.AddListener(() => { Main.main.S.action = () => { Debug.Log("saved"); Cookie.onClick.Invoke(); Cookie.onClick.Invoke(); Cookie.onClick.Invoke(); }; }) ;
+            //AddItemToDictionary();
+        }
+
+        async void AddItemToDictionary()
+        {
+            await UniTask.Delay(1000);
+            dic[Resource.cookie] = 3;
+            await UniTask.Delay(1000);
+            dic[Resource.gold] = 10;
+            await UniTask.Delay(1000);
+            dic[Resource.stone] = 100;
         }
     }
 }
