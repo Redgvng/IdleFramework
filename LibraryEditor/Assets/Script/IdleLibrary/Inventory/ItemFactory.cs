@@ -9,9 +9,7 @@ namespace IdleLibrary.Inventory
     {
         public static ITEM CreateRandomItem()
         {
-            //‚Ü‚¸‹ó‚ÌƒAƒCƒeƒ€‚ğì‚é
-            var item = new ITEM(-1);
-            return item;
+            return null;
         }
     }
 }

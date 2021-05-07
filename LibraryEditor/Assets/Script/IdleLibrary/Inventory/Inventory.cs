@@ -15,11 +15,11 @@ namespace IdleLibrary.Inventory
         public int cursorId;
         public void ReleaseItem()
         {
-            inputItem = ITEM.CreateNullItem();
+            inputItem = inputItem.CreateNullItem();
         }
         public InputItem()
         {
-            inputItem = new ITEM(-1);
+            inputItem = new NullItem(-1);
             cursorId = -1;
         }
     }
@@ -44,30 +44,28 @@ namespace IdleLibrary.Inventory
         public bool isFull => items.All((item) => item.isSet);
         public readonly int initialInventoryNum = 10;
         int totalInventoryNum => expandNum + initialInventoryNum;
-        private ITEM originalItem;
         //Saveすべき変数を注入する
         //テスト用コンストラクタです
         public Inventory()
         {
             saveData = new InventoryForSave();
-            originalItem = new ITEM(-1);
+            var originalItem = new Item(-1);
             for (int i = 0; i < totalInventoryNum; i++)
             {
                 items.Add(originalItem);
             }
             this.input = new InputItem();
         }
-        public Inventory(InputItem input, ref InventoryForSave saveData, ITEM originalItem = null)
+        public Inventory(InputItem input, ref InventoryForSave saveData)
         {
             if (saveData == null)
                 saveData = new InventoryForSave();
-            this.saveData = saveData;
-            originalItem = originalItem == null ? new ITEM(-1) : originalItem;
+            this.saveData = saveData;;
             if (items.Count == 0)
             {
                 for (int i = 0; i < totalInventoryNum; i++)
                 {
-                    items.Add(originalItem);
+                    items.Add(new NullItem(-1));
                 }
             }
             this.input = input;
@@ -77,7 +75,7 @@ namespace IdleLibrary.Inventory
         //とりあえず何も考えずに...
         public void ExpandInventory()
         {
-            items.Add(new ITEM(-1));
+            items.Add(new NullItem(-1));
             expandNum++;
         }
 
@@ -101,7 +99,7 @@ namespace IdleLibrary.Inventory
         {
             if (index < 0 || index >= totalInventoryNum)
             {
-                return new ITEM(-1);
+                return new NullItem(-1);
             }
 
             return items[index];
@@ -165,7 +163,7 @@ namespace IdleLibrary.Inventory
 
         public void DeleteItem(int index)
         {
-            var nullItem = new ITEM(-1);
+            var nullItem = new NullItem(-1);
             SetItem(nullItem, index);
         }
         public void RegisterItem(int index)

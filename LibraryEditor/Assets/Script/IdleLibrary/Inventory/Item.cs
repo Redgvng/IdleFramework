@@ -7,7 +7,7 @@ namespace IdleLibrary.Inventory
 {
     //抽象クラスにするとシリアライズできない
     [System.Serializable]
-    public class ITEM : IText
+    public abstract class ITEM : IText
     {
         public int id;
         public bool isSet => id >= 0;
@@ -16,27 +16,17 @@ namespace IdleLibrary.Inventory
         {
             this.id = id;
         }
-        public virtual string Text() { return $"----ITEM----\n\n- ID : {id}"; }
-        public static ITEM CreateNullItem() { return new ITEM(-1); }
-
-        //Itemの効果を...
-        //Goldだったらどうするか、
-
-        //TargetNumber
-        NUMBER targetNumber;
-        MultiplierType multiplierType;
-
-        void ItemEffect()
-        {
-            var number = new NUMBER();
-            //number.multiplier.RegisterMultiplier(new MultiplierInfo())
-        }
+        public abstract string Text();
+        public abstract ITEM CreateNullItem();
     }
 
     public class NullItem : ITEM
     {
         public NullItem(int id) : base(id) { }
-
+        public override ITEM CreateNullItem()
+        {
+            return new NullItem(-1);
+        }
         public override string Text()
         {
             return "Null Itemです。これは入ってちゃいけません";
@@ -47,10 +37,17 @@ namespace IdleLibrary.Inventory
     public class Item : ITEM
     {
         public Item(int id) : base(id) { }
+        public override ITEM CreateNullItem()
+        {
+            return new Item(-1);
+        }
+        public override string Text()
+        {
+            return "Test用itemです。";
+        }
     }
 
-    //Itemを継承して自作のアイテムを作ります(セーブ関係上厳しい)
-    
+
     [System.Serializable]
     public class Artifact : ITEM
     {
@@ -58,13 +55,11 @@ namespace IdleLibrary.Inventory
         {
 
         }
-
         public override string Text()
         {
             return $"----ITEM----\n\n- ID : {id}\n\n - Level : {level} \n- Quality : {quality} \n\n\n[Effects in Hidden Challenge]\n- Anti-Magid Power : {antimagicPower}";
         }
-
-        new public ITEM CreateNullItem()
+        public override ITEM CreateNullItem()
         {
             return new Artifact(-1);
         }
