@@ -37,6 +37,7 @@ namespace IdleLibrary
         [OdinSerialize]
         public SaveO SO;
         public SaveDeclare SD;
+        public saveCtrl saveCtrl;
 
 
         public AudioSource SoundEffectSource;

@@ -235,6 +235,8 @@ if (fileuploader) {
             main.SR = SRdata;
             main.S = Sdata;
 
+            main.saveCtrl.setSaveKey();
+
             //yield return new WaitForSeconds(1.0f);
             SceneManager.LoadScene(sceneName);
         }

@@ -778,7 +778,8 @@ MonoBehaviour:
   tick: 1
   SR:
     ascendTime: 
-  SD: {fileID: 0}
+  SD: {fileID: 345078243}
+  saveCtrl: {fileID: 345078242}
   SoundEffectSource: {fileID: 0}
   plainPopText: {fileID: 0}
 --- !u!1 &757917429

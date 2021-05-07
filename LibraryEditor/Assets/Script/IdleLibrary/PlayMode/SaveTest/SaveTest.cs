@@ -34,7 +34,7 @@ namespace IdleLibrary
                 IdleLibrary.Main.main.S.cookie++;
             });
             this.ObserveEveryValueChanged(_ => Main.main.S.cookie).Subscribe(_ => cookieText.text = UsefulMethod.tDigit(Main.main.S.cookie));
-            //AddItemToDictionary();
+            AddItemToDictionary();
         }
 
         async void AddItemToDictionary()
