@@ -14,7 +14,6 @@ namespace IdleLibrary
             //var json = JsonUtility.ToJson(obj);
             var json = Save_Odin.GetJsonFromOdinSave<T>(obj);
             PlayerPrefs.SetString(key, json);
-            Debug.Log(json);
         }
 
         /// <summary>
