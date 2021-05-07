@@ -38,12 +38,12 @@ namespace IdleLibrary {
 
     //Expeditionから、純粋にアイドル時間で何かをする処理を抜き出します。
     [Serializable]
-    public class IdleAction
+    public class IdleAction : IIdleAction
     {
         [SerializeField] private NUMBER currentTime { get; set; }
         [SerializeField] private bool isStarted;
-        private Action OnClaim { get; }
-        private Func<bool> canClaim { get; }
+        [SerializeField] private Action OnClaim { get; }
+        [SerializeField] private Func<bool> canClaim { get; }
         private Cal requiredHour { get; set; }
 
         public IdleAction(float initHour, Action OnClaim = null, Func<bool> canClaim = null)
@@ -99,6 +99,26 @@ namespace IdleLibrary {
         {
             return (float)(currentTime.Number / requiredHour.GetValue());
         }
+    }
+
+    [Serializable]
+    public class IdleActionWithlevel : IIdleAction, ILevel
+    {
+        private readonly IIdleAction idleAction;
+        public long level { get; set; }
+        public IdleActionWithlevel(IIdleAction idleAction)
+        {
+            this.idleAction = idleAction;
+        }
+        public bool CanClaim() => idleAction.CanClaim();
+        public bool CanStart() => idleAction.CanStart();
+        public void Start() => idleAction.Start();
+        public void Claim()
+        {
+            idleAction.Claim();
+            level++;
+        }
+
     }
 
     //IdleActionとの違いは？

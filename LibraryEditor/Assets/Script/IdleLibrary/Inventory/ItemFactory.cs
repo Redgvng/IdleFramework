@@ -17,7 +17,10 @@ namespace IdleLibrary.Inventory
             item.id = id;
 
             var quality = UnityEngine.Random.Range(0, 100);
-            item.quality = quality; 
+            item.quality = quality;
+
+            //IdleActionÇÃê›íË
+            var idleAction = new IdleAction();
 
             return item;
         }

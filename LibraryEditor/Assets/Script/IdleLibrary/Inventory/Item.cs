@@ -73,6 +73,7 @@ namespace IdleLibrary.Inventory
             return new Artifact(-1);
         }
 
+        public IdleAction idleAction { get; set; }
         public long level { get; set; }
         public int quality { get; set; }
         public double antimagicPower { get; set; }
