@@ -16,27 +16,62 @@ namespace IdleLibrary {
         void StartExpedition();
         void Claim();
     }
-
+    [System.Serializable]
+    public class ExpeditionForSave
+    {
+        public long completedNum;
+        public float currentTimeSec;
+        public bool isStarted;
+        public int hourId;
+    }
     public class Expedition : IExpedition
     {
         private readonly ITransaction transaction;
         private readonly IReward reward;
         private float requiredHour;
-        private float currentTimesec;
-        private bool isStarted;
-        float[] requiredHours = new float[] { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 24.0f };
-        int hourId;
+        private float[] requiredHours;
 
-        public Expedition(float initHour, ITransaction transaction = null, IReward reward = null)
+        private readonly int id;
+
+        //Save
+        [SerializeField] private long completedNum { get => saveData[id].completedNum; set => saveData[id].completedNum = value; }
+        [SerializeField] private float currentTimesec { get => saveData[id].currentTimeSec; set => saveData[id].currentTimeSec = value; }
+        [SerializeField] private bool isStarted { get => saveData[id].isStarted; set => saveData[id].isStarted = value; }
+        [SerializeField] private int hourId { get => saveData[id].hourId; set => saveData[id].hourId = value; }
+        [SerializeField] private ExpeditionForSave[] saveData;
+
+        public Expedition(int id, ExpeditionForSave[] saveData, ITransaction transaction = null, IReward reward = null, params float[] requiredHoursArray)
         {
+            this.id = id;
+            this.saveData = saveData;
             this.transaction = transaction == null ? new NullTransaction() : transaction;
-            this.requiredHour = initHour;
+            this.requiredHours = requiredHoursArray;
+            requiredHour = requiredHours[hourId];
             this.reward = reward == null ? new NullReward() : reward;
             Progress();
         }
+        //Test用
+        public Expedition(int id, ITransaction transaction = null, IReward reward = null, params float[] requiredHoursArray)
+        {
+            saveData = new ExpeditionForSave[1]
+            {
+                new ExpeditionForSave()
+            };
+            this.id = id;
+            this.transaction = transaction == null ? new NullTransaction() : transaction;
+            this.requiredHours = requiredHoursArray;
+            if (requiredHours.Length != 0) requiredHour = requiredHours[hourId];
+            this.reward = reward == null ? new NullReward() : reward;
+            Progress();
+        }
+
         public bool IsStarted()
         {
             return isStarted;
+        }
+        public long CompletedNum()
+        {
+            return completedNum;
         }
         public void StartOrClaim()
         {
@@ -81,6 +116,7 @@ namespace IdleLibrary {
                 return;
             isStarted = false;
             currentTimesec = 0;
+            completedNum++;
             Reward();
         }
         private void Reward()
