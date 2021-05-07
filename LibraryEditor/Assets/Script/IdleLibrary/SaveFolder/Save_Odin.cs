@@ -15,7 +15,7 @@ public class SampleClass
 
 //Odin Save
 [System.Serializable]
-public class SaveO
+public partial class SaveO
 {
     public SampleClass sample;
 }
