@@ -16,7 +16,6 @@ namespace IdleLibrary
     public class Load : MonoBehaviour, IPointerDownHandler
     {
         public Button saveButton;
-        public Button saveButtonOnCrazygame;
         string saveTitle, saveContent;
         [SerializeField]
         string gameTitle = "";
@@ -27,13 +26,12 @@ namespace IdleLibrary
         AES aes = new AES();
         public static bool isLoading;
 
-        string[] saveStrArray = new string[6];
-        string[] jsonArray = new string[6];
+        string[] saveStrArray = new string[2];
+        string[] jsonArray = new string[2];
 
         void Start()
         {
             saveButton.onClick.AddListener(() => StartCoroutine(saveText()));
-            saveButtonOnCrazygame.onClick.AddListener(() => StartCoroutine(saveText()));
 
 #if UNITY_EDITOR
 #elif UNITY_WEBGL

@@ -18,7 +18,6 @@ namespace IdleLibrary
 }
 namespace IdleLibrary.Inventory
 {
-
 	public class Inventory_Mono : Subject
 	{
 		
