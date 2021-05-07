@@ -19,10 +19,10 @@ public class ExpeditionSample : MonoBehaviour
         //í â›
         var gold = new NUMBER(100);
         //ExpeditionÇçÏÇÈ
-        var expedition1 = MakeSomeExpedition(gold, new FixedCost(1), 0.5f);
-        var expedition2 = MakeSomeExpedition(gold, new FixedCost(1), 0.5f);
-        var expedition3 = MakeSomeExpedition(gold, new FixedCost(1), 0.5f);
-        var expedition4 = MakeSomeExpedition(gold, new FixedCost(1), 0.5f);
+        var expedition1 = MakeSomeExpedition(1, gold, new FixedCost(1));
+        var expedition2 = MakeSomeExpedition(2, gold, new FixedCost(1));
+        var expedition3 = MakeSomeExpedition(3, gold, new FixedCost(1));
+        var expedition4 = MakeSomeExpedition(4, gold, new FixedCost(1));
 
         //UIÇ∆ïRÇ√ÇØÇÈ(InstantiateÇ∑ÇÈÇ‚ÇËï˚Ç…ïœÇ¶ÇΩÇŸÇ§Ç™Ç¢Ç¢Ç©Ç‡ÇµÇÍÇ»Ç¢)
         expeditions[0].LinkExpedition(expedition1);
@@ -31,10 +31,10 @@ public class ExpeditionSample : MonoBehaviour
         expeditions[3].LinkExpedition(expedition4);
     }
 
-    Expedition MakeSomeExpedition(NUMBER number, ICost cost, float initHour)
+    Expedition MakeSomeExpedition(int id, NUMBER number, ICost cost)
     {
         var transaction = new Transaction(number, cost);
-        return new Expedition(initHour, transaction);
+        return new Expedition(id, new ExpeditionForSave[0], null, null, new float[] { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 24.0f});
     }
 
     // Update is called once per frame

@@ -755,7 +755,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &1863945235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -847,11 +847,55 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1863945237}
     m_Modifications:
+    - target: {fileID: 7628404570267058776, guid: 86a5f1844772d4dd8bd2c11dfc8228fc,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 1438333f74b2be446b2ca0a84a5ccfaf,
+        type: 2}
+    - target: {fileID: 7628404570267058776, guid: 86a5f1844772d4dd8bd2c11dfc8228fc,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 1438333f74b2be446b2ca0a84a5ccfaf, type: 2}
+    - target: {fileID: 7628404570686080242, guid: 86a5f1844772d4dd8bd2c11dfc8228fc,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 1438333f74b2be446b2ca0a84a5ccfaf,
+        type: 2}
+    - target: {fileID: 7628404570686080242, guid: 86a5f1844772d4dd8bd2c11dfc8228fc,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 1438333f74b2be446b2ca0a84a5ccfaf, type: 2}
+    - target: {fileID: 7628404571100910671, guid: 86a5f1844772d4dd8bd2c11dfc8228fc,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 1438333f74b2be446b2ca0a84a5ccfaf,
+        type: 2}
+    - target: {fileID: 7628404571100910671, guid: 86a5f1844772d4dd8bd2c11dfc8228fc,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 1438333f74b2be446b2ca0a84a5ccfaf, type: 2}
     - target: {fileID: 7628404571146288031, guid: 86a5f1844772d4dd8bd2c11dfc8228fc,
         type: 3}
       propertyPath: m_Value
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7628404571252011873, guid: 86a5f1844772d4dd8bd2c11dfc8228fc,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 1438333f74b2be446b2ca0a84a5ccfaf,
+        type: 2}
+    - target: {fileID: 7628404571252011873, guid: 86a5f1844772d4dd8bd2c11dfc8228fc,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 1438333f74b2be446b2ca0a84a5ccfaf, type: 2}
     - target: {fileID: 7628404571405268428, guid: 86a5f1844772d4dd8bd2c11dfc8228fc,
         type: 3}
       propertyPath: m_AnchorMax.x
