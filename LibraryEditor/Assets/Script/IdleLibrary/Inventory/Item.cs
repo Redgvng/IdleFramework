@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.Serialization;
+using Cysharp.Threading.Tasks;
 
 namespace IdleLibrary.Inventory
 {
@@ -58,24 +59,45 @@ namespace IdleLibrary.Inventory
 
 
     [System.Serializable]
-    public class Artifact : ITEM, ILevel
+    public class Artifact : ITEM
     {
         public Artifact(int id) : base(id)
         {
-
+            DelayedInitialize();
         }
         public override string Text()
         {
-            return $"----ITEM----\n- ID : {id}\n\n - Level : {level} \n- Quality : {quality} \n[Effects in Hidden Challenge]\n- Anti-Magid Power : {antimagicPower}";
+            return $"----ITEM----\n- ID : {id}\n\n - Level : {idleAction.level} \n- Quality : {quality} \n- Anti-Magid Power : {antimagicPower}"
+                + $"- Time to Level Up : {(idleAction.currentTime / idleAction.requiredTime).ToString("F2")}";
         }
         public override ITEM CreateNullItem()
         {
             return new Artifact(-1);
         }
 
-        public IdleAction idleAction { get; set; }
-        public long level { get; set; }
+        async void DelayedInitialize()
+        {
+            await UniTask.WaitUntil(() => idleAction != null);
+            idleAction.Start();
+            UpdateIdleAction();
+        }
+        async void UpdateIdleAction()
+        {
+            while (true)
+            {
+                if (idleAction.CanClaim())
+                {
+                    idleAction.Claim();
+                    idleAction.Start();
+                }
+                await UniTask.Delay(1000);
+            }
+        }
+        [OdinSerialize]
+        public IdleActionWithlevel idleAction { get; set; }
+        [OdinSerialize]
         public int quality { get; set; }
+        [OdinSerialize]
         public double antimagicPower { get; set; }
     }
     

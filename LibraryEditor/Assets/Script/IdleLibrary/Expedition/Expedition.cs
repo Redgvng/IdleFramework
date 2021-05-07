@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using System;
+using Sirenix.Serialization;
 
 namespace IdleLibrary {
 
@@ -34,22 +35,25 @@ namespace IdleLibrary {
         bool CanClaim();
         void Start();
         void Claim();
+        float currentTime { get; }
+        float requiredTime { get; }
     }
-
     //Expeditionから、純粋にアイドル時間で何かをする処理を抜き出します。
     [Serializable]
     public class IdleAction : IIdleAction
     {
-        [SerializeField] private NUMBER currentTime { get; set; }
-        [SerializeField] private bool isStarted;
-        [SerializeField] private Action OnClaim { get; }
-        [SerializeField] private Func<bool> canClaim { get; }
-        private Cal requiredHour { get; set; }
+        [OdinSerialize] private NUMBER currentTime { get; set; }
+        [OdinSerialize] private bool isStarted;
+        [OdinSerialize] private Action OnClaim { get; }
+        [OdinSerialize] private Func<bool> canClaim { get; }
+        [OdinSerialize] private Cal requiredHour { get; set; }
+        float IIdleAction.currentTime => (float)currentTime.Number;
+        public float requiredTime => (float)requiredHour.GetValue();
 
         public IdleAction(float initHour, Action OnClaim = null, Func<bool> canClaim = null)
         {
-            this.requiredHour = new Cal(initHour);
-            if (currentTime == null) currentTime = new NUMBER();
+            if(requiredHour == null) this.requiredHour = new Cal(initHour);
+            if(currentTime == null) currentTime = new NUMBER();
             this.OnClaim = OnClaim == null ? () => { } : OnClaim;
             this.canClaim = canClaim == null ? () => true : canClaim;
             Progress();
@@ -101,14 +105,19 @@ namespace IdleLibrary {
         }
     }
 
+    //Levelを持つIdleActionです。
     [Serializable]
     public class IdleActionWithlevel : IIdleAction, ILevel
     {
+        [OdinSerialize]
         private readonly IIdleAction idleAction;
         public long level { get; set; }
+
+        public float currentTime => idleAction.currentTime;
+        public float requiredTime => idleAction.requiredTime;
         public IdleActionWithlevel(IIdleAction idleAction)
         {
-            this.idleAction = idleAction;
+            if(this.idleAction == null) this.idleAction = idleAction;
         }
         public bool CanClaim() => idleAction.CanClaim();
         public bool CanStart() => idleAction.CanStart();
