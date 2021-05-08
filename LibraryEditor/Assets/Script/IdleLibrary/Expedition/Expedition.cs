@@ -109,6 +109,7 @@ namespace IdleLibrary {
     {
         [OdinSerialize]
         private readonly IIdleAction idleAction;
+        [OdinSerialize]
         public long level { get; set; }
 
         public float CurrentTime => idleAction.CurrentTime;

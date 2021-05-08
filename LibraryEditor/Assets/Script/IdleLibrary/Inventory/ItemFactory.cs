@@ -9,11 +9,13 @@ namespace IdleLibrary.Inventory
     public class ItemFactory
     {
         //使うインベントリ
+        /*
         private readonly Inventory targetInventory;
         public ItemFactory(Inventory targetInventory)
         {
             this.targetInventory = targetInventory;
         }
+        */
         //適当にゴールドを強化するという体のItemを作ってみる！
         public ITEM CreateRandomItem()
         {
