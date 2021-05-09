@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using UniRx.Triggers;
+using UniRx;
+using System;
 
 namespace IdleLibrary.Inventory
 {
@@ -43,6 +46,10 @@ namespace IdleLibrary.Inventory
                 if(_itemIconWithMouse == null)
                 {
                     _itemIconWithMouse = Instantiate(inventory_mono.item, MouseImageCanvas);
+                    _itemIconWithMouse.GetOrAddComponent<ObservableEventTrigger>().OnPointerUpAsObservable().Subscribe(_ =>
+                    {
+                        _itemIconWithMouse.SetActive(false);
+                    });
                     _itemIconWithMouse.GetComponent<Image>().raycastTarget = false;
                     _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().raycastTarget = false;
                 }
@@ -55,6 +62,9 @@ namespace IdleLibrary.Inventory
                     _itemIconWithMouse.SetActive(true);
                     _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().sprite = sprites[inventory_mono.inputItem.inputItem.id];
                     _itemIconWithMouse.transform.position = Input.mousePosition;
+                    if(Input.GetMouseButtonUp(0)){
+                        inventory_mono.inputItem.ReleaseItem();
+                    }
                 }
             }
         }
