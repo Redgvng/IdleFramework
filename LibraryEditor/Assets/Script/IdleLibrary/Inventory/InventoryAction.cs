@@ -141,4 +141,28 @@ namespace IdleLibrary.Inventory
         }
     }
 
+    /*
+    public class ShowInfoToTextField_Update : IInventoryAction
+    {
+        private readonly ShowInfoToTextField show;
+        private int currentIndex;
+        public ShowInfoToTextField_Update(ShowInfoToTextField show)
+        {
+            this.show = show;
+            UpdateText();
+        }
+        public void Action(int index)
+        {
+            currentIndex = index;
+        }
+        async void UpdateText()
+        {
+            while (true)
+            {
+                show.Action(currentIndex);
+                await UniTask.Delay(100);
+            }
+        }
+    }
+    */
 }

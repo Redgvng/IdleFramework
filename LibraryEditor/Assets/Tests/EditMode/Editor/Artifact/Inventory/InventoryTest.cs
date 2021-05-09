@@ -171,7 +171,7 @@ namespace Tests
             inventory2.input = input;
             inventory2.SetItemByOrder(new Item(5));
             inventory.SetItemByOrder(new Item(3));
-            var swap = new SwapItem(inventory,input);
+            var swap = new SwapItem(inventory, input);
 
             inventory2.RegisterItem(0);
             swap.Action(0);

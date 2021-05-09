@@ -7,7 +7,6 @@ namespace IdleLibrary
     public interface ICost
     {
         double Cost { get; }
-
     }
 
     public interface IMaxableCost : ICost

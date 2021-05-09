@@ -1,16 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace IdleLibrary.Inventory
 {
     //とりあえず適当に作ってみる...
     public class ItemFactory
     {
-        public static ITEM CreateRandomItem()
+        //使うインベントリ
+        /*
+        private readonly Inventory targetInventory;
+        public ItemFactory(Inventory targetInventory)
         {
-            //まず空のアイテムを作る
-            var item = new ITEM(-1);
+            this.targetInventory = targetInventory;
+        }
+        */
+        //適当にゴールドを強化するという体のItemを作ってみる！
+        public ITEM CreateRandomItem()
+        {
+            var item = new Artifact(-1);
+            //Idを決めます。
+            var id = UnityEngine.Random.Range(0, Enum.GetValues(typeof(ItemId)).Length);
+            item.id = id;
+
+            var quality = UnityEngine.Random.Range(0, 100);
+            item.quality = quality;
+
+            //IdleActionの設定
+            var idleAction = new IdleAction(10);
+            item.idleAction = idleAction;
+
             return item;
         }
     }

@@ -31,22 +31,17 @@ namespace IdleLibrary
         }
     }
 
+    [Serializable]
     public class Cal
     {
-        public Multiplier multiplier = new Multiplier();
+        public Multiplier multiplier;
         private double initialValue;
 
         public Cal(double initialValue)
         {
             this.initialValue = initialValue;
+            multiplier = new Multiplier();
         }
-        /*
-        public Cal(double initialValue, CalsName Name)
-        {
-            this.initialValue = initialValue;
-            DataContainer<Cal>.GetInstance().SetDataByName(this, Name);
-        }
-        */
         public virtual double GetValue() => multiplier.CaluculatedNumber(initialValue);
     }
 

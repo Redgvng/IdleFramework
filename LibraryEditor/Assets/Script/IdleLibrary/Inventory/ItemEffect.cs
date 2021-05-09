@@ -8,9 +8,7 @@ namespace IdleLibrary.Inventory
     //より汎用的に書くには、boolを受け取り、その場合に強化を行うmultiplierを定義する。
     public class ItemEffect
     {
-        public ItemEffect(NUMBER gold, ITEM item)
-        {
+        //Number
 
-        }
     }
 }
