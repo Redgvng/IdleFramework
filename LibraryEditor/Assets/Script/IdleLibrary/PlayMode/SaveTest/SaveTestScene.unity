@@ -778,7 +778,8 @@ MonoBehaviour:
   tick: 1
   SR:
     ascendTime: 
-  SD: {fileID: 0}
+  SD: {fileID: 345078243}
+  saveCtrl: {fileID: 345078242}
   SoundEffectSource: {fileID: 0}
   plainPopText: {fileID: 0}
 --- !u!1 &757917429
@@ -942,6 +943,8 @@ MonoBehaviour:
   Cookie: {fileID: 2092671461}
   EffectButton: {fileID: 1191431396}
   cookieText: {fileID: 268731599}
+  ballPre: {fileID: 3904699992393871157, guid: c41b5d53dac72c5478daccda77b1003d, type: 3}
+  window: {fileID: 757917435}
 --- !u!1 &1085143013
 GameObject:
   m_ObjectHideFlags: 0
