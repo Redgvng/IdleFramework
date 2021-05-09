@@ -6,6 +6,7 @@ using UniRx.Triggers;
 using UniRx;
 using TMPro;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 
 namespace IdleLibrary
 {
@@ -21,8 +22,9 @@ namespace IdleLibrary
         public Dictionary<Resource, int> dic;
         public GameObject ball;
     }
-    public class SaveTest : MonoBehaviour
+    public class SaveTest : SerializedMonoBehaviour
     {
+        public GameObject sampleObject;
         public Button Cookie;
         public TextMeshProUGUI cookieText;
         Dictionary<Resource, int> dic { get => Main.main.S.dic; set => Main.main.S.dic = value; }

@@ -30,12 +30,8 @@ namespace IdleLibrary
 
         [SerializeField]
         public SaveR SR;
-        [NonSerialized]
-        [OdinSerialize]
-        public Save S;
-        [NonSerialized]
-        [OdinSerialize]
-        public SaveO SO;
+        [NonSerialized] [OdinSerialize] public Save S;
+        [NonSerialized] [OdinSerialize] public SaveO SO;
         public SaveDeclare SD;
         public saveCtrl saveCtrl;
 
