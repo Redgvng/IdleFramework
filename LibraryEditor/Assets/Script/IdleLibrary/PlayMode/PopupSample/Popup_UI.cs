@@ -52,18 +52,11 @@ namespace IdleLibrary.UI
         {
             iconImage.sprite = spr;
         }
-
         void Awake()
         {
             thisRect = gameObject.GetComponent<RectTransform>();
             setFalse(gameObject);
         }
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
         // Update is called once per frame
         void Update()
         {
