@@ -222,7 +222,6 @@ MonoBehaviour:
   GenerateItemButton: {fileID: 1094505888}
   ExpandInventory: {fileID: 556688981}
   ExpandEquipmentInventory: {fileID: 348771211}
-  SortByIdButton: {fileID: 0}
   item: {fileID: 4109965076950982275, guid: 7b9eb2a05d838354e9e62b6d419cae57, type: 3}
   inventoryItemInfoText: {fileID: 1471221699}
   canvas: {fileID: 1864212063}
@@ -393,7 +392,7 @@ PrefabInstance:
     - target: {fileID: 2510264189067025618, guid: fe840e9a608bd644c93eac5d6a30e3f1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 288.28
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2510264189067025618, guid: fe840e9a608bd644c93eac5d6a30e3f1,
         type: 3}
@@ -691,7 +690,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &241136919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -855,7 +854,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &274367801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2227,7 +2226,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &1496428170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2425,7 +2424,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &1864212066
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -28,8 +28,6 @@ namespace IdleLibrary.Inventory
 		Button ExpandInventory;
 		[SerializeField]
 		Button ExpandEquipmentInventory;
-		[SerializeField]
-		Button SortByIdButton;
 		
 
 		public GameObject item;
@@ -107,10 +105,6 @@ namespace IdleLibrary.Inventory
 			ExpandEquipmentInventory.OnClickAsObservable().Subscribe(_ =>
 			{
 				equipmentInventory.inventory.ExpandInventory();
-			});
-			SortByIdButton.OnClickAsObservable().Subscribe(_ =>
-			{
-				inventory.inventory.SortById();
 			});
 
 			Notify();
