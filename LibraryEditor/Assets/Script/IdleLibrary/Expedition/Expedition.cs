@@ -24,9 +24,9 @@ namespace IdleLibrary {
         public bool isStarted;
         public int hourId;
     }
-    public class Expedition : IExpedition
+    public class Expedition : IExpedition, ILevel
     {
-        private readonly ITransaction transaction;
+        private ITransaction transaction;
         private readonly IReward reward;
         private float requiredHour;
         private float[] requiredHours;
@@ -38,6 +38,8 @@ namespace IdleLibrary {
         [SerializeField] private float currentTimesec { get => saveData[id].currentTimeSec; set => saveData[id].currentTimeSec = value; }
         [SerializeField] private bool isStarted { get => saveData[id].isStarted; set => saveData[id].isStarted = value; }
         [SerializeField] private int hourId { get => saveData[id].hourId; set => saveData[id].hourId = value; }
+        [SerializeField] public long level { get => completedNum; set => completedNum = value; }
+
         [SerializeField] private ExpeditionForSave[] saveData;
 
         public Expedition(int id, ExpeditionForSave[] saveData, ITransaction transaction = null, IReward reward = null, params float[] requiredHoursArray)
@@ -49,6 +51,10 @@ namespace IdleLibrary {
             requiredHour = requiredHours[hourId];
             this.reward = reward == null ? new NullReward() : reward;
             Progress();
+        }
+        public void SetTransaction(ITransaction transaction)
+        {
+            this.transaction = transaction;
         }
         //Test用
         public Expedition(int id, ITransaction transaction = null, IReward reward = null, params float[] requiredHoursArray)
