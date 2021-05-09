@@ -26,6 +26,9 @@ namespace IdleLibrary.UI
         }
         async void ShowWindow()
         {
+            //To resolve the bug of ContentSizeFitter
+            setActive(windowObject);
+            setFalse(windowObject);
             bool tempBool = false;
             while (true)
             {
