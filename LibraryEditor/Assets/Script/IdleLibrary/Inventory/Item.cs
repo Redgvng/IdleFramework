@@ -99,8 +99,8 @@ namespace IdleLibrary.Inventory
         }
         public Action StartIdleAction => DelayedInitialize;
         [OdinSerialize] public IdleAction idleAction { get; set; }
-        [OdinSerialize] public int quality { get; set; }
-        [OdinSerialize] public double antimagicPower { get; set; }
+        public int quality;
+        public double antimagicPower;
     }
     
 }
