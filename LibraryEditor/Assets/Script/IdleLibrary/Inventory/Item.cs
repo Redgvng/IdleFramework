@@ -68,11 +68,8 @@ namespace IdleLibrary.Inventory
         }
         public override string Text()
         {
-            return "";
-            /*
-            return $"----ITEM----\n- ID : {id}\n\n - Level : {idleAction.level} \n- Quality : {quality} \n- Anti-Magid Power : {antimagicPower}"
+            return $"----ITEM----\n- ID : {id}\n\n - Level : {level} \n- Quality : {quality} \n- Anti-Magid Power : {antimagicPower}"
                 + $"- Time to Level Up : {(idleAction.CurrentTime / idleAction.RequiredTime).ToString("F2")}";
-            */
         }
         public override ITEM CreateNullItem()
         {
@@ -97,6 +94,7 @@ namespace IdleLibrary.Inventory
                 await UniTask.Delay(1000);
             }
         }
+        public long level;
         public Action StartIdleAction => DelayedInitialize;
         [OdinSerialize] public IdleAction idleAction { get; set; }
         public int quality;

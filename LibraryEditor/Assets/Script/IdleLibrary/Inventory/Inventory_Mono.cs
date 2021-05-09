@@ -82,6 +82,18 @@ namespace IdleLibrary.Inventory
 			pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.UpdateUI(
 				LocationKind.MouseFollow, inputItem.hoveredInventory.GetItem(inputItem.cursorId)));
 
+			//ItemのIdle Actionの設定をします
+			equipmentInventory.inventory.GetItems().ToList().ForEach((x) =>
+			{
+				Artifact arti = null;
+				if (x is Artifact) arti = x as Artifact;
+				if (arti != null)
+                {
+					arti.idleAction.Initialize();
+					arti.idleAction.Start();
+                }
+			});
+
 			//ItemFactoryを作ります
 			var itemFactory = new ItemFactory();
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
