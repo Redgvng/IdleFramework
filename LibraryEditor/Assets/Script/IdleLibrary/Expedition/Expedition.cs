@@ -137,6 +137,13 @@ namespace IdleLibrary {
     }
     */
 
+    public class ExpeditionForSave
+    {
+        public long completedNum;
+        public float currentTimeSec;
+        public bool isStarted;
+        public int hourId;
+    }
     //IdleActionとの違いは？
     //- transactionを持つ
     //- rewardを持つ
