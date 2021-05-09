@@ -28,7 +28,7 @@ namespace IdleLibrary.Inventory
             item.quality = quality;
 
             //IdleActionÇÃê›íË
-            var idleAction = new IdleActionWithlevel(new IdleAction(10));
+            var idleAction = new IdleAction(10);
             item.idleAction = idleAction;
 
             return item;

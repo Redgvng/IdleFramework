@@ -8,6 +8,7 @@ using UniRx;
 using UniRx.Triggers;
 using Cysharp.Threading.Tasks;
 using System.Linq;
+using IdleLibrary.UI;
 
 namespace IdleLibrary
 {
@@ -48,6 +49,8 @@ namespace IdleLibrary.Inventory
 		public InventoryInfo inventory;
 		public InventoryInfo equipmentInventory;
 
+		[SerializeField] Popup_UI pop;
+
 		// Use this for initialization
 		void Awake()
 		{
@@ -74,9 +77,10 @@ namespace IdleLibrary.Inventory
 			equipmentInventory.AddRightaction(new RevertItemToOtherInventory(equipmentInventory.inventory, inventory.inventory));
 			equipmentInventory.AddLeftAction(new ShowInfoToTextField(equipmentInventory.inventory, inventoryItemInfoText));
 
-			//Canvasの外に出たらcursorIdを-1にする
-			//canvas.gameObject.GetOrAddComponent<ObservableEventTrigger>().OnPointerExitAsObservable()
-			//	.Subscribe(_ => inputItem.cursorId = -1);
+			//ここにPopUpを書きます
+			var popUp = new Popup(() => inputItem.cursorId != -1, pop.gameObject);
+			pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.UpdateUI(
+				LocationKind.MouseFollow, inputItem.hoveredInventory.GetItem(inputItem.cursorId)));
 
 			//ItemFactoryを作ります
 			var itemFactory = new ItemFactory();
@@ -96,24 +100,10 @@ namespace IdleLibrary.Inventory
 			{
 				inventory.inventory.SortById();
 			});
-			
 
-			//SaveInventory();
 			Notify();
 		}
 
-		/*
-		private async void SaveInventory()
-        {
-			while (true)
-			{
-				Main.main.S.inventory = inventory.inventory.saveData;
-				Main.main.S.equipmentInventory = equipmentInventory.inventory.saveData;
-				await UniTask.DelayFrame(60);
-			}
-        }
-		*/
-		
         private void Update()
         {
 			Notify();

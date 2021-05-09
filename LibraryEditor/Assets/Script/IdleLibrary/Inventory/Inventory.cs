@@ -11,7 +11,10 @@ namespace IdleLibrary.Inventory
     {
         public ITEM inputItem;
         public int index;
+        //クリックされた時に登録されます
         public Inventory inputInventory;
+        //ホバーしたときに登録されます
+        public Inventory hoveredInventory;
         public int cursorId;
         public void ReleaseItem()
         {

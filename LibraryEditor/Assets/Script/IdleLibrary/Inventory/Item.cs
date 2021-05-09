@@ -68,8 +68,11 @@ namespace IdleLibrary.Inventory
         }
         public override string Text()
         {
+            return "";
+            /*
             return $"----ITEM----\n- ID : {id}\n\n - Level : {idleAction.level} \n- Quality : {quality} \n- Anti-Magid Power : {antimagicPower}"
                 + $"- Time to Level Up : {(idleAction.CurrentTime / idleAction.RequiredTime).ToString("F2")}";
+            */
         }
         public override ITEM CreateNullItem()
         {
@@ -95,7 +98,7 @@ namespace IdleLibrary.Inventory
             }
         }
         public Action StartIdleAction => DelayedInitialize;
-        [OdinSerialize] public IdleActionWithlevel idleAction { get; set; }
+        [OdinSerialize] public IdleAction idleAction { get; set; }
         [OdinSerialize] public int quality { get; set; }
         [OdinSerialize] public double antimagicPower { get; set; }
     }

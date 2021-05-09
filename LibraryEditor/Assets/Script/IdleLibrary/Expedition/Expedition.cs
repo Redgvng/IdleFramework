@@ -104,6 +104,7 @@ namespace IdleLibrary {
     }
 
     //Levelを持つIdleActionです。
+    /*
     [Serializable]
     public class IdleActionWithlevel : IIdleAction, ILevel
     {
@@ -115,6 +116,8 @@ namespace IdleLibrary {
         public float CurrentTime => idleAction.CurrentTime;
         public float RequiredTime => idleAction.RequiredTime;
         public bool CanClaim() => idleAction.CanClaim();
+        public bool CanStart() => idleAction.CanStart();
+        public void Start() => idleAction.Start();
 
         public IdleActionWithlevel(IIdleAction idleAction)
         {
@@ -125,17 +128,8 @@ namespace IdleLibrary {
             idleAction.Claim();
             level++;
         }
-
-        public void Start()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool CanStart()
-        {
-            throw new NotImplementedException();
-        }
     }
+    */
 
     //IdleActionとの違いは？
     //- transactionを持つ

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UniRx;
-using Cysharp.Threading.Tasks;
 using Sirenix.Serialization;
 
 namespace IdleLibrary

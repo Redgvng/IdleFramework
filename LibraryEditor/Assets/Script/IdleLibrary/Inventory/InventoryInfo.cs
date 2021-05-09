@@ -101,6 +101,11 @@ public class InventoryInfo
 		item.GetOrAddComponent<ObservableEventTrigger>().OnPointerEnterAsObservable()
 			.Subscribe(_ => {
 				inputItem.cursorId = items.IndexOf(item);
+				inputItem.hoveredInventory = inventory;
+			});
+		item.GetOrAddComponent<ObservableEventTrigger>().OnPointerExitAsObservable()
+			.Subscribe(_ => {
+				inputItem.cursorId = -1;
 			});
 		item.GetOrAddComponent<ObservableEventTrigger>().OnBeginDragAsObservable()
 			.Subscribe(_ => _holdAction[0].Action(items.IndexOf(item)));

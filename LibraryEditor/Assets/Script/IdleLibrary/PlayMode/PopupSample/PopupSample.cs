@@ -32,7 +32,7 @@ namespace IdleLibrary.UI
         void SetUI(GameObject targetObject, Popup_UI popup_ui, LocationKind locationKind, IText description, Sprite iconSprite = null)
         {
             var eventTrigger = targetObject.AddComponent<ObservableEventTrigger>();
-            eventTrigger.OnPointerEnterAsObservable().Subscribe(data => { isOver = true; popup_ui.UpdateUI(locationKind, description, iconSprite); });
+            eventTrigger.OnPointerEnterAsObservable().Subscribe(data => { popup_ui.UpdateUI(locationKind, description, iconSprite); isOver = true; });
             eventTrigger.OnPointerExitAsObservable().Subscribe(data => { isOver = false; });
         }
         bool ShowCondition()
