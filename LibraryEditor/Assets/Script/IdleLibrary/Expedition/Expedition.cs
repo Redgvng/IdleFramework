@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 using Cysharp.Threading.Tasks;
 
 namespace IdleLibrary {
@@ -29,7 +30,7 @@ namespace IdleLibrary {
         private ITransaction transaction;
         private readonly IReward reward;
         private float requiredHour;
-        private float[] requiredHours;
+        private Func<float[]> requiredHours;
 
         private readonly int id;
 
@@ -42,13 +43,13 @@ namespace IdleLibrary {
 
         [SerializeField] private ExpeditionForSave[] saveData;
 
-        public Expedition(int id, ExpeditionForSave[] saveData, ITransaction transaction = null, IReward reward = null, params float[] requiredHoursArray)
+        public Expedition(int id, ExpeditionForSave[] saveData, Func<float[]> requiredHoursArray = null, ITransaction transaction = null, IReward reward = null)
         {
             this.id = id;
             this.saveData = saveData;
             this.transaction = transaction == null ? new NullTransaction() : transaction;
             this.requiredHours = requiredHoursArray;
-            requiredHour = requiredHours[hourId];
+            requiredHour = requiredHours()[hourId];
             this.reward = reward == null ? new NullReward() : reward;
             Progress();
         }
@@ -57,7 +58,7 @@ namespace IdleLibrary {
             this.transaction = transaction;
         }
         //Test用
-        public Expedition(int id, ITransaction transaction = null, IReward reward = null, params float[] requiredHoursArray)
+        public Expedition(int id, Func<float[]> requiredHoursArray = null, ITransaction transaction = null, IReward reward = null)
         {
             saveData = new ExpeditionForSave[1]
             {
@@ -66,7 +67,7 @@ namespace IdleLibrary {
             this.id = id;
             this.transaction = transaction == null ? new NullTransaction() : transaction;
             this.requiredHours = requiredHoursArray;
-            if (requiredHours.Length != 0) requiredHour = requiredHours[hourId];
+            if (requiredHours().Length != 0) requiredHour = requiredHours()[hourId];
             this.reward = reward == null ? new NullReward() : reward;
             Progress();
         }
@@ -143,10 +144,10 @@ namespace IdleLibrary {
             if (IsStarted())
                 return;
             if (isRight)
-                hourId = hourId < requiredHours.Length - 1 ? hourId + 1 : 0;
+                hourId = hourId < requiredHours().Length - 1 ? hourId + 1 : 0;
             else
-                hourId = hourId > 0 ? hourId - 1 : requiredHours.Length - 1;
-            SelectTime(requiredHours[hourId]);
+                hourId = hourId > 0 ? hourId - 1 : requiredHours().Length - 1;
+            SelectTime(requiredHours()[hourId]);
         }
         public void IncreaseCurrentTime(float timesec) 
         {
