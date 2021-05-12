@@ -31,21 +31,34 @@ namespace IdleLibrary.Inventory
     public class SwapItem : IInventoryAction
     {
         private readonly Inventory inventory;
-        private readonly InputItem inputItem;
-        public SwapItem(Inventory inventory, InputItem inputItem)
+        public SwapItem(Inventory inventory)
         {
             this.inventory = inventory;
-            this.inputItem = inputItem;
         }
         public void Action(int index)
         {
             if (inventory.input.inputItem.id != -1)
             {
                 inventory.SwapItem(index, inventory.input);
-                inputItem.ReleaseItem();
+                inventory.input.ReleaseItem();
                 return;
             }
             inventory.RegisterItem(index);
+        }
+    }
+    //まずstack判定を行い、その後スワップを行います。
+    public class StackAndSwapItem : IInventoryAction
+    {
+        private readonly Inventory inventory;
+        private readonly SwapItem swap;
+        public StackAndSwapItem(Inventory inventory)
+        {
+            this.inventory = inventory;
+            swap = new SwapItem(inventory);
+        }
+        public void Action(int index)
+        {
+            if()
         }
     }
 

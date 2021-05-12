@@ -9,8 +9,8 @@ namespace IdleLibrary.Inventory
 {
     public interface IStackableItem
     {
-        int stackedNumber { get; set; }
-        bool CanStacked(ITEM item);
+        bool CanStack(ITEM item);
+        void Stack(ITEM item);
     }
     //抽象クラスにするとシリアライズできない
     [System.Serializable]
@@ -60,11 +60,15 @@ namespace IdleLibrary.Inventory
         public StackableItem(int id) : base(id) { stackedNumber = -1; }
         [OdinSerialize] public int stackedNumber { get; set; }
 
-        public bool CanStacked(ITEM item)
+        public bool CanStack(ITEM item)
         {
             if (!(item is StackableItem)) return false;
             if (item.id == this.id) return true;
             else return false;
+        }
+        public void Stack(ITEM item)
+        {
+            stackedNumber++;
         }
 
         public override ITEM CreateNullItem()
