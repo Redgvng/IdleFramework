@@ -10,7 +10,7 @@ public class ExpeditionTest
     [Test]
     public void ShouldStartWithoutCost()
     {
-        var expedition = new Expedition(0, new Transaction(new NUMBER(), new NullCost()));
+        var expedition = new Expedition(0, () => new float[]{ 1.0f }, new Transaction(new NUMBER(), new NullCost()));
         Assert.IsTrue(expedition.CanStart());
     }
     [Test]
@@ -19,13 +19,13 @@ public class ExpeditionTest
         var number = new NUMBER(100);
         var cost = new FixedCost(30);
         var transaction = new Transaction(number, cost);
-        var expedition = new Expedition(0, transaction);
+        var expedition = new Expedition(0, () => new float[] { 1.0f }, transaction);
         Assert.IsTrue(expedition.CanStart());
     }
     [Test]
     public void ShouldIncreaseCurrentTime()
     {
-        var expedition = new Expedition(0, new Transaction(new NUMBER(), new NullCost()));
+        var expedition = new Expedition(0, () => new float[] { 1.0f }, new Transaction(new NUMBER(), new NullCost()));
         expedition.IncreaseCurrentTime(1 * 3600);
         Assert.IsTrue(expedition.CanClaim());
     }
@@ -35,7 +35,7 @@ public class ExpeditionTest
         var number = new NUMBER(100);
         var cost = new FixedCost(30);
         var transaction = new Transaction(number, cost);
-        var expedition = new Expedition(0, transaction);
+        var expedition = new Expedition(0, () => new float[] { 1.0f }, transaction);
         expedition.StartExpedition();
         expedition.IncreaseCurrentTime(1 * 3600);
         Assert.IsTrue(expedition.CanClaim());
@@ -48,7 +48,7 @@ public class ExpeditionTest
         var gold = new NUMBER();
         var stone = new NUMBER();
         var reward = new NumberReward((gold, 100), (stone, 50));
-        var expedition = new Expedition(0, null, reward);
+        var expedition = new Expedition(0, () => new float[] { 1.0f }, null, reward);
 
         expedition.StartExpedition();
         expedition.IncreaseCurrentTime(1 * 3600);
