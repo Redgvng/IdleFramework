@@ -5,18 +5,9 @@ using System;
 
 namespace IdleLibrary.Inventory
 {
-    //とりあえず適当に作ってみる...
+
     public class ItemFactory
     {
-        //使うインベントリ
-        /*
-        private readonly Inventory targetInventory;
-        public ItemFactory(Inventory targetInventory)
-        {
-            this.targetInventory = targetInventory;
-        }
-        */
-        //適当にゴールドを強化するという体のItemを作ってみる！
         public ITEM CreateRandomItem()
         {
             var item = new Artifact(-1);

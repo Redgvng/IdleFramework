@@ -40,6 +40,7 @@ namespace IdleLibrary.UI
         }
         public void UpdateUI(LocationKind locationKind, IText descriptionString, Sprite iconSprite = null)
         {
+            Debug.Log("よばれｔるよ");
             this.locationKind = locationKind;
             UpdateText(descriptionString);
             if (iconSprite != null) UpdateIcon(iconSprite);

@@ -4,6 +4,7 @@ using UnityEngine;
 using Sirenix.Serialization;
 using Cysharp.Threading.Tasks;
 using System;
+using System.Linq;
 
 namespace IdleLibrary.Inventory
 {
@@ -91,13 +92,18 @@ namespace IdleLibrary.Inventory
         }
         public override string Text()
         {
-            return $"----ITEM----\n- ID : {id}\n\n - Level : {level} \n- Quality : {quality} \n- Anti-Magid Power : {antimagicPower}"
-                + $""
-                + $"- Time to Level Up : {(idleAction.CurrentTime / idleAction.RequiredTime).ToString("F2")}";
+            return $"----ARTIFACT----\n- ID : {id}\n\n- Level : {level} \n- Quality : {quality} \n- Anti-Magid Power : {antimagicPower}"
+                + "\n[Effect]" + EffectText()
+                + $"\n- Time to Level Up : {(idleAction.CurrentTime / idleAction.RequiredTime).ToString("F2")}";
         }
         public string EffectText()
         {
-            return "";
+            string text = "";
+            foreach (var item in effect)
+            {
+                text += $"\n {item.Key} : " + UsefulMethod.tDigit(item.Value(), 1);
+            }
+            return text;
         }
         public override ITEM CreateNullItem()
         {
@@ -122,7 +128,7 @@ namespace IdleLibrary.Inventory
                 await UniTask.Delay(1000);
             }
         }
-        public Dictionary<string, Func<double>> effect = new Dictionary<string, Func<double>>();
+        [OdinSerialize] public Dictionary<string, Func<double>> effect = new Dictionary<string, Func<double>>();
         public long level;
         public Action StartIdleAction => DelayedInitialize;
         [OdinSerialize] public IdleAction idleAction { get; set; }

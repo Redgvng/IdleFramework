@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using UniRx.Triggers;
 using UniRx;
 using System;
+using IdleLibrary.UI;
 
 namespace IdleLibrary.Inventory
 {
@@ -17,6 +18,8 @@ namespace IdleLibrary.Inventory
         public Sprite lockedSprite;
         public Transform MouseImageCanvas;
         GameObject _itemIconWithMouse;
+        Popup popUp;
+        [SerializeField] Popup_UI pop;
 
         void Awake()
         {
@@ -29,6 +32,16 @@ namespace IdleLibrary.Inventory
             if(subject is Inventory_Mono)
             {
                 var inventory_mono = subject as Inventory_Mono;
+
+                //ポップアップの設定
+                if(popUp == null)
+                {
+                    popUp = new Popup(() => inventory_mono.inputItem.cursorId != -1, pop.gameObject);
+                    pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.UpdateUI(
+                        LocationKind.Corner, inventory_mono.inputItem.hoveredInventory.GetItem(inventory_mono.inputItem.cursorId)));
+                }
+
+                //アイテム画像の更新
                 foreach(var info in inventory_mono.UIInfoList)
                 {
                     int index = 0;

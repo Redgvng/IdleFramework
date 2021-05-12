@@ -47,8 +47,6 @@ namespace IdleLibrary.Inventory
 		public InventoryInfo inventory;
 		public InventoryInfo equipmentInventory;
 
-		[SerializeField] Popup_UI pop;
-
 		// Use this for initialization
 		void Awake()
 		{
@@ -75,11 +73,6 @@ namespace IdleLibrary.Inventory
 			equipmentInventory.AddRightaction(new RevertItemToOtherInventory(equipmentInventory.inventory, inventory.inventory));
 			equipmentInventory.AddLeftAction(new ShowInfoToTextField(equipmentInventory.inventory, inventoryItemInfoText));
 
-			//ここにPopUpを書きます
-			var popUp = new Popup(() => inputItem.cursorId != -1, pop.gameObject);
-			pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.UpdateUI(
-				LocationKind.MouseFollow, inputItem.hoveredInventory.GetItem(inputItem.cursorId)));
-
 			//ItemのIdle Actionの設定をします.
 			equipmentInventory.inventory.GetItems().ToList().ForEach((x) =>
 			{
@@ -95,8 +88,8 @@ namespace IdleLibrary.Inventory
 			//ItemFactoryを作ります
 			var itemFactory = new ItemFactory();
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
-				//var item = itemFactory.CreateRandomItem();
-				var item = new StackableItem(UnityEngine.Random.Range(0,5));
+				var item = itemFactory.CreateRandomItem();
+				//var item = new StackableItem(UnityEngine.Random.Range(0,5));
 				inventory.inventory.SetItemByOrder(item);
 				});
 			ExpandInventory.OnClickAsObservable().Subscribe(_ =>

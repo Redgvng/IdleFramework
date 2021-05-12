@@ -226,7 +226,6 @@ MonoBehaviour:
   inventoryItemInfoText: {fileID: 1471221699}
   canvas: {fileID: 1864212063}
   EquipmentCanvas: {fileID: 274367793}
-  pop: {fileID: 124161680}
 --- !u!114 &71000958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +246,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3ea471d85422f234e84c33cd638eb3ba, type: 3}
   lockedSprite: {fileID: 21300000, guid: ae6ae6193a9ac4d42bf65cc080e72149, type: 3}
   MouseImageCanvas: {fileID: 241136917}
+  pop: {fileID: 124161680}
 --- !u!1001 &124161678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -392,7 +392,7 @@ PrefabInstance:
     - target: {fileID: 2510264189067025618, guid: fe840e9a608bd644c93eac5d6a30e3f1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 288.28
       objectReference: {fileID: 0}
     - target: {fileID: 2510264189067025618, guid: fe840e9a608bd644c93eac5d6a30e3f1,
         type: 3}
@@ -1612,7 +1612,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &952967716
 MonoBehaviour:
   m_ObjectHideFlags: 0
