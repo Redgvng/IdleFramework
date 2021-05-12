@@ -21,7 +21,15 @@ namespace IdleLibrary
         public int NumberAsInt => (int)Number;
         [OdinSerialize] public virtual double Number { get; set; }
         [OdinSerialize] public virtual double TotalNumber { get; set; }
-        public Multiplier multiplier { get; }
+        public Multiplier multiplier {
+            get
+            {
+                if (_multiplier == null) return new Multiplier();
+                return _multiplier;
+            }
+            set => _multiplier = value;
+        }
+        private Multiplier _multiplier;
         public bool CanSet => true;
 
         //Private
@@ -30,15 +38,9 @@ namespace IdleLibrary
         //ユニットテスト用コンストラクタ
         public NUMBER(double initialValue = 0)
         {
-            multiplier = new Multiplier();
             Number = initialValue;
         }
 
-        //本番用コンストラクタ
-        public NUMBER()
-        {
-            multiplier = new Multiplier();
-        }
         public virtual void IncrementNumber(double increment = 1, bool isNetValue = false)
         {
             Number += !isNetValue ? multiplier.CaluculatedNumber(increment) : increment;

@@ -7,14 +7,10 @@ using System;
 
 namespace IdleLibrary.Inventory
 {
-    public enum ItemId
+    public interface IStackableItem
     {
-        sample1,
-        sample2,
-        sample3,
-        sample4,
-        sample5,
-
+        int stackedNumber { get; set; }
+        bool CanStacked(ITEM item);
     }
     //抽象クラスにするとシリアライズできない
     [System.Serializable]
@@ -47,7 +43,8 @@ namespace IdleLibrary.Inventory
     [System.Serializable]
     public class Item : ITEM
     {
-        public Item(int id) : base(id) { }
+        public Item(int id) : base(id) {}
+
         public override ITEM CreateNullItem()
         {
             return new Item(-1);
@@ -57,7 +54,28 @@ namespace IdleLibrary.Inventory
             return "Test用itemです。";
         }
     }
+    [System.Serializable]
+    public class StackableItem : ITEM, IStackableItem
+    {
+        public StackableItem(int id) : base(id) { stackedNumber = -1; }
+        [OdinSerialize] public int stackedNumber { get; set; }
 
+        public bool CanStacked(ITEM item)
+        {
+            if (!(item is StackableItem)) return false;
+            if (item.id == this.id) return true;
+            else return false;
+        }
+
+        public override ITEM CreateNullItem()
+        {
+            return new StackableItem(-1);
+        }
+        public override string Text()
+        {
+            return $"Test用Stackableなアイテムです。現在{stackedNumber}個スタックしています";
+        }
+    }
 
     [System.Serializable]
     public class Artifact : ITEM
@@ -69,7 +87,12 @@ namespace IdleLibrary.Inventory
         public override string Text()
         {
             return $"----ITEM----\n- ID : {id}\n\n - Level : {level} \n- Quality : {quality} \n- Anti-Magid Power : {antimagicPower}"
+                + $""
                 + $"- Time to Level Up : {(idleAction.CurrentTime / idleAction.RequiredTime).ToString("F2")}";
+        }
+        public string EffectText()
+        {
+            return "";
         }
         public override ITEM CreateNullItem()
         {
@@ -94,6 +117,7 @@ namespace IdleLibrary.Inventory
                 await UniTask.Delay(1000);
             }
         }
+        public Dictionary<string, Func<double>> effect = new Dictionary<string, Func<double>>();
         public long level;
         public Action StartIdleAction => DelayedInitialize;
         [OdinSerialize] public IdleAction idleAction { get; set; }
