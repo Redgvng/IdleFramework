@@ -13,7 +13,7 @@ namespace IdleLibrary.Inventory
         public int index;
         //クリックされた時に登録されます
         public Inventory inputInventory;
-        //ホバーしたときに登録されます
+        //ホバーしたときに登録されます.ホバーを登録していないときに、この変数が見えているのは良くない。
         public Inventory hoveredInventory;
         public int cursorId;
         public void ReleaseItem()

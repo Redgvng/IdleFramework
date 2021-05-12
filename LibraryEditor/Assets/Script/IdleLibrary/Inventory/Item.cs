@@ -57,7 +57,7 @@ namespace IdleLibrary.Inventory
     [System.Serializable]
     public class StackableItem : ITEM, IStackableItem
     {
-        public StackableItem(int id) : base(id) { stackedNumber = -1; }
+        public StackableItem(int id) : base(id) { stackedNumber = 1; }
         [OdinSerialize] public int stackedNumber { get; set; }
 
         public bool CanStack(ITEM item)
@@ -68,7 +68,8 @@ namespace IdleLibrary.Inventory
         }
         public void Stack(ITEM item)
         {
-            stackedNumber++;
+            var it = item as StackableItem;
+            stackedNumber += it.stackedNumber;
         }
 
         public override ITEM CreateNullItem()
@@ -77,7 +78,7 @@ namespace IdleLibrary.Inventory
         }
         public override string Text()
         {
-            return $"Test用Stackableなアイテムです。現在{stackedNumber}個スタックしています";
+            return $"This is a stackable item for a test purpose. \n Currently {stackedNumber} items are stacked.";
         }
     }
 

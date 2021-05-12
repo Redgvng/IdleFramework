@@ -7,9 +7,9 @@ using IdleLibrary.Inventory;
 using System.Linq;
 using IdleLibrary;
 
-namespace Tests
+namespace Tests.inventory
 {
-    public class InventoryTest
+    public class BasicOperationTest
     {
         [Test]
         public void CanSetItem()
@@ -73,7 +73,7 @@ namespace Tests
             var item = new Item(3);
             inventory.ExpandInventory();
             inventory.SetItem(item, 2);
-            var swap = new SwapItem(inventory,inventory.input);
+            var swap = new SwapItem(inventory);
 
             inventory.RegisterItem(2);
             swap.Action(10);
@@ -171,7 +171,7 @@ namespace Tests
             inventory2.input = input;
             inventory2.SetItemByOrder(new Item(5));
             inventory.SetItemByOrder(new Item(3));
-            var swap = new SwapItem(inventory, input);
+            var swap = new SwapItem(inventory);
 
             inventory2.RegisterItem(0);
             swap.Action(0);
@@ -186,7 +186,7 @@ namespace Tests
             var inventory = new Inventory();
             inventory.SetItemByOrder(new Item(3));
             inventory.SetItemByOrder(new Item(4));
-            var swap = new SwapItem(inventory, inventory.input);
+            var swap = new SwapItem(inventory);
 
             inventory.RegisterItem(1);
             swap.Action(0);
@@ -235,5 +235,26 @@ namespace Tests
             Assert.IsFalse(inventory.GetItem(0).isLocked);
         }
 
+    }
+    public class ItemStackTest
+    {
+        [Test]
+        public void CanStackItem()
+        {
+            var inventory = new Inventory();
+            var stack = new StackItem(inventory);
+            var stackable = new StackableItem(0);
+            var stackable2 = new StackableItem(0);
+            inventory.SetItem(stackable, 0);
+            inventory.SetItem(stackable2, 1);
+
+            //id1のアイテムを登録
+            inventory.RegisterItem(1);
+            //0にスタック
+            stack.Action(0);
+
+            Assert.AreEqual(2, stackable.stackedNumber);
+            Assert.IsFalse(inventory.GetItem(1).isSet);
+        }
     }
 }

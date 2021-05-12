@@ -62,7 +62,7 @@ namespace IdleLibrary.Inventory
 			//アクションを設定
 			//inventory.AddLeftAction(new SwapItem(inventory.inventory));
 			//クリックじゃなくてドラッグアンドドロップにもできる
-			var swap = new SwapItem(inventory.inventory, inputItem);
+			var swap = new StackAndSwapItem(inventory.inventory);
 			inventory.RegisterHoldAction(swap, new Releaseitem(inputItem), swap);
 			inventory.AddLeftAction(new ShowInfoToTextField(inventory.inventory, inventoryItemInfoText));
 			inventory.AddLeftAction(new LockItem(inventory.inventory), KeyCode.L);
@@ -70,7 +70,7 @@ namespace IdleLibrary.Inventory
 			inventory.AddRightaction(new RevertItemToOtherInventory(inventory.inventory,equipmentInventory.inventory));
 
 			//equipmentInventory.AddLeftAction(new SwapItem(equipmentInventory.inventory));
-			var swap2 = new SwapItem(equipmentInventory.inventory, inputItem);
+			var swap2 = new StackAndSwapItem(equipmentInventory.inventory);
 			equipmentInventory.RegisterHoldAction(swap2, new Releaseitem(inputItem), swap2);
 			equipmentInventory.AddRightaction(new RevertItemToOtherInventory(equipmentInventory.inventory, inventory.inventory));
 			equipmentInventory.AddLeftAction(new ShowInfoToTextField(equipmentInventory.inventory, inventoryItemInfoText));
@@ -80,7 +80,7 @@ namespace IdleLibrary.Inventory
 			pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.UpdateUI(
 				LocationKind.MouseFollow, inputItem.hoveredInventory.GetItem(inputItem.cursorId)));
 
-			//ItemのIdle Actionの設定をします
+			//ItemのIdle Actionの設定をします.
 			equipmentInventory.inventory.GetItems().ToList().ForEach((x) =>
 			{
 				Artifact arti = null;
@@ -95,7 +95,8 @@ namespace IdleLibrary.Inventory
 			//ItemFactoryを作ります
 			var itemFactory = new ItemFactory();
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
-				var item = itemFactory.CreateRandomItem();
+				//var item = itemFactory.CreateRandomItem();
+				var item = new StackableItem(UnityEngine.Random.Range(0,5));
 				inventory.inventory.SetItemByOrder(item);
 				});
 			ExpandInventory.OnClickAsObservable().Subscribe(_ =>

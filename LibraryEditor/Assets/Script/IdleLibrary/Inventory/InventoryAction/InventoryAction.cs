@@ -28,6 +28,7 @@ namespace IdleLibrary.Inventory
         }
     }
 
+    //あらゆるアイテムをスワップします
     public class SwapItem : IInventoryAction
     {
         private readonly Inventory inventory;
@@ -46,19 +47,47 @@ namespace IdleLibrary.Inventory
             inventory.RegisterItem(index);
         }
     }
-    //まずstack判定を行い、その後スワップを行います。
+    public class StackItem : IInventoryAction
+    {
+        private readonly Inventory inventory;
+        public StackItem(Inventory inventory)
+        {
+            this.inventory = inventory;
+        }
+        public void Action(int index)
+        {
+            isActionScceeded = false;
+            if (inventory.input.inputItem is IStackableItem && inventory.GetItem(index) is IStackableItem)
+            {
+                var stackable = inventory.GetItem(index) as IStackableItem;
+                if (stackable.CanStack(inventory.input.inputItem))
+                {
+                    stackable.Stack(inventory.input.inputItem);
+                    inventory.input.ReleaseItem();
+                    inventory.input.inputInventory.DeleteItem(inventory.input.index);
+                    isActionScceeded = true;
+                }
+            }
+        }
+        public bool isActionScceeded;
+    }
+    //まずstack判定を行い、その後スワップを行います。インベントリの標準搭載機能？
     public class StackAndSwapItem : IInventoryAction
     {
         private readonly Inventory inventory;
         private readonly SwapItem swap;
+        private readonly StackItem stack;
         public StackAndSwapItem(Inventory inventory)
         {
             this.inventory = inventory;
             swap = new SwapItem(inventory);
+            stack = new StackItem(inventory);
         }
         public void Action(int index)
         {
-            if()
+            stack.Action(index);
+            if(!stack.isActionScceeded)
+                swap.Action(index);
         }
     }
 
