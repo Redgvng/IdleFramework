@@ -19,6 +19,7 @@ namespace IdleLibrary.Inventory
         public Transform MouseImageCanvas;
         GameObject _itemIconWithMouse;
         Popup popUp;
+        bool isPopUpInitialized;
         [SerializeField] Popup_UI pop;
 
         void Awake()
@@ -32,13 +33,23 @@ namespace IdleLibrary.Inventory
             if(subject is Inventory_Mono)
             {
                 var inventory_mono = subject as Inventory_Mono;
+                var input = inventory_mono.inputItem;
 
                 //ポップアップの設定
-                if(popUp == null)
+
+                if(!isPopUpInitialized)
                 {
-                    popUp = new Popup(() => inventory_mono.inputItem.cursorId != -1, pop.gameObject);
-                    pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ => pop.UpdateUI(
-                        LocationKind.Corner, inventory_mono.inputItem.hoveredInventory.GetItem(inventory_mono.inputItem.cursorId)));
+                    Debug.Log("yobareteruyo");
+                    popUp = new Popup(() => input.hoveredInventory != null && input.hoveredInventory.GetItem(input.cursorId).isSet, pop.gameObject);
+                    pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ =>
+                    {
+                        if (input.hoveredInventory.GetItem(input.cursorId).id == -1) return;
+                        pop.UpdateUI(
+                            LocationKind.MouseFollow, 
+                            input.hoveredInventory.GetItem(input.cursorId),
+                            sprites[input.hoveredInventory.GetItem(input.cursorId).id]);
+                        });
+                    isPopUpInitialized = true;
                 }
 
                 //アイテム画像の更新
@@ -73,7 +84,7 @@ namespace IdleLibrary.Inventory
                 else
                 {
                     _itemIconWithMouse.SetActive(true);
-                    _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().sprite = sprites[inventory_mono.inputItem.inputItem.id];
+                    _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().sprite = sprites[input.inputItem.id];
                     _itemIconWithMouse.transform.position = Input.mousePosition;
                     if(Input.GetMouseButtonUp(0)){
                         inventory_mono.inputItem.ReleaseItem();
