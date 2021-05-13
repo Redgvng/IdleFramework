@@ -34,7 +34,7 @@ public class ExpeditionSample : MonoBehaviour
     Expedition MakeSomeExpedition(int id, NUMBER number, ICost cost)
     {
         var transaction = new Transaction(number, cost);
-        return new Expedition(id, new ExpeditionForSave[0], () => new float[] { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 24.0f }, null, null);
+        return new Expedition(id, new ExpeditionForSave[0], null, null, new float[] { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 24.0f });
     }
 
     // Update is called once per frame

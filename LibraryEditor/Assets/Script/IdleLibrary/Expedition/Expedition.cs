@@ -30,7 +30,7 @@ namespace IdleLibrary {
         private ITransaction transaction;
         private readonly IReward reward;
         private float requiredHour;
-        private Func<float[]> requiredHours;
+        private float[] requiredHours;
 
         private readonly int id;
 
@@ -39,17 +39,17 @@ namespace IdleLibrary {
         [SerializeField] private float currentTimesec { get => saveData[id].currentTimeSec; set => saveData[id].currentTimeSec = value; }
         [SerializeField] private bool isStarted { get => saveData[id].isStarted; set => saveData[id].isStarted = value; }
         [SerializeField] private int hourId { get => saveData[id].hourId; set => saveData[id].hourId = value; }
-        [SerializeField] public long level { get => completedNum; set => completedNum = value; }
-
+        public long level { get => completedNum; set => completedNum = value; }
+        private Func<float> timeSpeedFactor = () => 1;
         [SerializeField] private ExpeditionForSave[] saveData;
 
-        public Expedition(int id, ExpeditionForSave[] saveData, Func<float[]> requiredHoursArray = null, ITransaction transaction = null, IReward reward = null)
+        public Expedition(int id, ExpeditionForSave[] saveData, ITransaction transaction = null, IReward reward = null, params float[] requiredHoursArray)
         {
             this.id = id;
             this.saveData = saveData;
             this.transaction = transaction == null ? new NullTransaction() : transaction;
             this.requiredHours = requiredHoursArray;
-            requiredHour = requiredHours()[hourId];
+            requiredHour = requiredHours[hourId];
             this.reward = reward == null ? new NullReward() : reward;
             Progress();
         }
@@ -57,8 +57,12 @@ namespace IdleLibrary {
         {
             this.transaction = transaction;
         }
+        public void SetTimeSpeedFactor(Func<float> timeSpeedFactor)
+        {
+            this.timeSpeedFactor = timeSpeedFactor;
+        }
         //Test用
-        public Expedition(int id, Func<float[]> requiredHoursArray = null, ITransaction transaction = null, IReward reward = null)
+        public Expedition(int id, ITransaction transaction = null, IReward reward = null, params float[] requiredHoursArray)
         {
             saveData = new ExpeditionForSave[1]
             {
@@ -67,7 +71,7 @@ namespace IdleLibrary {
             this.id = id;
             this.transaction = transaction == null ? new NullTransaction() : transaction;
             this.requiredHours = requiredHoursArray;
-            if (requiredHours().Length != 0) requiredHour = requiredHours()[hourId];
+            if (requiredHours.Length != 0) requiredHour = requiredHours[hourId];
             this.reward = reward == null ? new NullReward() : reward;
             Progress();
         }
@@ -144,14 +148,14 @@ namespace IdleLibrary {
             if (IsStarted())
                 return;
             if (isRight)
-                hourId = hourId < requiredHours().Length - 1 ? hourId + 1 : 0;
+                hourId = hourId < requiredHours.Length - 1 && requiredHours[hourId + 1] != 0 ? hourId + 1 : 0;
             else
-                hourId = hourId > 0 ? hourId - 1 : requiredHours().Length - 1;
-            SelectTime(requiredHours()[hourId]);
+                hourId = hourId > 0 && requiredHours[hourId - 1] != 0 ? hourId - 1 : requiredHours.Length - 1;
+            SelectTime(requiredHours[hourId]);
         }
         public void IncreaseCurrentTime(float timesec) 
         {
-            currentTimesec += timesec;
+            currentTimesec += timesec * Math.Max(1, timeSpeedFactor());
             if (currentTimesec > RequiredTime(true))
                 currentTimesec = RequiredTime(true);
         }
