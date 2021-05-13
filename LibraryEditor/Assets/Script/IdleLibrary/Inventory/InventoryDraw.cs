@@ -21,6 +21,7 @@ namespace IdleLibrary.Inventory
         Popup popUp;
         bool isPopUpInitialized;
         [SerializeField] Popup_UI pop;
+        [SerializeField] GameObject mouseImagePre;
 
         void Awake()
         {
@@ -30,10 +31,10 @@ namespace IdleLibrary.Inventory
         //itemの状態を更新します。
         public void _Update(ISubject subject)
         {
-            if(subject is Inventory_Mono)
+            if(subject is IInventoryUIInfo)
             {
-                var inventory_mono = subject as Inventory_Mono;
-                var input = inventory_mono.inputItem;
+                var inventory_mono = subject as IInventoryUIInfo;
+                var input = inventory_mono.input;
 
                 //ポップアップの設定
 
@@ -43,7 +44,7 @@ namespace IdleLibrary.Inventory
                     popUp = new Popup(() => input.hoveredInventory != null && input.hoveredInventory.GetItem(input.cursorId).isSet, pop.gameObject);
                     pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ =>
                     {
-                        if (input.hoveredInventory.GetItem(input.cursorId).id == -1) return;
+                        if (!input.hoveredInventory.GetItem(input.cursorId).isSet) return;
                         pop.UpdateUI(
                             LocationKind.MouseFollow, 
                             input.hoveredInventory.GetItem(input.cursorId),
@@ -53,7 +54,7 @@ namespace IdleLibrary.Inventory
                 }
 
                 //アイテム画像の更新
-                foreach(var info in inventory_mono.UIInfoList)
+                foreach(var info in inventory_mono.UIInfo)
                 {
                     int index = 0;
                     foreach (var item in info.inventory.GetItems())
@@ -69,7 +70,7 @@ namespace IdleLibrary.Inventory
                 //マウスにくっつくウインドウの設定(後々柔軟に変えられるようにしたい)
                 if(_itemIconWithMouse == null)
                 {
-                    _itemIconWithMouse = Instantiate(inventory_mono.item, MouseImageCanvas);
+                    _itemIconWithMouse = Instantiate(mouseImagePre, MouseImageCanvas);
                     _itemIconWithMouse.GetOrAddComponent<ObservableEventTrigger>().OnPointerUpAsObservable().Subscribe(_ =>
                     {
                         _itemIconWithMouse.SetActive(false);
@@ -77,7 +78,7 @@ namespace IdleLibrary.Inventory
                     _itemIconWithMouse.GetComponent<Image>().raycastTarget = false;
                     _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().raycastTarget = false;
                 }
-                if (inventory_mono.inputItem.inputItem.id == -1)
+                if (input.inputItem.id == -1)
                 {
                     _itemIconWithMouse.SetActive(false);
                 }
@@ -87,7 +88,7 @@ namespace IdleLibrary.Inventory
                     _itemIconWithMouse.transform.GetChild(0).GetComponent<Image>().sprite = sprites[input.inputItem.id];
                     _itemIconWithMouse.transform.position = Input.mousePosition;
                     if(Input.GetMouseButtonUp(0)){
-                        inventory_mono.inputItem.ReleaseItem();
+                        input.ReleaseItem();
                     }
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 namespace IdleLibrary
 {
     public interface IObserver
@@ -12,7 +13,7 @@ namespace IdleLibrary
         void Detach(IObserver observer);
         void Notify();
     }
-    public abstract class Subject : MonoBehaviour, ISubject
+    public abstract class Subject : SerializedMonoBehaviour, ISubject
     {
         public void Attach(IObserver observer)
         {

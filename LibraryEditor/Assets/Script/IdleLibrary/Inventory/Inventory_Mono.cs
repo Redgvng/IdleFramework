@@ -19,7 +19,12 @@ namespace IdleLibrary
 }
 namespace IdleLibrary.Inventory
 {
-	public class Inventory_Mono : Subject
+	public interface IInventoryUIInfo
+    {
+		InputItem input { get; }
+		IEnumerable<InventoryInfo> UIInfo { get; }
+    }
+	public class Inventory_Mono : Subject, IInventoryUIInfo
 	{
 		
 		[SerializeField]
@@ -41,8 +46,10 @@ namespace IdleLibrary.Inventory
 		[NonSerialized]
 		public List<GameObject> EquippedItems = new List<GameObject>();
 
-		public List<InventoryInfo> UIInfoList = new List<InventoryInfo>();
-		public InputItem inputItem = new InputItem();
+	    List<InventoryInfo> UIInfoList = new List<InventoryInfo>();
+	    InputItem inputItem = new InputItem();
+		public InputItem input => inputItem;
+		public IEnumerable<InventoryInfo> UIInfo => UIInfoList;
 
 		public InventoryInfo inventory;
 		public InventoryInfo equipmentInventory;
