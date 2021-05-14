@@ -207,6 +207,8 @@ GameObject:
   - component: {fileID: 2510264188794756763}
   - component: {fileID: 2510264188794756764}
   - component: {fileID: 2510264188794756765}
+  - component: {fileID: 6717730114131178257}
+  - component: {fileID: 7515269999562794205}
   m_Layer: 5
   m_Name: PopupIconAndText
   m_TagString: Untagged
@@ -357,6 +359,33 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &6717730114131178257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2510264188794756767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce0799d2ac864693b477bd5b46c5089, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  windowImage: {fileID: 2510264188789708638}
+  iconImage: {fileID: 2510264187461762312}
+  descriptionText: {fileID: 2510264189067025631}
+--- !u!114 &7515269999562794205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2510264188794756767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb5e5014f40d6948815a7be8b174ff2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2510264189067025619
 GameObject:
   m_ObjectHideFlags: 0

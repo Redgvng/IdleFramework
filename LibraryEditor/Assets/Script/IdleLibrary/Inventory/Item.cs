@@ -8,11 +8,13 @@ using System.Linq;
 
 namespace IdleLibrary.Inventory
 {
+    //スタックすることのできるアイテムか？
     public interface IStackableItem
     {
         bool CanStack(ITEM item);
         void Stack(ITEM item);
     }
+
     //抽象クラスにするとシリアライズできない
     [System.Serializable]
     public abstract class ITEM : IText
@@ -93,34 +95,22 @@ namespace IdleLibrary.Inventory
         public override string Text()
         {
             return $"----ARTIFACT----\n- ID : {id}\n\n- Level : {level} \n- Quality : {quality} \n- Anti-Magid Power : {antimagicPower}"
-                + $"\n- Time to Level Up : {(idleAction.CurrentTime / idleAction.RequiredTime).ToString("F2")}";
+                + $"\n- Time to Level Up : {(idleAction.CurrentTime / idleAction.RequiredTime).ToString("F2")}"
+                + "\n" + EffectText();
         }
         public override ITEM CreateNullItem()
         {
             return new Artifact(-1);
         }
+        string EffectText()
+        {
+            string text = "[Effect]\n\n";
+            effects.ForEach((x) => text += x.Text() + "\n");
+            return text;
+        }
 
-        async void DelayedInitialize()
-        {
-            await UniTask.WaitUntil(() => idleAction != null);
-            idleAction.Start();
-            UpdateIdleAction();
-        }
-        async void UpdateIdleAction()
-        {
-            while (true)
-            {
-                if (idleAction.CanClaim())
-                {
-                    idleAction.Claim();
-                    idleAction.Start();
-                }
-                await UniTask.Delay(1000);
-            }
-        }
-        public List<BasicEffect> effects = new List<BasicEffect>(); 
+        [OdinSerialize] public List<IEffect> effects = new List<IEffect>(); 
         public long level;
-        public Action StartIdleAction => DelayedInitialize;
         [OdinSerialize] public IdleAction idleAction { get; set; }
         public int quality;
         public double antimagicPower;

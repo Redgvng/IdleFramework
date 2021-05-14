@@ -76,6 +76,7 @@ namespace IdleLibrary.Inventory
 
 			//equipmentInventory.AddLeftAction(new SwapItem(equipmentInventory.inventory));
 			var swap2 = new StackAndSwapItem(equipmentInventory.inventory);
+			equipmentInventory.inventory.RegisterSetItem(new StartIdleActionWithSet(new SimpleSetItem(equipmentInventory.inventory)));
 			equipmentInventory.RegisterHoldAction(swap2, new Releaseitem(inputItem), swap2);
 			equipmentInventory.AddRightaction(new RevertItemToOtherInventory(equipmentInventory.inventory, inventory.inventory));
 			equipmentInventory.AddLeftAction(new ShowInfoToTextField(equipmentInventory.inventory, inventoryItemInfoText));

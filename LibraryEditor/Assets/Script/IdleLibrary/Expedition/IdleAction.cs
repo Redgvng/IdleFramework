@@ -72,6 +72,7 @@ namespace IdleLibrary
         }
         public async void Initialize()
         {
+            if (isStartedFirst) return;
             isStartedFirst = true; 
             while (true)
             {
