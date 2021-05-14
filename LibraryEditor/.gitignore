@@ -57,6 +57,9 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+# Odin
+LibraryEditor/Assets/Plugins/Sirenix/Demos/
+
 # Crashlytics generated file
 crashlytics-build.properties
 
