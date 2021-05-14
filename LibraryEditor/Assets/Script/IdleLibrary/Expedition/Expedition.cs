@@ -140,7 +140,7 @@ namespace IdleLibrary {
             {
                 if (isStarted && currentTimesec < RequiredTime(true))
                     IncreaseCurrentTime(1);
-                await UniTask.Delay(1000);
+                await UniTask.Delay(1000, delayType: DelayType.Realtime);
             }
         }
         public void SwitchRequiredHour(bool isRight)
