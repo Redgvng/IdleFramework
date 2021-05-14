@@ -1,4 +1,4 @@
-# This .gitignore file should be placed at the root of your Unity project directory
+﻿# This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
@@ -10,7 +10,6 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 /[Aa]ssets/TextMesh Pro/Resources/Fonts & Materials/NotoSansCJKjp-Black SDF.asset
-
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
