@@ -5,7 +5,12 @@ using System;
 
 namespace IdleLibrary.Inventory
 {
-
+    public enum EffectKind
+    {
+        gold,
+        stone,
+        
+    }
     public class ItemFactory
     {
         public ITEM CreateRandomItem()
@@ -22,12 +27,14 @@ namespace IdleLibrary.Inventory
             var idleAction = new IdleAction(10);
             item.idleAction = idleAction;
 
-            //ステータスの増加率を決定する。リストで値を格納しよう、stringと値のペアでやることにする。
-            Dictionary<string, Func<double>> itemEffectDic = new Dictionary<string, Func<double>>();
+            /*
+            List<ItemEffect> effectList = new List<ItemEffect>();
             //ゴールド増加量を増やす.デリゲートも保存できるかな？
             itemEffectDic.Add("Gold Cap+", () => item.level + 1);
             itemEffectDic.Add("EXP+", () => item.level * 2 + 1);
-            item.effect = itemEffectDic;
+            */
+            //item.effect = itemEffectDic;
+
 
             return item;
         }

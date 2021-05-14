@@ -59,11 +59,12 @@ namespace IdleLibrary.Inventory
             }
             this.input = new InputItem();
         }
-        public Inventory(InputItem input, ref InventoryForSave saveData)
+        public Inventory(InputItem input, ref InventoryForSave saveData,int initialInventoryNum)
         {
             if (saveData == null)
                 saveData = new InventoryForSave();
-            this.saveData = saveData;;
+            this.saveData = saveData;
+            this.initialInventoryNum = initialInventoryNum;
             if (items.Count == 0)
             {
                 for (int i = 0; i < totalInventoryNum; i++)
