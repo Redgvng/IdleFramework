@@ -111,6 +111,8 @@ namespace IdleLibrary.Inventory
 
         [OdinSerialize] public List<IEffect> effects = new List<IEffect>(); 
         public long level;
+        public long levelCap;
+        public long maxLevelCap;//LevelCap§Œ…œœﬁ
         [OdinSerialize] public IdleAction idleAction { get; set; }
         public int quality;
         public double antimagicPower;
