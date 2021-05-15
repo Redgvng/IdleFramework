@@ -46,7 +46,9 @@ namespace IdleLibrary.Inventory
         public InputItem input;
         public bool isFull => items.All((item) => item.isSet);
         public readonly int initialInventoryNum = 10;
-        int totalInventoryNum => expandNum + initialInventoryNum;
+        internal int totalInventoryNum => expandNum + initialInventoryNum;
+
+        private ISetItem setItem;
         //Saveすべき変数を注入する
         //テスト用コンストラクタです
         public Inventory()
@@ -83,13 +85,6 @@ namespace IdleLibrary.Inventory
             expandNum++;
         }
 
-        public void SortById()
-        {
-            var tempItems = items.Select(item => { if (item.id == -1) item.id = 9999; return item; }).OrderBy((x) => x.id).ToList();
-            tempItems.ForEach((x) => { if (x.id == 9999) x.id = -1; });
-            items = tempItems;
-        }
-
         public void GenerateItemRandomly()
         {
             var item = new Artifact(-1);
@@ -119,13 +114,20 @@ namespace IdleLibrary.Inventory
 
         public void SetItem(ITEM item, int index)
         {
-            if(index < 0 || index >= totalInventoryNum)
+            if(setItem == null)
+            {
+                setItem = new SimpleSetItem(this);
+            }
+            if (index < 0 || index >= totalInventoryNum)
             {
                 Debug.LogError("セットできません");
                 return;
             }
-
-            items[index] = item;
+            setItem.SetItem(item, index);
+        }
+        public void RegisterSetItem(ISetItem setItem)
+        {
+            this.setItem = setItem;
         }
         public void SetItemByOrder(ITEM item)
         {
