@@ -183,4 +183,27 @@ namespace IdleLibrary.Inventory
         }
     }
 
+    public class ShowItemEffectToTextField : IInventoryAction
+    {
+        private readonly Inventory inventory;
+        private readonly TextMeshProUGUI textField;
+        public ShowItemEffectToTextField(Inventory inventory, TextMeshProUGUI textField)
+        {
+            this.inventory = inventory;
+            this.textField = textField;
+            textField.text = "";
+        }
+        public void Action(int index)
+        {
+            textField.text = inventory.GetItem(index).Text();
+        }
+        
+        //アイテムのeffectを表示します
+        string Text()
+        {
+            string text = "";
+            return text;
+        }
+    }
+
 }

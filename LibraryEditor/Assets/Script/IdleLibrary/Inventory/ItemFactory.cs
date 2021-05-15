@@ -23,8 +23,8 @@ namespace IdleLibrary.Inventory
             item.idleAction = idleAction;
 
             List<IEffect> effectList = new List<IEffect>();
-            effectList.Add(new GoldGain(() => item.level + 1));
-            effectList.Add(new ExpGain(() => item.level + 3));
+            effectList.Add(new BasicEffect(BasicEffectKind.goldGain, () => item.level * 3, Calway.add));
+            effectList.Add(new BasicEffect(BasicEffectKind.expGain, () => 1 + 0.1 + item.level * 0.1, Calway.mul));
             item.effects = effectList;
 
             return item;
