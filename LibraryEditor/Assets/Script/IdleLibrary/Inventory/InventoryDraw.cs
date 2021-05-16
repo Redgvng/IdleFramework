@@ -46,7 +46,7 @@ namespace IdleLibrary.Inventory
                     {
                         if (!input.hoveredInventory.GetItem(input.cursorId).isSet) return;
                         pop.UpdateUI(
-                            LocationKind.MouseFollow, 
+                            LocationKind.Corner, 
                             input.hoveredInventory.GetItem(input.cursorId),
                             sprites[input.hoveredInventory.GetItem(input.cursorId).id]);
                         });
