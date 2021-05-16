@@ -76,30 +76,16 @@ namespace IdleLibrary.Inventory
 
 			//equipmentInventory.AddLeftAction(new SwapItem(equipmentInventory.inventory));
 			var swap2 = new StackAndSwapItem(equipmentInventory.inventory);
-			equipmentInventory.inventory.RegisterSetItem(new StartIdleActionWithSet(new SimpleSetItem(equipmentInventory.inventory)));
 			equipmentInventory.RegisterHoldAction(swap2, new Releaseitem(inputItem), swap2);
 			equipmentInventory.AddRightaction(new RevertItemToOtherInventory(equipmentInventory.inventory, inventory.inventory));
 			equipmentInventory.AddLeftAction(new ShowInfoToTextField(equipmentInventory.inventory, inventoryItemInfoText));
 
-			//ItemのIdle Actionの設定をします.
-			equipmentInventory.inventory.GetItems().ToList().ForEach((x) =>
-			{
-				Artifact arti = null;
-				if (x is Artifact) arti = x as Artifact;
-				if (arti != null)
-                {
-					arti.idleAction.Initialize();
-					arti.idleAction.Start();
-                }
-			});
-
 			//アーティファクトの登録
 
 			//ItemFactoryを作ります
-			var itemFactory = new ArtifactFactory();
+			var itemFactory = new ItemFactory();
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
-				var item = itemFactory.CreateArtifact();
-				//var item = new StackableItem(UnityEngine.Random.Range(0,5));
+				var item = itemFactory.CreateSomeItem();
 				inventory.inventory.SetItemByOrder(item);
 				});
 			ExpandInventory.OnClickAsObservable().Subscribe(_ =>

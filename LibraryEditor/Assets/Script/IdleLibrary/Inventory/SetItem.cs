@@ -24,6 +24,7 @@ namespace IdleLibrary.Inventory
     }
 }
 
+/*
 //IEH1用なのでクラスをArtifactで限定させる。汎用的にする必要はない
 public class StartIdleActionWithSet : ISetItem
 {
@@ -45,3 +46,4 @@ public class StartIdleActionWithSet : ISetItem
         }
     }
 }
+*/

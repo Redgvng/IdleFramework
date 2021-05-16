@@ -87,7 +87,7 @@ namespace IdleLibrary.Inventory
 
         public void GenerateItemRandomly()
         {
-            var item = new Artifact(-1);
+            var item = new Item(-1);
             saveData.sampleAction = () => { Debug.Log("save‚³‚ê‚Ä‚é‚æ"); };
             item.id = UnityEngine.Random.Range(0, 5);
             SetItemByOrder(item);
