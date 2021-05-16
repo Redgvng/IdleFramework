@@ -36,6 +36,9 @@ namespace IdleLibrary.UI
                 {
                     setActive(windowObject);
                     tempBool = true;
+                    await UniTask.DelayFrame(1);
+                    setFalse(windowObject);
+                    setActive(windowObject);
                 }
                 else if (!showCondition() && tempBool)
                 {
