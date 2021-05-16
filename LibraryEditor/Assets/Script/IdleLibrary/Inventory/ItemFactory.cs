@@ -5,9 +5,9 @@ using System;
 
 namespace IdleLibrary.Inventory
 {
-    public class ItemFactory
+    public class ArtifactFactory
     {
-        public ITEM CreateRandomItem()
+        public Artifact CreateArtifact()
         {
             var item = new Artifact(-1);
             //Id‚ğŒˆ‚ß‚Ü‚·B

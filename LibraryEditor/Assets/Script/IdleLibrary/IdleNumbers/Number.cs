@@ -30,15 +30,15 @@ namespace IdleLibrary
             set => _multiplier = value;
         }
         private Multiplier _multiplier;
-        public bool CanSet => true;
-
-        //Private
-        private ISetItem<double> setNumber;
 
         //ユニットテスト用コンストラクタ
-        public NUMBER(double initialValue = 0)
+        public NUMBER(double initialValue)
         {
             Number = initialValue;
+        }
+        public NUMBER()
+        {
+
         }
 
         public virtual void IncrementNumber(double increment = 1, bool isNetValue = false)
@@ -67,23 +67,5 @@ namespace IdleLibrary
         }
     }
 
-    /*
-    public class CappedNumber : NUMBER
-    {
-        public Cap cap;
-        public CappedNumber(Cap cap)
-        {
-            this.cap = cap;
-        }
-
-        //増やすときにチェック？
-        public override void IncrementNumber(double increment, bool isNetValue = false)
-        {
-            Number += multiplier.CaluculatedNumber(increment);
-            TotalNumber += multiplier.CaluculatedNumber(increment);
-            cap.Check(this);
-        }
-    }
-    */
 }
 

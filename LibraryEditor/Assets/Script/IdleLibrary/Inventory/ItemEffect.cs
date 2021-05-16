@@ -78,6 +78,7 @@ namespace IdleLibrary.Inventory
     }
 
     //stats breakdown‚ğ•\¦‚³‚¹‚éˆ—‚ğì‚ë‚¤B
+    /*
     public class StatsBreakdownMaker
     {
         private readonly IEnumerable<IStatsBreakdown> statsBreakdowns;
@@ -85,5 +86,14 @@ namespace IdleLibrary.Inventory
         {
             this.statsBreakdowns = statsBreakdowns;
         }
+        public string Text()
+        {
+            string text = "";
+            foreach (var item in statsBreakdowns)
+            {
+
+            }
+        }
     }
+    */
 }

@@ -17,6 +17,16 @@ namespace IdleLibrary {
         void StartExpedition();
         void Claim();
     }
+    public interface IExpeditionAction
+    {
+        void OnStart();
+        void OnClaim();
+    }
+    public class NullExpeditionAction : IExpeditionAction
+    {
+        public void OnStart() { }
+        public void OnClaim() { }
+    }
     [System.Serializable]
     public class ExpeditionForSave
     {
@@ -24,11 +34,12 @@ namespace IdleLibrary {
         public float currentTimeSec;
         public bool isStarted;
         public int hourId;
+        public IExpeditionAction action;
     }
     public class Expedition : IExpedition, ILevel
     {
         private ITransaction transaction;
-        private readonly IReward reward;
+        private IExpeditionAction action { get => saveData[id].action; set => saveData[id].action = value; }
         private float requiredHour;
         private float[] requiredHours;
 
@@ -43,14 +54,19 @@ namespace IdleLibrary {
         private Func<float> timeSpeedFactor = () => 1;
         [SerializeField] private ExpeditionForSave[] saveData;
 
-        public Expedition(int id, ExpeditionForSave[] saveData, ITransaction transaction = null, IReward reward = null, params float[] requiredHoursArray)
+        public Expedition(int id, ExpeditionForSave[] saveData, ITransaction transaction = null, IExpeditionAction action = null, params float[] requiredHoursArray)
         {
             this.id = id;
             this.saveData = saveData;
+            //初期化が必要
+            for (int i = 0; i < saveData.Length; i++)
+            {
+                saveData[i] = saveData[i] ?? new ExpeditionForSave();
+            }
             this.transaction = transaction == null ? new NullTransaction() : transaction;
             this.requiredHours = requiredHoursArray;
             requiredHour = requiredHours[hourId];
-            this.reward = reward == null ? new NullReward() : reward;
+            if(this.action == null) { this.action = action == null ? new NullExpeditionAction() : action; }
             Progress();
         }
         public void SetTransaction(ITransaction transaction)
@@ -62,7 +78,7 @@ namespace IdleLibrary {
             this.timeSpeedFactor = timeSpeedFactor;
         }
         //Test用
-        public Expedition(int id, ITransaction transaction = null, IReward reward = null, params float[] requiredHoursArray)
+        public Expedition(int id, ITransaction transaction = null, IExpeditionAction action = null, params float[] requiredHoursArray)
         {
             saveData = new ExpeditionForSave[1]
             {
@@ -72,7 +88,7 @@ namespace IdleLibrary {
             this.transaction = transaction == null ? new NullTransaction() : transaction;
             this.requiredHours = requiredHoursArray;
             if (requiredHours.Length != 0) requiredHour = requiredHours[hourId];
-            this.reward = reward == null ? new NullReward() : reward;
+            this.action = action == null ? new NullExpeditionAction() : action;
             Progress();
         }
 
@@ -120,6 +136,7 @@ namespace IdleLibrary {
                 return;
             transaction.Pay();
             isStarted = true;
+            action.OnStart();
         }
         public void Claim()
         {
@@ -128,12 +145,8 @@ namespace IdleLibrary {
             isStarted = false;
             currentTimesec = 0;
             completedNum++;
-            Reward();
+            action.OnClaim();
         }
-        private void Reward()
-        {
-            reward.Reward();
-        }        
         async void Progress()
         {
             while (true)

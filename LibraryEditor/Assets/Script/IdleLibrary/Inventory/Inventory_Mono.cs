@@ -93,10 +93,12 @@ namespace IdleLibrary.Inventory
                 }
 			});
 
+			//アーティファクトの登録
+
 			//ItemFactoryを作ります
-			var itemFactory = new ItemFactory();
+			var itemFactory = new ArtifactFactory();
 			GenerateItemButton.OnClickAsObservable().Subscribe(_ => {
-				var item = itemFactory.CreateRandomItem();
+				var item = itemFactory.CreateArtifact();
 				//var item = new StackableItem(UnityEngine.Random.Range(0,5));
 				inventory.inventory.SetItemByOrder(item);
 				});

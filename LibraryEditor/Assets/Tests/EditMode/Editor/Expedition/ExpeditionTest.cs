@@ -48,7 +48,7 @@ public class ExpeditionTest
         var gold = new NUMBER();
         var stone = new NUMBER();
         var reward = new NumberReward((gold, 100), (stone, 50));
-        var expedition = new Expedition(0, null, reward);
+        var expedition = new Expedition(0, null, null);
 
         expedition.StartExpedition();
         expedition.IncreaseCurrentTime(1 * 3600);
