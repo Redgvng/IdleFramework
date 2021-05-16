@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Sirenix.Serialization;
 namespace IdleLibrary
 {
     public interface ICost
@@ -75,9 +76,9 @@ namespace IdleLibrary
     //リソースのみを計算する。
     public class LinearCost : IMaxableCost
     {
-        readonly double initialValue;
-        readonly double steep;
-        readonly ILevel level;
+        [OdinSerialize] readonly double initialValue;
+        [OdinSerialize] readonly double steep;
+        [OdinSerialize] readonly ILevel level;
         private CalDL cost { get; }
         public double Cost => cost.GetValue();
         public LinearCost(double initialValue, double steep, ILevel level)
@@ -129,9 +130,9 @@ namespace IdleLibrary
 
     public class ExponentialCost : IMaxableCost
     {
-        readonly double initialValue;
-        readonly double factor;
-        readonly ILevel level;
+        [OdinSerialize] readonly double initialValue;
+        [OdinSerialize] readonly double factor;
+        [OdinSerialize] readonly ILevel level;
         private CalDL cost { get; }
         public double Cost => cost.GetValue();
         public ExponentialCost(double initialValue, double factor, ILevel level)
