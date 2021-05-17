@@ -12,6 +12,7 @@ namespace IdleLibrary {
         bool IsStarted();
         float CurrentTimesec();
         float RequiredTime(bool isSec);
+        float RealRequiredTimesec();
         void SelectTime(float hour);
         void StartOrClaim();
         void StartExpedition();
@@ -130,6 +131,10 @@ namespace IdleLibrary {
             else
                 return requiredHour;
         }
+        public float RealRequiredTimesec()
+        {
+            return RequiredTime(true) / Math.Max(1, timeSpeedFactor());
+        }
         public void StartExpedition()
         {
             if (!CanStart())
@@ -168,14 +173,17 @@ namespace IdleLibrary {
         }
         public void IncreaseCurrentTime(float timesec) 
         {
-            currentTimesec += timesec * Math.Max(1, timeSpeedFactor());
-            if (currentTimesec > RequiredTime(true))
-                currentTimesec = RequiredTime(true);
+            currentTimesec += timesec;
+            if (currentTimesec > RealRequiredTimesec())
+                currentTimesec = RealRequiredTimesec();
         }
         public float ProgressPercent()
         {
-            return currentTimesec / RequiredTime(true);
+            return currentTimesec / RealRequiredTimesec();
         }
-
+        public string LeftTimesecString()
+        {
+            return UsefulMethod.DoubleTimeToDate(RealRequiredTimesec() - CurrentTimesec());
+        }
     }
 }
