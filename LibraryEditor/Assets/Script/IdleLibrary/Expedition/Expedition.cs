@@ -110,7 +110,7 @@ namespace IdleLibrary {
         }
         public bool CanClaim()
         {
-            return currentTimesec >= RequiredTime(true);
+            return currentTimesec >= RealRequiredTimesec();
         }
         public bool CanStart()
         {
