@@ -20,12 +20,12 @@ namespace IdleLibrary {
     }
     public interface IExpeditionAction
     {
-        void OnStart(ILevel level, int hourId);
+        void OnStart(int chestLotteryNum, float[] chestChance);
         void OnClaim();
     }
     public class NullExpeditionAction : IExpeditionAction
     {
-        public void OnStart(ILevel level, int hourId) { }
+        public void OnStart(int chestLotteryNum, float[] chestChance) { }
         public void OnClaim() { }
     }
     [System.Serializable]
@@ -44,7 +44,8 @@ namespace IdleLibrary {
         private float requiredHour;
         private float[] requiredHours;
         private readonly int id;
-        private ILevel ilevel;
+        private float[] chestChance;
+        private int chestLotteryNum;
 
         //Save
         [SerializeField] private long completedNum { get => saveData[id].completedNum; set => saveData[id].completedNum = value; }
@@ -78,9 +79,10 @@ namespace IdleLibrary {
         {
             this.timeSpeedFactor = timeSpeedFactor;
         }
-        public void SetILevel(ILevel ilevel)
+        public void SetReward(int chestLotteryNum, float[] chestChance)
         {
-            this.ilevel = ilevel;
+            this.chestLotteryNum = chestLotteryNum;
+            this.chestChance = chestChance;
         }
         //Test用
         public Expedition(int id, ITransaction transaction = null, IExpeditionAction action = null, params float[] requiredHoursArray)
@@ -145,7 +147,7 @@ namespace IdleLibrary {
                 return;
             transaction.Pay();
             isStarted = true;
-            action.OnStart(ilevel, hourId);
+            action.OnStart(chestLotteryNum, chestChance);
         }
         public void Claim()
         {
