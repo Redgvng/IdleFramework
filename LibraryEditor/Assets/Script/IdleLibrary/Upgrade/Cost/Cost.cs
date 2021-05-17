@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Sirenix.Serialization;
 namespace IdleLibrary
 {
     public interface ICost
@@ -22,6 +23,7 @@ namespace IdleLibrary
         double FixedNumCost(NUMBER number, int fixedNum);
     }
     //コスト用のcal 外部に公開したくない。
+    /*
     public class CalDL : Cal
     {
         private Func<long, double> initialFunc;
@@ -31,16 +33,10 @@ namespace IdleLibrary
             this.initialFunc = initialFunc;
             this.level = level;
         }
-        /*
-        public CalDL(Func<long, double> initialFunc, ILevel level, CalsName Name) : base(0, Name)
-        {
-            this.initialFunc = initialFunc;
-            this.level = level;
-        }
-        */
         public override double GetValue() => multiplier.CaluculatedNumber(initialFunc(level.level));
         public double GetValue(long level) => multiplier.CaluculatedNumber(initialFunc(level));
     }
+    */
 
     public class NullCost : IMaxableCost
     {
@@ -64,28 +60,28 @@ namespace IdleLibrary
 
     public class FixedCost : ICost
     {
-        public double Cost => cost.GetValue();
-        private Cal cost;
+        public double Cost => cost;
+        [OdinSerialize] private double cost;
         public FixedCost(double cost)
         {
-            this.cost = new Cal(cost);
+            this.cost = cost;
         }
     }
 
     //リソースのみを計算する。
     public class LinearCost : IMaxableCost
     {
-        readonly double initialValue;
-        readonly double steep;
-        readonly ILevel level;
-        private CalDL cost { get; }
-        public double Cost => cost.GetValue();
+        [OdinSerialize] readonly double initialValue;
+        [OdinSerialize] readonly double steep;
+        [OdinSerialize] readonly ILevel level;
+        //private CalDL cost { get; }
+        public double Cost => initialValue + level.level * steep;
         public LinearCost(double initialValue, double steep, ILevel level)
         {
             this.initialValue = initialValue;
             this.steep = steep;
             this.level = level;
-            cost = new CalDL((l) => initialValue + l * steep, level);
+            //cost = new CalDL((l) => initialValue + l * steep, level);
         }
 
         public long LevelAtMaxCost(NUMBER number)
@@ -129,11 +125,11 @@ namespace IdleLibrary
 
     public class ExponentialCost : IMaxableCost
     {
-        readonly double initialValue;
-        readonly double factor;
-        readonly ILevel level;
-        private CalDL cost { get; }
-        public double Cost => cost.GetValue();
+        [OdinSerialize] readonly double initialValue;
+        [OdinSerialize] readonly double factor;
+        [OdinSerialize] readonly ILevel level;
+        //private CalDL cost { get; }
+        public double Cost => Math.Pow(factor, level.level);
         public ExponentialCost(double initialValue, double factor, ILevel level)
         {
             if(factor == 1)
@@ -146,7 +142,7 @@ namespace IdleLibrary
             this.initialValue = initialValue;
             this.factor = factor;
             this.level = level;
-            cost = new CalDL((l) => Math.Pow(factor, l), level);
+            //cost = new CalDL((l) => Math.Pow(factor, l), level);
         }
         public long LevelAtMaxCost(NUMBER number)
         {

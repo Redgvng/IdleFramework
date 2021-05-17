@@ -33,7 +33,6 @@ namespace IdleLibrary.Inventory
     {
         public List<ITEM> items = new List<ITEM>();
         public int expandNum;
-        public Action sampleAction = () => { };
     }
 
     public class Inventory 
@@ -75,7 +74,6 @@ namespace IdleLibrary.Inventory
                 }
             }
             this.input = input;
-            saveData.sampleAction();
         }
 
         //‚Æ‚è‚ ‚¦‚¸‰½‚àl‚¦‚¸‚É...
@@ -87,8 +85,7 @@ namespace IdleLibrary.Inventory
 
         public void GenerateItemRandomly()
         {
-            var item = new Artifact(-1);
-            saveData.sampleAction = () => { Debug.Log("save‚³‚ê‚Ä‚é‚æ"); };
+            var item = new Item(-1);
             item.id = UnityEngine.Random.Range(0, 5);
             SetItemByOrder(item);
         }
