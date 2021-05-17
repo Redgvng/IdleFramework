@@ -60,6 +60,7 @@ namespace IdleLibrary.Inventory
                     foreach (var item in info.inventory.GetItems())
                     {
                         if (index >= info.items.Count) continue;
+                        if (item == null) continue;
                         //アイテム画像
                         info.items[index].transform.GetChild(0).GetComponent<Image>().sprite = item.isSet ? sprites[item.id] : lockedSprite;
                         info.items[index].transform.GetChild(1).gameObject.SetActive(item.isLocked);

@@ -20,12 +20,12 @@ namespace IdleLibrary {
     }
     public interface IExpeditionAction
     {
-        void OnStart();
+        void OnStart(ILevel level, int hourId);
         void OnClaim();
     }
     public class NullExpeditionAction : IExpeditionAction
     {
-        public void OnStart() { }
+        public void OnStart(ILevel level, int hourId) { }
         public void OnClaim() { }
     }
     [System.Serializable]
@@ -40,17 +40,17 @@ namespace IdleLibrary {
     public class Expedition : IExpedition, ILevel
     {
         private ITransaction transaction;
-        private IExpeditionAction action { get => saveData[id].action; set => saveData[id].action = value; }
+        public IExpeditionAction action { get => saveData[id].action; set => saveData[id].action = value; }
         private float requiredHour;
         private float[] requiredHours;
-
         private readonly int id;
+        private ILevel ilevel;
 
         //Save
         [SerializeField] private long completedNum { get => saveData[id].completedNum; set => saveData[id].completedNum = value; }
         [SerializeField] private float currentTimesec { get => saveData[id].currentTimeSec; set => saveData[id].currentTimeSec = value; }
         [SerializeField] private bool isStarted { get => saveData[id].isStarted; set => saveData[id].isStarted = value; }
-        [SerializeField] private int hourId { get => saveData[id].hourId; set => saveData[id].hourId = value; }
+        [SerializeField] public int hourId { get => saveData[id].hourId; set => saveData[id].hourId = value; }
         public long level { get => completedNum; set => completedNum = value; }
         private Func<float> timeSpeedFactor = () => 1;
         [SerializeField] private ExpeditionForSave[] saveData;
@@ -77,6 +77,10 @@ namespace IdleLibrary {
         public void SetTimeSpeedFactor(Func<float> timeSpeedFactor)
         {
             this.timeSpeedFactor = timeSpeedFactor;
+        }
+        public void SetILevel(ILevel ilevel)
+        {
+            this.ilevel = ilevel;
         }
         //Test用
         public Expedition(int id, ITransaction transaction = null, IExpeditionAction action = null, params float[] requiredHoursArray)
@@ -141,7 +145,7 @@ namespace IdleLibrary {
                 return;
             transaction.Pay();
             isStarted = true;
-            action.OnStart();
+            action.OnStart(ilevel, hourId);
         }
         public void Claim()
         {
