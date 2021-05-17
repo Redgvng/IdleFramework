@@ -73,6 +73,14 @@ namespace IdleLibrary.Inventory
                     items.Add(new NullItem(-1));
                 }
             }
+            else
+            {
+                for (int i = 0; i < totalInventoryNum; i++)
+                {
+                    if (items[i] == null)
+                        items[i] = new NullItem(-1);
+                }
+            }
             this.input = input;
         }
 
@@ -117,7 +125,7 @@ namespace IdleLibrary.Inventory
             }
             if (index < 0 || index >= totalInventoryNum)
             {
-                Debug.LogError("セットできません");
+                Debug.Log("セットできません");
                 return;
             }
             setItem.SetItem(item, index);
@@ -137,7 +145,7 @@ namespace IdleLibrary.Inventory
                 }
             }
 
-            Debug.LogError("セットできません");
+            Debug.Log("セットできません");
             return;
         }
         public void SwapItem(int swapped, int swapping)
