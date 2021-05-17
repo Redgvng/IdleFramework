@@ -19,7 +19,8 @@ namespace IdleLibrary
     {
         //Public
         public int NumberAsInt => (int)Number;
-        [OdinSerialize] public virtual double Number { get; set; }
+        [OdinSerialize] private double _Number;
+        public virtual double Number { get => _Number; set => _Number = value; }
         [OdinSerialize] public virtual double TotalNumber { get; set; }
         public Multiplier multiplier {
             get
