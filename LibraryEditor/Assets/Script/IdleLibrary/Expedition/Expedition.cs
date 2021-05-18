@@ -45,7 +45,7 @@ namespace IdleLibrary
         private float requiredHour;
         private float[] requiredHours;
         private readonly int id;
-        private int chestLotteryNum;
+        private Func<int> chestLotteryNum;
         private float[] chestChance;
         //Save
         [SerializeField] private long completedNum { get => saveData[id].completedNum; set => saveData[id].completedNum = value; }
@@ -79,7 +79,7 @@ namespace IdleLibrary
         {
             this.timeSpeedFactor = timeSpeedFactor;
         }
-        public void SetReward(int chestLotteryNum, float[] chestChance)
+        public void SetReward(Func<int> chestLotteryNum, float[] chestChance)
         {
             this.chestLotteryNum = chestLotteryNum;
             this.chestChance = chestChance;
@@ -147,7 +147,7 @@ namespace IdleLibrary
                 return;
             transaction.Pay();
             isStarted = true;
-            action.OnStart(chestLotteryNum, chestChance);
+            action.OnStart(chestLotteryNum(), chestChance);
         }
         public void Claim()
         {
