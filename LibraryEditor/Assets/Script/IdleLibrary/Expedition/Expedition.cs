@@ -5,7 +5,8 @@ using System.Linq;
 using System;
 using Cysharp.Threading.Tasks;
 
-namespace IdleLibrary {
+namespace IdleLibrary
+{
 
     public interface IExpedition
     {
@@ -44,9 +45,8 @@ namespace IdleLibrary {
         private float requiredHour;
         private float[] requiredHours;
         private readonly int id;
+        private Func<int> chestLotteryNum;
         private float[] chestChance;
-        private int chestLotteryNum;
-
         //Save
         [SerializeField] private long completedNum { get => saveData[id].completedNum; set => saveData[id].completedNum = value; }
         [SerializeField] private float currentTimesec { get => saveData[id].currentTimeSec; set => saveData[id].currentTimeSec = value; }
@@ -68,7 +68,7 @@ namespace IdleLibrary {
             this.transaction = transaction == null ? new NullTransaction() : transaction;
             this.requiredHours = requiredHoursArray;
             requiredHour = requiredHours[hourId];
-            if(this.action == null) { this.action = action == null ? new NullExpeditionAction() : action; }
+            if (this.action == null) { this.action = action == null ? new NullExpeditionAction() : action; }
             Progress();
         }
         public void SetTransaction(ITransaction transaction)
@@ -79,7 +79,7 @@ namespace IdleLibrary {
         {
             this.timeSpeedFactor = timeSpeedFactor;
         }
-        public void SetReward(int chestLotteryNum, float[] chestChance)
+        public void SetReward(Func<int> chestLotteryNum, float[] chestChance)
         {
             this.chestLotteryNum = chestLotteryNum;
             this.chestChance = chestChance;
@@ -147,11 +147,11 @@ namespace IdleLibrary {
                 return;
             transaction.Pay();
             isStarted = true;
-            action.OnStart(chestLotteryNum, chestChance);
+            action.OnStart(chestLotteryNum(), chestChance);
         }
         public void Claim()
         {
-            if(!CanClaim())
+            if (!CanClaim())
                 return;
             isStarted = false;
             currentTimesec = 0;
@@ -177,7 +177,7 @@ namespace IdleLibrary {
                 hourId = hourId > 0 && requiredHours[hourId - 1] != 0 ? hourId - 1 : requiredHours.Length - 1;
             SelectTime(requiredHours[hourId]);
         }
-        public void IncreaseCurrentTime(float timesec) 
+        public void IncreaseCurrentTime(float timesec)
         {
             currentTimesec += timesec;
             if (currentTimesec > RealRequiredTimesec())
