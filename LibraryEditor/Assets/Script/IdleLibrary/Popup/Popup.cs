@@ -12,17 +12,23 @@ namespace IdleLibrary.UI
 {
     public interface IPopup
     {
-
+        void SetShowAction(Action action);
     }
     public class Popup : MonoBehaviour, IPopup
     {
         Func<bool> showCondition;
+        Action action;
         GameObject windowObject;
+        
         public Popup(Func<bool> showCondition, GameObject windowObject)
         {
             this.showCondition = showCondition;
             this.windowObject = windowObject;
             ShowWindow();
+        }
+        public void SetShowAction(Action action)
+        {
+            this.action = action;
         }
         async void ShowWindow()
         {
@@ -35,6 +41,7 @@ namespace IdleLibrary.UI
                 if (showCondition() && !tempBool)
                 {
                     setActive(windowObject);
+                    action();
                     tempBool = true;
                     await UniTask.DelayFrame(1);
                     setFalse(windowObject);
