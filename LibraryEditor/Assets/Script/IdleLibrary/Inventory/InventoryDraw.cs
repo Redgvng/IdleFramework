@@ -40,7 +40,6 @@ namespace IdleLibrary.Inventory
 
                 if(!isPopUpInitialized)
                 {
-                    Debug.Log("yobareteruyo");
                     popUp = new Popup(() => input.hoveredInventory != null && input.hoveredInventory.GetItem(input.cursorId).isSet, pop.gameObject);
                     pop.UpdateAsObservable().Where(_ => pop.gameObject.activeSelf).Subscribe(_ =>
                     {

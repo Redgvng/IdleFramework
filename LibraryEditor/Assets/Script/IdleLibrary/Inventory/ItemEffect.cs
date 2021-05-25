@@ -4,6 +4,7 @@ using UnityEngine;
 using Sirenix.Serialization;
 using System;
 using static IdleLibrary.UsefulMethod;
+using IdleLibrary;
 
 namespace IdleLibrary.Inventory
 {
@@ -14,33 +15,31 @@ namespace IdleLibrary.Inventory
     }
     //将来statsbreakdownで使う可能性のあるインターフェース
     //テキストのみデコレート可能にしておく必要あるか？
-    public interface IStatsBreakdown : IStatsBreakdownText
+    public interface IStatsBreakdown
     {
         //各々の値
         double Value();
-        //等しいことのbool (クラスが同じとか、idが同じとか...)
-        bool IsEqual(object obj);
-    }
-    //デコレート用インターフェース
-    public interface IStatsBreakdownText
-    {
-        //文章のフォーマット(値がないやつも最悪これ使えばいい)
         string StatsBreakdownText(double value);
     }
+
     public interface IEffect : IText
     {
-        
+        IEffect Clone();
+        Enum effectType { get; }
     }
+    [Serializable]
     public class BasicEffect : IEffect, IStatsBreakdown
     {
-        [OdinSerialize] public readonly Func<double> value;
+        public Func<double> value = () => 0;
         public string effectText;
         public Calway calway;
-        public BasicEffect(string effectText, Func<double> value, Calway calway)
+        [OdinSerialize] private Enum _effectType;
+        public Enum effectType => _effectType;
+        public BasicEffect(Enum type, string effectText, Calway calway)
         {
-            this.value = value;
             this.effectText = effectText;
             this.calway = calway;
+            this._effectType = type;
         }
         public string Text()
         {
@@ -62,38 +61,17 @@ namespace IdleLibrary.Inventory
             };
             return text;
         }
-        public double Value() => value();
-        public bool IsEqual(object obj)
+        public double Value()
         {
-            if (obj is BasicEffect)
-            {
-                var effect = obj as BasicEffect;
-                if(effect.effectText == this.effectText)
-                {
-                    return true;
-                }
-            }
-            return false;
+            if (value == null) return 0;
+            return value();
+        }
+        public IEffect Clone()
+        {
+            var clonedEffect = new BasicEffect(this.effectType, this.effectText, this.calway);
+            return clonedEffect;
         }
     }
-
-    //stats breakdownを表示させる処理を作ろう。
-    /*
-    public class StatsBreakdownMaker
-    {
-        private readonly IEnumerable<IStatsBreakdown> statsBreakdowns;
-        public StatsBreakdownMaker(IEnumerable<IStatsBreakdown> statsBreakdowns)
-        {
-            this.statsBreakdowns = statsBreakdowns;
-        }
-        public string Text()
-        {
-            string text = "";
-            foreach (var item in statsBreakdowns)
-            {
-
-            }
-        }
-    }
-    */
 }
+
+
