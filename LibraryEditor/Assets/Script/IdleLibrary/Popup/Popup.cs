@@ -16,12 +16,22 @@ namespace IdleLibrary.UI
     public class Popup : MonoBehaviour, IPopup
     {
         Func<bool> showCondition;
-        Action action;
+        Action action = () => { };
         GameObject windowObject;
         
         public Popup(Func<bool> showCondition, GameObject windowObject)
         {
             this.showCondition = showCondition;
+            this.windowObject = windowObject;
+            ShowWindow();
+        }
+        private bool isOver;
+        public Popup(GameObject hoveredObject, GameObject windowObject)
+        {
+            var trigger = hoveredObject.GetOrAddComponent<ObservableEventTrigger>();
+            trigger.OnPointerEnterAsObservable().Subscribe(_ => isOver = true);
+            trigger.OnPointerExitAsObservable().Subscribe(_ => isOver = false);
+            this.showCondition = () => isOver;
             this.windowObject = windowObject;
             ShowWindow();
         }
