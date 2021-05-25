@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -12,28 +12,22 @@ namespace IdleLibrary.UI
 {
     public interface IPopup
     {
-
     }
     public class Popup : MonoBehaviour, IPopup
     {
         Func<bool> showCondition;
+        Action action;
         GameObject windowObject;
-        bool isOver;
+        
         public Popup(Func<bool> showCondition, GameObject windowObject)
         {
             this.showCondition = showCondition;
             this.windowObject = windowObject;
             ShowWindow();
         }
-        //FuncÇì¸ÇÍÇ»ÇØÇÍÇŒé©ìÆìIÇ…ÉzÉoÅ[ÉgÉäÉKÅ[Ç…ÇµÇ‹Ç∑
-        public Popup(GameObject hoveredObject, GameObject windowObject)
+        public void SetShowAction(Action action)
         {
-            var trigger = hoveredObject.GetOrAddComponent<ObservableEventTrigger>();
-            trigger.OnPointerEnterAsObservable().Subscribe(_ => isOver = true);
-            trigger.OnPointerExitAsObservable().Subscribe(_ => isOver = false);
-            this.showCondition = () => isOver;
-            this.windowObject = windowObject;
-            ShowWindow();
+            this.action = action;
         }
         async void ShowWindow()
         {
@@ -46,6 +40,7 @@ namespace IdleLibrary.UI
                 if (showCondition() && !tempBool)
                 {
                     setActive(windowObject);
+                    action();
                     tempBool = true;
                     await UniTask.DelayFrame(1);
                     setFalse(windowObject);
