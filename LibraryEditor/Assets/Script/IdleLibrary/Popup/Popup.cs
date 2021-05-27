@@ -16,7 +16,7 @@ namespace IdleLibrary.UI
     public class Popup : MonoBehaviour, IPopup
     {
         Func<bool> showCondition;
-        Action action = () => { };
+        Action action = () => { };  
         GameObject windowObject;
         
         public Popup(Func<bool> showCondition, GameObject windowObject)
