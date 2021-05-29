@@ -27,20 +27,11 @@ namespace IdleLibrary.Inventory
         IEffect Clone();
         Enum effectType { get; }
     }
-    [Serializable]
-    public class BasicEffect : IEffect, IStatsBreakdown
+    public class ValueEffect
     {
         public Func<double> value = () => 0;
         public string effectText;
         public Calway calway;
-        [OdinSerialize] private Enum _effectType;
-        public Enum effectType => _effectType;
-        public BasicEffect(Enum type, string effectText, Calway calway)
-        {
-            this.effectText = effectText;
-            this.calway = calway;
-            this._effectType = type;
-        }
         public string Text()
         {
             string text = calway switch
@@ -66,12 +57,60 @@ namespace IdleLibrary.Inventory
             if (value == null) return 0;
             return value();
         }
+    }
+    [Serializable]
+    public class BasicEffect : ValueEffect , IEffect, IStatsBreakdown
+    {
+        [OdinSerialize] private Enum _effectType;
+        public Enum effectType => _effectType;
+        public BasicEffect(Enum type, string effectText, Calway calway)
+        {
+            this.effectText = effectText;
+            this.calway = calway;
+            this._effectType = type;
+        }
+        //コピーコンストラクタ
+        public BasicEffect(BasicEffect basicEffect)
+        {
+            this.effectText = basicEffect.effectText;
+            this.calway = basicEffect.calway;
+            this._effectType = basicEffect._effectType;
+            this.value = basicEffect.value;
+        }
+        
         public IEffect Clone()
         {
             var clonedEffect = new BasicEffect(this.effectType, this.effectText, this.calway);
             return clonedEffect;
         }
     }
+
+    [Serializable]
+    public class OptionBasicEffect : ValueEffect,  IEffect, IStatsBreakdown, ILevel
+    {
+        public long level { get; set; }
+        public long maxLevel;
+        [OdinSerialize] private Enum _effectType;
+        public Enum effectType => _effectType;
+        public OptionBasicEffect(Enum type, string effectText, Calway calway)
+        {
+            this.effectText = effectText;
+            this.calway = calway;
+            this._effectType = type;
+        }
+
+        public IEffect Clone()
+        {
+            var clonedEffect = new BasicEffect(this.effectType, this.effectText, this.calway);
+            return clonedEffect;
+        }
+        public void SetMaxLevel(long maxLevel)
+        {
+            level = 1;
+            this.maxLevel = maxLevel;
+        }
+    }
+
 }
 
 
