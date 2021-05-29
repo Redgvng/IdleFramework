@@ -64,7 +64,10 @@ namespace IdleLibrary.Inventory
         public Inventory(InputItem input, ref InventoryForSave saveData,int initialInventoryNum)
         {
             if (saveData == null)
+            {
                 saveData = new InventoryForSave();
+                Debug.Log("nullŒÄ‚Î‚ê‚Ä‚é‚æ");
+            }
             this.saveData = saveData;
             this.initialInventoryNum = initialInventoryNum;
             /*

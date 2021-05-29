@@ -90,6 +90,9 @@ namespace IdleLibrary.Inventory
     {
         public long level { get; set; }
         public long maxLevel;
+        public double randomValue;
+        public double factor;
+        public Func<double, double> aug;
         [OdinSerialize] private Enum _effectType;
         public Enum effectType => _effectType;
         public OptionBasicEffect(Enum type, string effectText, Calway calway)
@@ -97,17 +100,54 @@ namespace IdleLibrary.Inventory
             this.effectText = effectText;
             this.calway = calway;
             this._effectType = type;
+            level = 1;
         }
 
         public IEffect Clone()
         {
-            var clonedEffect = new BasicEffect(this.effectType, this.effectText, this.calway);
+            var clonedEffect = new OptionBasicEffect(this.effectType, this.effectText, this.calway);
+            clonedEffect.maxLevel = maxLevel;
+            clonedEffect.factor = factor;
+            clonedEffect.aug = aug;
+            clonedEffect.level = level;
+
             return clonedEffect;
         }
-        public void SetMaxLevel(long maxLevel)
+        public OptionBasicEffect SetMaxLevel(long maxLevel)
         {
             level = 1;
             this.maxLevel = maxLevel;
+            return this;
+        }
+        public OptionBasicEffect SetFactor(double factor)
+        {
+            this.factor = factor;
+            return this;
+        }
+        public OptionBasicEffect SetAug(Func<double, double> aug)
+        {
+            this.aug = aug;
+            return this;
+        }
+        //ƒŒƒxƒ‹‚ªã‚ª‚Á‚½Žž‚É‚±‚ê‚ðŒÄ‚Ô
+        public void UpdateRandomValue()
+        {
+            randomValue = UnityEngine.Random.Range((int)factor * level, (int)(factor * aug(level + 1)));
+            value = () => randomValue; 
+        }
+    }
+    enum NullEnum { hoge}
+    [Serializable]
+    public class NullEffect : IEffect
+    {
+        public Enum effectType => NullEnum.hoge;
+        public IEffect Clone()
+        {
+            return new NullEffect();
+        }
+        public string Text()
+        {
+            return "No Effect!";
         }
     }
 

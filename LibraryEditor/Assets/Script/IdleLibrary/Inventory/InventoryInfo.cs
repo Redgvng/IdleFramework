@@ -47,12 +47,9 @@ public class InventoryInfo
 		{
 			InstantiateItem();
 		}
-
 		//inventoryのexpandNumが変化したら、それに応じてExpandを呼ぶ？
 		this.ObserveEveryValueChanged(_ => inventory.totalInventoryNum).Subscribe(_ =>
 		{
-			Debug.Log(inventory.totalInventoryNum);
-			Debug.Log(inventory.GetInventoryLength());
 			int diff = inventory.totalInventoryNum - inventory.GetInventoryLength();
 			if (diff <= 0) return;
 			for (int i = 0; i < diff; i++)
@@ -60,7 +57,6 @@ public class InventoryInfo
 				inventory.items.Add(new NullItem(-1));
 			}
 		});
-
 		//inventoryLength()の値が変化したら、それに応じてInstantiateする.,
 		this.ObserveEveryValueChanged(_ => inventory.GetInventoryLength()).Subscribe(_ =>
 		{
