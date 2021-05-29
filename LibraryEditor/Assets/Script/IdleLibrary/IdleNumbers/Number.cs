@@ -30,6 +30,7 @@ namespace IdleLibrary
             }
             set => _multiplier = value;
         }
+
         private Multiplier _multiplier;
 
         //ユニットテスト用コンストラクタ

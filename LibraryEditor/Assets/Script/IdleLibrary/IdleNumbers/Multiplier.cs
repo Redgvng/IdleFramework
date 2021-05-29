@@ -30,6 +30,7 @@ namespace IdleLibrary
             this.trigger = trigger == null ? () => true : trigger;
             this.multiplierType = type;
         }
+      
     }
 
     [Serializable]

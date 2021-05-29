@@ -44,8 +44,9 @@ namespace IdleLibrary.Inventory
 
         public InputItem input;
         public bool isFull => items.All((item) => item.isSet);
+        public Multiplier extraInventoryNum = new Multiplier();
         public readonly int initialInventoryNum = 10;
-        internal int totalInventoryNum => expandNum + initialInventoryNum;
+        internal int totalInventoryNum => initialInventoryNum + (int)extraInventoryNum.CaluculatedNumber(0) + expandNum;
 
         private ISetItem setItem;
         //Save‚·‚×‚«•Ï”‚ğ’“ü‚·‚é
@@ -66,6 +67,7 @@ namespace IdleLibrary.Inventory
                 saveData = new InventoryForSave();
             this.saveData = saveData;
             this.initialInventoryNum = initialInventoryNum;
+            /*
             if (items.Count == 0)
             {
                 for (int i = 0; i < totalInventoryNum; i++)
@@ -81,6 +83,7 @@ namespace IdleLibrary.Inventory
                         items[i] = new NullItem(-1);
                 }
             }
+            */
             this.input = input;
         }
 
@@ -114,7 +117,7 @@ namespace IdleLibrary.Inventory
         }
         public int GetInventoryLength()
         {
-            return totalInventoryNum;
+            return items.Count;
         }
 
         public void SetItem(ITEM item, int index)

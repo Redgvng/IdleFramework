@@ -35,7 +35,6 @@ namespace IdleLibrary
         public SaveDeclare SD;
         public saveCtrl saveCtrl;
 
-
         public AudioSource SoundEffectSource;
         //public Sound sound;
         public GameObject plainPopText;

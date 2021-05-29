@@ -6,6 +6,11 @@ namespace IdleLibrary
         string Text();
     }
 
+    public class NullText : IText
+    {
+        public string Text() => "";
+    }
+
     //IText用デコレート
     public class ColorText : IText
     {
@@ -24,4 +29,5 @@ namespace IdleLibrary
             return text;
         }
     }
+
 }

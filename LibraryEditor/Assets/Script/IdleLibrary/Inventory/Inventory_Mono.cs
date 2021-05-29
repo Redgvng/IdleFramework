@@ -90,11 +90,11 @@ namespace IdleLibrary.Inventory
 				});
 			ExpandInventory.OnClickAsObservable().Subscribe(_ =>
 			{
-				inventory.inventory.ExpandInventory();
+				inventory.inventory.expandNum++;
 			});
 			ExpandEquipmentInventory.OnClickAsObservable().Subscribe(_ =>
 			{
-				equipmentInventory.inventory.ExpandInventory();
+				equipmentInventory.inventory.expandNum++;
 			});
 
 			Notify();
