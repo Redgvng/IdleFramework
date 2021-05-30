@@ -120,12 +120,13 @@ namespace IdleLibrary.Inventory
         {
             this.inventory = inventory;
         }
+        public bool CanDelete(int index)
+        {
+            return !inventory.GetItem(index).isLocked && inventory.input.inputItem.id == -1;
+        }
         public void Action(int index)
         {
-            if (inventory.GetItem(index).isLocked)
-                return;
-
-            if (inventory.input.inputItem.id == -1)
+            if (CanDelete(index))
                 inventory.DeleteItem(index);
         }
     }
