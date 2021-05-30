@@ -26,6 +26,7 @@ namespace IdleLibrary.Inventory
     {
         IEffect Clone();
         Enum effectType { get; }
+        string EffectText { get; }
     }
     public class ValueEffect
     {
@@ -83,6 +84,7 @@ namespace IdleLibrary.Inventory
             var clonedEffect = new BasicEffect(this.effectType, this.effectText, this.calway);
             return clonedEffect;
         }
+        public string EffectText => effectText;
     }
 
     [Serializable]
@@ -135,6 +137,7 @@ namespace IdleLibrary.Inventory
             randomValue = UnityEngine.Random.Range((int)factor * level, (int)(factor * aug(level + 1)));
             value = () => randomValue; 
         }
+        public string EffectText => effectText;
     }
     enum NullEnum { hoge}
     [Serializable]
@@ -149,6 +152,7 @@ namespace IdleLibrary.Inventory
         {
             return "No Effect!";
         }
+        public string EffectText => Text();
     }
 
 }
