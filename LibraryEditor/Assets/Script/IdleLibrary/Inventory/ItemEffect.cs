@@ -150,7 +150,7 @@ namespace IdleLibrary.Inventory
         }
         public string Text()
         {
-            return "No Effect!";
+            return "No Effect";
         }
         public string EffectText => Text();
     }
