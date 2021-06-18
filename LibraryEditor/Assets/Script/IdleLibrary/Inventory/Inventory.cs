@@ -45,7 +45,7 @@ namespace IdleLibrary.Inventory
         public InputItem input;
         public bool isFull => items.All((item) => item.isSet);
         public Multiplier extraInventoryNum = new Multiplier();
-        public readonly int initialInventoryNum = 10;
+        public readonly int initialInventoryNum = 3;
         internal int totalInventoryNum => initialInventoryNum + (int)extraInventoryNum.CaluculatedNumber(0) + expandNum;
 
         private ISetItem setItem;
