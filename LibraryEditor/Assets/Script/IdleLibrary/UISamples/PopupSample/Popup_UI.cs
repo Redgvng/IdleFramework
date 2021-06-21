@@ -43,6 +43,8 @@ namespace IdleLibrary.UI
             this.locationKind = locationKind;
             UpdateText(descriptionString);
             if (iconSprite != null) UpdateIcon(iconSprite);
+            Hide();
+            Show();
         }
         private void UpdateText(IText text)
         {
