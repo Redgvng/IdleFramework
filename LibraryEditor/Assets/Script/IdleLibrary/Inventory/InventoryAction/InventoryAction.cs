@@ -147,7 +147,7 @@ namespace IdleLibrary.Inventory
 
             if (inventory.input.inputItem.id == -1)
             {
-                inventory.GetItem(index).isLocked = true;
+                inventory.GetItem(index).isLocked = !inventory.GetItem(index).isLocked;
             }
         }
     }

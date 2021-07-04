@@ -17,8 +17,7 @@ public class Level : ILevel
 [Serializable]
 public class TimeBasedLevel : ILevel
 {
-    public long level { get => _levelCap; set => _levelCap = value; }
-    [OdinSerialize] private long _levelCap;
+    public long level { get ; set; }
     public long maxLevelCap;
     public TimeBasedLevel(long maxLevelCap)
     {

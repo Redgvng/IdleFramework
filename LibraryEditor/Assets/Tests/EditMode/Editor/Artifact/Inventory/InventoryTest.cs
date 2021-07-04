@@ -235,6 +235,19 @@ namespace Tests.inventory
             Assert.IsFalse(inventory.GetItem(0).isLocked);
         }
 
+        [Test]
+        public void CanUnlockWithLockedItem()
+        {
+            var inventory = new Inventory();
+            var lockItem = new LockItem(inventory);
+
+            lockItem.Action(0);
+            //もう一度ロックすると
+            lockItem.Action(0);
+
+            Assert.IsFalse(inventory.GetItem(0).isLocked);
+        }
+
     }
     public class ItemStackTest
     {
