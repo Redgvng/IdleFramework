@@ -325,11 +325,13 @@ namespace IdleLibrary
         }
 
         //
+        /*
         public static Main GetMain()
         {
             GameObject mainCtrl = GameObject.FindGameObjectWithTag("mainCtrl");
             return mainCtrl.GetComponent<Main>();
         }
+        */
 
         //
         public static IEnumerator EasyForCor(usefuleDelegate dele, int num, float interval)

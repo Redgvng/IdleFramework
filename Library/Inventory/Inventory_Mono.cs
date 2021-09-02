@@ -57,8 +57,8 @@ namespace IdleLibrary.Inventory
 		// Use this for initialization
 		void Awake()
 		{
-			inventory = new InventoryInfo(new Inventory(inputItem, ref Main.main.S.inventory, 10), canvas, items, item, inputItem);
-			equipmentInventory = new InventoryInfo(new Inventory(inputItem, ref Main.main.S.equipmentInventory, 10), EquipmentCanvas, EquippedItems, item, inputItem);
+			//inventory = new InventoryInfo(new Inventory(inputItem, ref Main.main.S.inventory, 10), canvas, items, item, inputItem);
+			//equipmentInventory = new InventoryInfo(new Inventory(inputItem, ref Main.main.S.equipmentInventory, 10), EquipmentCanvas, EquippedItems, item, inputItem);
 
 			//UIと紐づける
 			UIInfoList.Add(inventory);
