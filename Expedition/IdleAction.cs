@@ -68,7 +68,7 @@ namespace IdleLibrary
             if (!CanClaim())
                 return;
             isStarted = false;
-            currentTime.Number = 0;
+            currentTime.ResetNumberToZero();
         }
         public async void Initialize()
         {
@@ -84,7 +84,7 @@ namespace IdleLibrary
 
         public void IncreaseCurrentTime(float timesec)
         {
-            currentTime.IncrementNumber(timesec);
+            currentTime.Increment(timesec);
         }
         public float ProgressPercent()
         {

@@ -8,6 +8,7 @@ using TMPro;
 
 namespace IdleLibrary
 {
+    /*
     public interface ICapped
     {
         bool CappedAction(NUMBER number, Cal calculator);
@@ -60,4 +61,5 @@ namespace IdleLibrary
             capped.CappedAction(number, this);
         }
     }
+    */
 }

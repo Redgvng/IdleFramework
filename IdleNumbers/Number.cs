@@ -5,23 +5,25 @@ using Sirenix.Serialization;
 
 namespace IdleLibrary
 {
-    public interface IName
-    {
-        string GetName();
-    }
     public interface IMultiplier
     {
         Multiplier multiplier { get; }
     }
+
+    public interface INumber
+    {
+        double Number { get; }
+        void Increment(double increment);
+        void Decrement(double decrement);
+    }
+
     //こいつら一旦統計量持てない
     [Serializable]
-    public class NUMBER : IComparable<NUMBER>, IMultiplier
+    public class NUMBER : IMultiplier,INumber
     {
-        //Public
-        public int NumberAsInt => (int)Number;
-        [OdinSerialize] private double _Number;
-        public virtual double Number { get => _Number; set => _Number = value; }
-        [OdinSerialize] public virtual double TotalNumber { get; set; }
+        public double Number { get => _Number; private set => _Number = value; }
+        [SerializeField] double _Number;
+        public double TotalNumber;
         public Multiplier multiplier {
             get
             {
@@ -30,42 +32,56 @@ namespace IdleLibrary
             }
             set => _multiplier = value;
         }
-
+        public NUMBER(double initialNumber) { Number = initialNumber; }
+        public NUMBER() { }
         private Multiplier _multiplier;
-
-        //ユニットテスト用コンストラクタ
-        public NUMBER(double initialValue)
+        public virtual void Increment(double increment = 1)
         {
-            Number = initialValue;
+            Number += multiplier.CaluculatedNumber(increment);
+            TotalNumber += multiplier.CaluculatedNumber(increment);
         }
-        public NUMBER()
+        public void IncrementFixNumber(double fixIncrement)
         {
-
+            Number += fixIncrement;
         }
-
-        public virtual void IncrementNumber(double increment = 1, bool isNetValue = false)
-        {
-            Number += !isNetValue ? multiplier.CaluculatedNumber(increment) : increment;
-            TotalNumber += !isNetValue ? multiplier.CaluculatedNumber(increment) : increment;
-        }
-        public virtual void DecrementNumber(double decrement = 1)
+        public virtual void Decrement(double decrement = 1)
         {
             Number = Math.Max(Number - decrement, 0);
         }
-        public int CompareTo(NUMBER other)
+        public void ResetNumberToZero()
         {
-            if (Number < other.Number)
+            Number = 0;
+        }
+    }
+
+    //これを使う場合、通常GainedNumberが関数となるはず。それ以外の場合はクラスを作り直した方がいいかも
+    [Serializable]
+    public class AsyncNumber : IMultiplier, INumber
+    {
+        public double Number { get => GainedNumber - ConsumedNumber; }
+        protected virtual double GainedNumber { get; }
+        [SerializeField] double ConsumedNumber;
+        public Multiplier multiplier
+        {
+            get
             {
-                return 1;
+                if (_multiplier == null) return new Multiplier();
+                return _multiplier;
             }
-            else if (Number > other.Number)
+            set => _multiplier = value;
+        }
+        private Multiplier _multiplier;
+        public virtual void Increment(double increment = 1)
+        {
+            
+        }
+        public virtual void Decrement(double decrement = 1)
+        {
+            if(Number > decrement)
             {
-                return -1;
+                throw new Exception("DecrementがNumberより大きいです");
             }
-            else
-            {
-                return 0;
-            }
+            ConsumedNumber += decrement;
         }
     }
 

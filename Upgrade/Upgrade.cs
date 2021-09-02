@@ -36,7 +36,7 @@ namespace IdleLibrary.Upgrade {
         {
             if (!CanBuy())
                 return;
-            number.DecrementNumber(cost.Cost);
+            number.Decrement(cost.Cost);
             level.level++;
         }
 
@@ -46,7 +46,7 @@ namespace IdleLibrary.Upgrade {
                 return;
 
             long tempLevel = cost.LevelAtMaxCost(number);
-            number.DecrementNumber(cost.MaxCost(number));
+            number.Decrement(cost.MaxCost(number));
             level.level = tempLevel;
         }
 
@@ -57,13 +57,13 @@ namespace IdleLibrary.Upgrade {
 
             if(cost.LevelAtMaxCost(number) > fixedNum)
             {
-                number.DecrementNumber(cost.FixedNumCost(number,fixedNum));
+                number.Decrement(cost.FixedNumCost(number,fixedNum));
                 level.level += fixedNum;
             }
             else
             {
                 long tempLevel = cost.LevelAtMaxCost(number);
-                number.DecrementNumber(cost.MaxCost(number));
+                number.Decrement(cost.MaxCost(number));
                 level.level = tempLevel;
             }
         }
@@ -91,7 +91,7 @@ namespace IdleLibrary.Upgrade {
 
             foreach (var item in info)
             {
-                item.number.DecrementNumber(item.cost.Cost);
+                item.number.Decrement(item.cost.Cost);
             }
             level.level++;
         }
@@ -104,7 +104,7 @@ namespace IdleLibrary.Upgrade {
             var minLevel = info.Select((x) => x.cost.LevelAtMaxCost(x.number)).Min();
             foreach (var item in info)
             {
-                item.number.DecrementNumber(item.cost.MaxCost(item.number));
+                item.number.Decrement(item.cost.MaxCost(item.number));
             }
             level.level = minLevel;
         }
@@ -119,7 +119,7 @@ namespace IdleLibrary.Upgrade {
             {
                 foreach (var item in info)
                 {
-                    item.number.DecrementNumber(item.cost.FixedNumCost(item.number, fixedNum));
+                    item.number.Decrement(item.cost.FixedNumCost(item.number, fixedNum));
                 }
                 level.level += fixedNum;
             }
@@ -127,7 +127,7 @@ namespace IdleLibrary.Upgrade {
             {
                 foreach (var item in info)
                 {
-                    item.number.DecrementNumber(item.cost.MaxCost(item.number));
+                    item.number.Decrement(item.cost.MaxCost(item.number));
                 }
                 level.level = minLevel;
             }

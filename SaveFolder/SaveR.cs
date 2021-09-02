@@ -4,14 +4,14 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace IdleLibrary
+
+[System.Serializable]
+public class SaveR
 {
-    [System.Serializable]
-    public class SaveR
-    {
-        public string ascendTime;
-        /* ここからアセンドでリセットする変数をpublicで宣言していく */
-        /* NOTE : インスペクターに表示させたくない変数は[NonSerialized]をつける */
-        /* NOTE : サイズの大きい配列は[NonSeriarized]をつける */
-    }
+    public string ascendTime;
+    /* ここからアセンドでリセットする変数をpublicで宣言していく */
+    /* NOTE : インスペクターに表示させたくない変数は[NonSerialized]をつける */
+    /* NOTE : サイズの大きい配列は[NonSeriarized]をつける */
+    
 }
+

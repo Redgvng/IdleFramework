@@ -21,7 +21,7 @@ namespace IdleLibrary
         }
         public void Reward()
         {
-            info.ToList().ForEach((x) => x.number.IncrementNumber(x.increment, true));
+            info.ToList().ForEach((x) => x.number.IncrementFixNumber(x.increment));
         }
         public string Text()
         {

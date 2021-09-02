@@ -19,7 +19,7 @@ namespace IdleLibrary{
         }
         public void Pay()
         {
-            resource.DecrementNumber(cost.Cost);
+            resource.Decrement(cost.Cost);
         }
         public Transaction(NUMBER resource, ICost cost)
         {

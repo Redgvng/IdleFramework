@@ -21,7 +21,7 @@ namespace IdleLibrary.Inventory {
         // Start is called before the first frame update
         void Start()
         {
-            cookieButton.onClick.AddListener(() => cookie.IncrementNumber(1));
+            cookieButton.onClick.AddListener(() => cookie.Increment(1));
             CookieProduce();
         }
 
@@ -29,7 +29,7 @@ namespace IdleLibrary.Inventory {
         {
             while (true)
             {
-                cookie.IncrementNumber(cookieAutoProduce.Number);
+                cookie.Increment(cookieAutoProduce.Number);
                 await UniTask.Delay(1000);
             }
         }
