@@ -60,7 +60,7 @@ namespace IdleLibrary
     {
         public double Number { get => GainedNumber - ConsumedNumber; }
         protected virtual double GainedNumber { get; }
-        [SerializeField] double ConsumedNumber;
+        protected virtual double ConsumedNumber { get; set; }
         public Multiplier multiplier
         {
             get
@@ -77,7 +77,7 @@ namespace IdleLibrary
         }
         public virtual void Decrement(double decrement = 1)
         {
-            if(Number > decrement)
+            if(Number < decrement)
             {
                 throw new Exception("DecrementがNumberより大きいです");
             }

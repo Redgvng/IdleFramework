@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace IdleLibrary.Upgrade {
 
+    /*
     public interface IUpgrade
     {
         bool CanBuy();
@@ -12,15 +13,14 @@ namespace IdleLibrary.Upgrade {
         void MaxPay();
         void FixedAmountPay(int num);
     }
+    */
     
-    //外部からは買った時の処理と、買えるかどうかが必要(ITransactionでアップグレードも表現しよう。)
-    //UpgradeからCostの情報が取れないのは明らかにおかしい
-    public class Upgrade : IUpgrade
+    public class Upgrade
     {
         private ILevel level;
-        public NUMBER number;
+        public INumber number;
         public IMaxableCost cost;
-        public Upgrade(ILevel level, NUMBER number, IMaxableCost cost)
+        public Upgrade(ILevel level, INumber number, IMaxableCost cost)
         {
             this.level = level;
             this.number = number;
@@ -70,11 +70,11 @@ namespace IdleLibrary.Upgrade {
     }
 
     //Upgradeと同じようにふるまってほしい
-    public class MultipleUpgrade : IUpgrade
+    public class MultipleUpgrade
     {
-        private readonly IEnumerable<(NUMBER number, IMaxableCost cost)> info;
+        private readonly IEnumerable<(INumber number, IMaxableCost cost)> info;
         private readonly ILevel level;
-        public MultipleUpgrade(ILevel level, params (NUMBER number, IMaxableCost cost)[] info)
+        public MultipleUpgrade(ILevel level, params (INumber number, IMaxableCost cost)[] info)
         {
             this.info = info;
             this.level = level;

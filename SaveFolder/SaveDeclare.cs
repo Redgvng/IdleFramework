@@ -25,18 +25,7 @@ namespace IdleLibrary
 		void Awake()
 		{
 			//NUMBER
-			
-		}
-
-		// Use this for initialization
-		void Start()
-		{
-
-		}
-
-		void Update()
-		{
-
+			InitializeArray(ref main.SR.upgradeLevels, Enum.GetValues(typeof(UpgradeKind)).Length);
 		}
 	}
 }
