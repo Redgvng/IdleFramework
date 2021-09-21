@@ -129,7 +129,7 @@ namespace IdleLibrary
         [OdinSerialize] readonly double factor;
         [OdinSerialize] readonly ILevel level;
         //private CalDL cost { get; }
-        public double Cost => Math.Pow(factor, level.level);
+        public double Cost => initialValue * Math.Pow(factor, level.level);
         public ExponentialCost(double initialValue, double factor, ILevel level)
         {
             if(factor == 1)
