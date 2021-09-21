@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace IdleLibrary
 {
     [System.Serializable]
-    public class SaveR
+    public partial class SaveR
     {
         public string ascendTime;
         public double distanceConsumed;
