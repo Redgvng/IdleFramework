@@ -28,7 +28,7 @@ namespace IdleLibrary
         }
         [Range(0.05f, 20.0f)]
         public float tick = 1.0f;
-
+        //
         [SerializeField]
         public SaveR SR;
         [SerializeField] public Save S;
@@ -64,7 +64,7 @@ namespace IdleLibrary
                 lastTime = DateTime.Now;
             }
             StartCoroutine(plusTime());
-            this.ObserveEveryValueChanged(_ => tick).Subscribe(_ => Time.fixedDeltaTime = 1f /tick / 10);
+            //this.ObserveEveryValueChanged(_ => tick).Subscribe(_ => Time.fixedDeltaTime = 1f /tick / 10);
         }
 
 
