@@ -16,24 +16,12 @@ namespace IdleLibrary
         void Decrement(double decrement);
     }
 
-    //こいつら一旦統計量持てない
     [Serializable]
     public class NUMBER : IMultiplier,INumber
     {
-        public double Number { get => _Number; private set => _Number = value; }
-        [SerializeField] double _Number;
+        public virtual double Number { get; set; }
         public double TotalNumber;
-        public Multiplier multiplier {
-            get
-            {
-                if (_multiplier == null) return new Multiplier();
-                return _multiplier;
-            }
-            set => _multiplier = value;
-        }
-        public NUMBER(double initialNumber) { Number = initialNumber; }
-        public NUMBER() { }
-        private Multiplier _multiplier;
+        private Multiplier _multiplier = new Multiplier(); public Multiplier multiplier => _multiplier;
         public virtual void Increment(double increment = 1)
         {
             Number += multiplier.CaluculatedNumber(increment);
@@ -72,7 +60,7 @@ namespace IdleLibrary
         private Multiplier _multiplier;
         public virtual void Increment(double increment = 1)
         {
-            
+            ConsumedNumber = Math.Max(0, ConsumedNumber - increment);
         }
         public virtual void Decrement(double decrement = 1)
         {

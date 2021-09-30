@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace IdleLibrary
 {
@@ -13,6 +14,7 @@ namespace IdleLibrary
     //Value Object
     public class Level : ILevel
     {
-        public long level { get; set; }
+        public long level { get => _level; set => _level = value; }
+        [SerializeField] private long _level;
     }
 }
