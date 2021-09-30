@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Sirenix.Serialization;
 namespace IdleLibrary
 {
     public interface ICost
@@ -22,21 +21,6 @@ namespace IdleLibrary
         /// </summary>
         double FixedNumCost(INumber number, int fixedNum);
     }
-    //コスト用のcal 外部に公開したくない。
-    /*
-    public class CalDL : Cal
-    {
-        private Func<long, double> initialFunc;
-        private ILevel level;
-        public CalDL(Func<long, double> initialFunc, ILevel level) : base(0)
-        {
-            this.initialFunc = initialFunc;
-            this.level = level;
-        }
-        public override double GetValue() => multiplier.CaluculatedNumber(initialFunc(level.level));
-        public double GetValue(long level) => multiplier.CaluculatedNumber(initialFunc(level));
-    }
-    */
 
     public class NullCost : IMaxableCost
     {
@@ -61,7 +45,7 @@ namespace IdleLibrary
     public class FixedCost : ICost
     {
         public double Cost => cost;
-        [OdinSerialize] private double cost;
+        private readonly double cost;
         public FixedCost(double cost)
         {
             this.cost = cost;
@@ -71,9 +55,9 @@ namespace IdleLibrary
     //リソースのみを計算する。
     public class LinearCost : IMaxableCost
     {
-        [OdinSerialize] readonly double initialValue;
-        [OdinSerialize] readonly double steep;
-        [OdinSerialize] readonly ILevel level;
+        readonly double initialValue;
+        readonly double steep;
+        readonly ILevel level;
         //private CalDL cost { get; }
         public double Cost => initialValue + level.level * steep;
         public LinearCost(double initialValue, double steep, ILevel level)
@@ -125,9 +109,9 @@ namespace IdleLibrary
 
     public class ExponentialCost : IMaxableCost
     {
-        [OdinSerialize] readonly double initialValue;
-        [OdinSerialize] readonly double factor;
-        [OdinSerialize] readonly ILevel level;
+        readonly double initialValue;
+        readonly double factor;
+        readonly ILevel level;
         //private CalDL cost { get; }
         public double Cost => initialValue * Math.Pow(factor, level.level);
         public ExponentialCost(double initialValue, double factor, ILevel level)

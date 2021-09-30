@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.Serialization;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Linq;
@@ -61,7 +60,7 @@ namespace IdleLibrary.Inventory
     public class StackableItem : ITEM, IStackableItem
     {
         public StackableItem(int id) : base(id) { stackedNumber = 1; }
-        [OdinSerialize] public int stackedNumber { get; set; }
+        public int stackedNumber;
 
         public bool CanStack(ITEM item)
         {

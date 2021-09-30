@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Sirenix.Serialization;
 using System;
 
 namespace IdleLibrary.Inventory

@@ -225,13 +225,10 @@ if (fileuploader) {
                 saveStrArray[i] = System.Text.Encoding.UTF8.GetString(aes.dencrypt(Convert.FromBase64String(jsonArray[i])));
                 // yield return saveStrArray[i];
             }
-            /*
+            
             SaveR SRdata = JsonUtility.FromJson<SaveR>(saveStrArray[0]);
             Save Sdata = JsonUtility.FromJson<Save>(saveStrArray[1]);
-            */
-            SaveR SRdata = Save_Odin.Load<SaveR>(saveStrArray[0]);
-            Save Sdata = Save_Odin.Load<Save>(saveStrArray[1]);
-
+            
             main.SR = SRdata;
             main.S = Sdata;
 

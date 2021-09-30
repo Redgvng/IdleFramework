@@ -5,13 +5,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using static IdleLibrary.UsefulMethod;
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UniRx;
 
 namespace IdleLibrary
 {
-    public class Main : SerializedMonoBehaviour
+    public class Main : MonoBehaviour
     {
         public double allTime { get => S.allTime; set => S.allTime = value; }
         public DateTime birthTime
@@ -32,7 +30,6 @@ namespace IdleLibrary
         [SerializeField]
         public SaveR SR;
         [SerializeField] public Save S;
-        [NonSerialized] [OdinSerialize] public SaveO SO;
         public SaveDeclare SD;
         public saveCtrl saveCtrl;
 
