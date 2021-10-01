@@ -52,8 +52,6 @@ namespace IdleLibrary
         {
             saveClass.SetObject(keyList.resetSaveKey, main.SR);
             saveClass.SetObject(keyList.permanentSaveKey, main.S);
-            //SaveOのセーブ
-            //saveClass.SetObject(keyList.odinSaveKey, main.SO);
         }
 
 

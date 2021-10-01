@@ -139,6 +139,9 @@ namespace IdleLibrary
                     case 1: argument_ToString_tdigit = "F1"; break;
                     case 2: argument_ToString_tdigit = "F2"; break;
                     case 3: argument_ToString_tdigit = "F3"; break;
+                    case 4: argument_ToString_tdigit = "F4"; break;
+                    case 5: argument_ToString_tdigit = "F5"; break;
+                    case 6: argument_ToString_tdigit = "F6"; break;
                     default: argument_ToString_tdigit = "F0"; break;
                 }
             }
