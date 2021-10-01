@@ -23,14 +23,14 @@ namespace IdleLibrary.ResourceDistribution {
 
     public class Element : ILevel
     {
-        public long level { get; set; }
+        public long level { get => progressSlider.level; set => progressSlider.level = value; }
         private readonly INumber number;
-        private double stored;
+        public double stored;
         private readonly ProgressSlider progressSlider;
-        public Element(INumber number, ProgressSlider progressSlider)
+        public Element(INumber number, ILevel level, Func<double> RequiredProgress, Func<double, double> ProgressSpeedPerFrame)
         {
             this.number = number;
-            this.progressSlider = progressSlider;
+            this.progressSlider = new ProgressSlider(RequiredProgress, () => ProgressSpeedPerFrame(this.stored), level);
         }
         public void Store()
         {
@@ -45,8 +45,16 @@ namespace IdleLibrary.ResourceDistribution {
         }
         public void Update()
         {
-            progressSlider.IncrementProgress(stored);
+            if(progressSlider != null)
+                progressSlider.Update();
         }
-        public float CurrentProgressRatio() => progressSlider.CurrentProgressRatio();
+        public float CurrentProgressRatio()
+        {
+            if (progressSlider != null)
+                return progressSlider.CurrentProgressRatio();
+            else
+                return 0;
+        }
+        public double CurrentProgress() => progressSlider.currentProgress;
     }
 }

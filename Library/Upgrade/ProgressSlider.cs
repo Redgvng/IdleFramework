@@ -8,7 +8,8 @@ namespace IdleLibrary
     public class ProgressSlider : ILevel
     {
         public long level { get => _level.level; set => _level.level = value; }
-        [SerializeField] double currentProgress;
+        [SerializeField] double _currentProgress;
+        public double currentProgress { get => _currentProgress; private set => _currentProgress = value; }
         private readonly Func<double> RequiredProgress = () => 0;
         private readonly Func<double> ProgressSpeedPerFrame = () => 0;
         private readonly ILevel _level;
@@ -26,10 +27,6 @@ namespace IdleLibrary
                 currentProgress -= RequiredProgress();
                 level++;
             }
-        }
-        public void IncrementProgress(double increment)
-        {
-            currentProgress += increment;
         }
         public float CurrentProgressRatio() => (float)(currentProgress / RequiredProgress());
     }

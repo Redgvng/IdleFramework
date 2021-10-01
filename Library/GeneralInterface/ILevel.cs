@@ -12,6 +12,7 @@ namespace IdleLibrary
         public long level { get; set; }
     }
     //Value Object
+    [Serializable]
     public class Level : ILevel
     {
         public long level { get => _level; set => _level = value; }
