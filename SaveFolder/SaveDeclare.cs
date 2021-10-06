@@ -26,6 +26,7 @@ namespace IdleLibrary
 		{
 			//NUMBER
 			InitializeArray(ref main.SR.upgradeLevels, Enum.GetValues(typeof(UpgradeKind)).Length);
+			InitializeArray(ref main.S.prestigeUpgradeLevels, Enum.GetValues(typeof(UpgradeKind)).Length);
 		}
 	}
 }

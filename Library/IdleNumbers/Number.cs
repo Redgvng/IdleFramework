@@ -9,15 +9,19 @@ namespace IdleLibrary
         Multiplier multiplier { get; }
     }
 
-    public interface INumber
+    public interface IGetNumber
     {
         double Number { get; }
+    }
+
+    public interface INumber : IGetNumber
+    {
         void Increment(double increment);
         void Decrement(double decrement);
     }
 
     [Serializable]
-    public class NUMBER : IMultiplier,INumber
+    public class NUMBER : IMultiplier, INumber
     {
         public virtual double Number { get; set; }
         public double TotalNumber;

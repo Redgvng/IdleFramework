@@ -5,6 +5,7 @@ using System;
 
 namespace IdleLibrary
 {
+    [Serializable]
     public class ProgressSlider : ILevel
     {
         public long level { get => _level.level; set => _level.level = value; }
@@ -25,6 +26,32 @@ namespace IdleLibrary
             if (currentProgress >= RequiredProgress())
             {
                 currentProgress -= RequiredProgress();
+                level++;
+            }
+        }
+        public float CurrentProgressRatio() => (float)(currentProgress / RequiredProgress());
+    }
+
+    [Serializable]
+    public class AsyncProgressSlider : ILevel
+    {
+        public long level { get => _level.level; set => _level.level = value; }
+        [SerializeField] double numberConsumed;
+        public double currentProgress { get => number.Number - numberConsumed; }
+        private readonly Func<double> RequiredProgress = () => 0;
+        private readonly IGetNumber number;
+        private readonly ILevel _level;
+        public AsyncProgressSlider(Func<double> RequiredProgress, IGetNumber number, ILevel _level)
+        {
+            this.RequiredProgress = RequiredProgress;
+            this.number = number;
+            this._level = _level;
+        }
+        public void Update()
+        {
+            if (currentProgress >= RequiredProgress())
+            {
+                numberConsumed += RequiredProgress();
                 level++;
             }
         }
