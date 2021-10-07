@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -18,9 +18,8 @@ using IdleLibrary;
 
 namespace IdleLibrary
 {
-	public class SaveDeclare : MonoBehaviour
+	public partial class SaveDeclare : MonoBehaviour
 	{
-
 		// Use this for initialization
 		void Awake()
 		{

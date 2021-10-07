@@ -12,8 +12,5 @@ namespace IdleLibrary
         public string ascendTime;
         public double distanceConsumed;
         public float currentTime;
-
-        //UpgradeLevel
-        public long[] upgradeLevels;
     }
 }
