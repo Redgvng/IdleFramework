@@ -7,7 +7,7 @@ using UniRx;
 using TMPro;
 using System;
 
-namespace IdleLibrary.ResourceDistribution {
+namespace IdleLibrary.ProgressSlider.ResourceDistribution {
 
     public interface IInitialize
     {

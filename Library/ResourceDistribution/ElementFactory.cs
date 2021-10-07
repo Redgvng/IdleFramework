@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 
-namespace IdleLibrary.ResourceDistribution
+namespace IdleLibrary.ProgressSlider.ResourceDistribution
 {
     public class ElementUIFactory<T> : MonoBehaviour where T : MonoBehaviour, IUI
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace IdleLibrary.ResourceDistribution
+namespace IdleLibrary.ProgressSlider.ResourceDistribution
 {
     public class UI : MonoBehaviour, IUI
     {

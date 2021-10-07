@@ -2,19 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 namespace IdleLibrary.Upgrade {
 
-    /*
-    public interface IUpgrade
+    //購入したかどうかをシリアライズする
+    [Serializable]
+    public class OneTimeUpgrade
     {
-        bool CanBuy();
-        void Pay();
-        void MaxPay();
-        void FixedAmountPay(int num);
+        [SerializeField] private bool isPurchased;
+        private readonly FixedCost fixedCost;
+        private readonly Func<string> explain;
+        private readonly INumber costNumber;
+        public OneTimeUpgrade(INumber costNumber,FixedCost fixedCost, Func<string> explain)
+        {
+            this.fixedCost = fixedCost;
+            this.explain = explain;
+            this.costNumber = costNumber;
+        }
+        public bool CanBuy()
+        {
+            return costNumber.Number >= fixedCost.Cost;
+        }
+        public void Pay()
+        {
+            if (!CanBuy())
+                return;
+            costNumber.Decrement(fixedCost.Cost);
+            isPurchased = true;
+        }
+        public string Explain() => explain();
     }
-    */
-    
+
     public class Upgrade
     {
         private ILevel level;

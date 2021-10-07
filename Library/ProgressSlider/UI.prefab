@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 344748428565125889}
   - component: {fileID: 344748428565125888}
   - component: {fileID: 344748428565125895}
+  - component: {fileID: 5659580274337887866}
   m_Layer: 5
-  m_Name: Element 1
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +86,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &344748428565125889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,6 +142,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5659580274337887866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344748428565125893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c936ac5415945358759ca0e2a86321, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  titleText: {fileID: 344748429991230109}
+  slider: {fileID: 7278961886544167533}
 --- !u!1 &344748429991230083
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace IdleLibrary
+namespace IdleLibrary.ProgressSlider
 {
+    public interface IProgressSlider
+    {
+        void Update();
+        float CurrentProgressRatio();
+    }
     [Serializable]
-    public class ProgressSlider : ILevel
+    public class ProgressSlider : ILevel, IProgressSlider
     {
         public long level { get => _level.level; set => _level.level = value; }
         [SerializeField] double _currentProgress;
@@ -33,7 +38,7 @@ namespace IdleLibrary
     }
 
     [Serializable]
-    public class AsyncProgressSlider : ILevel
+    public class AsyncProgressSlider : ILevel, IProgressSlider
     {
         public long level { get => _level.level; set => _level.level = value; }
         [SerializeField] double numberConsumed;
