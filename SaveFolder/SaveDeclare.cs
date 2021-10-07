@@ -18,15 +18,15 @@ using IdleLibrary;
 
 namespace IdleLibrary
 {
-	public class SaveDeclare : MonoBehaviour
+	public partial class SaveDeclare : MonoBehaviour
 	{
-
 		// Use this for initialization
 		void Awake()
 		{
 			//NUMBER
-			InitializeArray(ref main.SR.upgradeLevels, Enum.GetValues(typeof(UpgradeKind)).Length);
-			InitializeArray(ref main.S.prestigeUpgradeLevels, Enum.GetValues(typeof(UpgradeKind)).Length);
+			Initialize();
 		}
+
+	    partial void Initialize();
 	}
 }
