@@ -10,14 +10,12 @@ namespace IdleLibrary.Upgrade {
     [Serializable]
     public class OneTimeUpgrade
     {
-        [SerializeField] private bool isPurchased;
+        public bool isPurchased;
         private readonly FixedCost fixedCost;
-        private readonly Func<string> explain;
         private readonly INumber costNumber;
-        public OneTimeUpgrade(INumber costNumber,FixedCost fixedCost, Func<string> explain)
+        public OneTimeUpgrade(INumber costNumber,FixedCost fixedCost)
         {
             this.fixedCost = fixedCost;
-            this.explain = explain;
             this.costNumber = costNumber;
         }
         public bool CanBuy()
@@ -31,7 +29,6 @@ namespace IdleLibrary.Upgrade {
             costNumber.Decrement(fixedCost.Cost);
             isPurchased = true;
         }
-        public string Explain() => explain();
     }
 
     public class Upgrade
