@@ -24,9 +24,13 @@ namespace IdleLibrary
 		void Awake()
 		{
 			//NUMBER
+			/*
 			InitializeArray(ref main.SR.upgradeLevels, Enum.GetValues(typeof(UpgradeKind)).Length);
 			InitializeArray(ref main.S.prestigeUpgradeLevels, Enum.GetValues(typeof(UpgradeKind)).Length);
 			InitializeArray(ref main.S.oneTimeUpgrades, 100);
+            */
+			Initialize();
 		}
+		partial void Initialize();
 	}
 }
