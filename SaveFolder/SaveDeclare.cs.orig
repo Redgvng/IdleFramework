@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -24,9 +24,15 @@ namespace IdleLibrary
 		void Awake()
 		{
 			//NUMBER
+<<<<<<< HEAD
+			InitializeArray(ref main.SR.upgradeLevels, Enum.GetValues(typeof(UpgradeKind)).Length);
+			InitializeArray(ref main.S.prestigeUpgradeLevels, Enum.GetValues(typeof(UpgradeKind)).Length);
+			InitializeArray(ref main.S.oneTimeUpgrades, 100);
+=======
 			Initialize();
+>>>>>>> c9d0bde10169eb8c744666ce30cb3f58396bd0f4
 		}
 
-		partial void Initialize();
+	    partial void Initialize();
 	}
 }
