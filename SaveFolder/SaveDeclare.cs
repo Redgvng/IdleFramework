@@ -24,6 +24,8 @@ namespace IdleLibrary
 		void Awake()
 		{
 			//NUMBER
+			/*
+            */
 			Initialize();
 		}
 

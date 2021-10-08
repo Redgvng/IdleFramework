@@ -8,7 +8,7 @@ namespace IdleLibrary.ProgressSlider
 {
     public interface IUI
     {
-        public Slider GetSlider { get; }
+        Slider GetSlider { get; }
     }
     public class UI : MonoBehaviour, IUI
     {
