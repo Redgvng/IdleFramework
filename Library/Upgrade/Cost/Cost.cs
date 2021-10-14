@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 namespace IdleLibrary
 {
-    public interface ICost
+    public interface ICost : IMultiplier
     {
         double Cost { get; }
     }
@@ -25,7 +25,7 @@ namespace IdleLibrary
     public class NullCost : IMaxableCost
     {
         public double Cost => 0;
-
+        public Multiplier multiplier { get; } = new Multiplier();
         public double FixedNumCost(IGetNumber number, int fixedNum)
         {
             return 0;
@@ -44,7 +44,8 @@ namespace IdleLibrary
 
     public class FixedCost : ICost
     {
-        public double Cost => cost;
+        public double Cost => multiplier.CaluculatedNumber(cost);
+        public Multiplier multiplier { get; } = new Multiplier();
         private readonly double cost;
         public FixedCost(double cost)
         {
@@ -58,8 +59,8 @@ namespace IdleLibrary
         readonly double initialValue;
         readonly double steep;
         readonly ILevel level;
-        //private CalDL cost { get; }
-        public double Cost => initialValue + level.level * steep;
+        public Multiplier multiplier { get; } = new Multiplier();
+        public double Cost => multiplier.CaluculatedNumber(initialValue + level.level * steep);
         public LinearCost(double initialValue, double steep, ILevel level)
         {
             this.initialValue = initialValue;
@@ -112,8 +113,8 @@ namespace IdleLibrary
         readonly double initialValue;
         readonly double factor;
         readonly ILevel level;
-        //private CalDL cost { get; }
-        public double Cost => initialValue * Math.Pow(factor, level.level);
+        public Multiplier multiplier { get; } = new Multiplier();
+        public double Cost => multiplier.CaluculatedNumber(initialValue * Math.Pow(factor, level.level));
         public ExponentialCost(double initialValue, double factor, ILevel level)
         {
             if (factor == 1)

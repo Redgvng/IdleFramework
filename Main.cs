@@ -73,5 +73,12 @@ namespace IdleLibrary
                 yield return new WaitForSeconds(1.0f);
             }
         }
+
+        [ContextMenu("Validate")]
+        private void Validate()
+        {
+            S.tempTornadoPoint = 0;
+            S.tempPrestigePoint = 0;
+        }
     }
 }

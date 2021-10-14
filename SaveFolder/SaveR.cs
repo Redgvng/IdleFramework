@@ -10,7 +10,6 @@ namespace IdleLibrary
     public partial class SaveR
     {
         public string ascendTime;
-        public double distanceConsumed;
         public float currentTime;
     }
 }

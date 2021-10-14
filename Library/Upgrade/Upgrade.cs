@@ -3,16 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UniRx;
 
 namespace IdleLibrary.Upgrade {
+
+    public class SetSaveProperty
+    {
+        public void SetProperty()
+        {
+            //セーブするべき変数を書き換える。
+        }
+    }
 
     //購入したかどうかをシリアライズする
     [Serializable]
     public class OneTimeUpgrade
     {
-        public bool isPurchased;
         private readonly FixedCost fixedCost;
         private readonly INumber costNumber;
+        public bool isPurchased;
         public OneTimeUpgrade(INumber costNumber,FixedCost fixedCost)
         {
             this.fixedCost = fixedCost;
@@ -20,7 +29,7 @@ namespace IdleLibrary.Upgrade {
         }
         public bool CanBuy()
         {
-            return costNumber.Number >= fixedCost.Cost;
+            return costNumber.Number >= fixedCost.Cost && !isPurchased;
         }
         public void Pay()
         {
@@ -28,6 +37,23 @@ namespace IdleLibrary.Upgrade {
                 return;
             costNumber.Decrement(fixedCost.Cost);
             isPurchased = true;
+        }
+
+        //save用ユーティリティ
+        public static void Load(IEnumerable<OneTimeUpgrade> upgrades, bool[] loadedBools)
+        {
+            upgrades
+            .Select((upgrade, index) => new { upgrade, index })
+            .ToList()
+            .ForEach(pair => pair.upgrade.isPurchased = loadedBools[pair.index]);
+        }
+        public static void Save(IEnumerable<OneTimeUpgrade> upgrades, bool[] loadedBools)
+        {
+            upgrades
+            .Select((upgrade, index) => new { upgrade, index })
+            .ToList()
+            .ForEach(pair => pair.upgrade.ObserveEveryValueChanged(x => x.isPurchased)
+            .Subscribe(_ => loadedBools[pair.index] = pair.upgrade.isPurchased));
         }
     }
 
