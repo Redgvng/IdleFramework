@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UniRx;
+using System.Linq;
 
 namespace IdleLibrary.ProgressSlider
 {
@@ -35,6 +37,22 @@ namespace IdleLibrary.ProgressSlider
             }
         }
         public float CurrentProgressRatio() => (float)(currentProgress / RequiredProgress());
+        public float TimeToLevelUpForSecond() => (float)((RequiredProgress() - currentProgress) / (ProgressSpeedPerFrame() / Time.fixedDeltaTime))-1;
+        public static void Load(IEnumerable<ProgressSlider> sliders, double[] loadProgress)
+        {
+            sliders
+            .Select((slider, index) => new { slider, index })
+            .ToList()
+            .ForEach(pair => pair.slider.currentProgress = loadProgress[pair.index]);
+        }
+        public static void Save(IEnumerable<ProgressSlider> sliders, double[] loadProgress)
+        {
+            sliders
+            .Select((slider, index) => new { slider, index })
+            .ToList()
+            .ForEach(pair => pair.slider.ObserveEveryValueChanged(x => x.currentProgress)
+            .Subscribe(_ => loadProgress[pair.index] = pair.slider.currentProgress));
+        }
     }
 
     [Serializable]
