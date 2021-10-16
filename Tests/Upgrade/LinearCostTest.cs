@@ -64,6 +64,14 @@ namespace Tests.Cost
             Assert.AreEqual(50, l);
             Assert.AreEqual(100, c);
         }
+        [Test]
+        public void ShouldNotZeroCostWhenMaxBuyAndCantBuy()
+        {
+            var level = new MockLevel();
+            LinearCost cost = new LinearCost(100000, 0, level);
+            var number = new NUMBER();
+            Assert.IsTrue(cost.MaxCost(number) != 0);
+        }
     }
 
     public class ExponentialCostTest
