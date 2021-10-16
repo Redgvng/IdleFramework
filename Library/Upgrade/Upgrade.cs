@@ -7,17 +7,13 @@ using UniRx;
 
 namespace IdleLibrary.Upgrade {
 
-    public class SetSaveProperty
+    public interface IUpgrade
     {
-        public void SetProperty()
-        {
-            //セーブするべき変数を書き換える。
-        }
+        void Pay();
+        bool CanBuy();
     }
 
-    //購入したかどうかをシリアライズする
-    [Serializable]
-    public class OneTimeUpgrade
+    public class OneTimeUpgrade : IUpgrade
     {
         private readonly FixedCost fixedCost;
         private readonly INumber costNumber;
@@ -57,9 +53,9 @@ namespace IdleLibrary.Upgrade {
         }
     }
 
-    public class Upgrade
+    public class Upgrade : IUpgrade
     {
-        private ILevel level;
+        public ILevel level;
         public INumber number;
         public IMaxableCost cost;
         public Upgrade(ILevel level, INumber number, IMaxableCost cost)
@@ -112,7 +108,7 @@ namespace IdleLibrary.Upgrade {
     }
 
     //Upgradeと同じようにふるまってほしい
-    public class MultipleUpgrade
+    public class MultipleUpgrade : IUpgrade
     {
         private readonly IEnumerable<(INumber number, IMaxableCost cost)> info;
         private readonly ILevel level;

@@ -74,11 +74,5 @@ namespace IdleLibrary
             }
         }
 
-        [ContextMenu("Validate")]
-        private void Validate()
-        {
-            S.tempTornadoPoint = 0;
-            S.tempPrestigePoint = 0;
-        }
     }
 }

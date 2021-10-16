@@ -21,12 +21,13 @@ namespace IdleLibrary.ProgressSlider.ResourceDistribution {
         Slider progressSlider { get; }
     }
 
+    //INumberではなく、専用Numberに後ほど書き換える必要あり
     public class Element : ILevel
     {
         public long level { get => progressSlider.level; set => progressSlider.level = value; }
         private readonly INumber number;
         public double stored;
-        private readonly ProgressSlider progressSlider;
+        public readonly ProgressSlider progressSlider;
         public Element(INumber number, ILevel level, Func<double> RequiredProgress, Func<double, double> ProgressSpeedPerFrame)
         {
             this.number = number;
@@ -56,5 +57,27 @@ namespace IdleLibrary.ProgressSlider.ResourceDistribution {
                 return 0;
         }
         public double CurrentProgress() => progressSlider.currentProgress;
+        public float TimeToLevelUp() => progressSlider.TimeToLevelUpForSecond();
+        public static void Load(IEnumerable<Element> elements, double[] loadStored, double[] loadProgress)
+        {
+            elements
+            .Select((element, index) => new { element, index })
+            .ToList()
+            .ForEach(pair => pair.element.stored = loadStored[pair.index]);
+
+            var sliders = elements.Select(element => element.progressSlider);
+            ProgressSlider.Load(sliders, loadProgress);
+        }
+        public static void Save(IEnumerable<Element> elements, double[] loadStored, double[] loadProgress)
+        {
+            elements
+            .Select((element, index) => new { element, index })
+            .ToList()
+            .ForEach(pair => pair.element.ObserveEveryValueChanged(x => x.stored)
+            .Subscribe(_ => loadStored[pair.index] = pair.element.stored));
+
+            var sliders = elements.Select(element => element.progressSlider);
+            ProgressSlider.Save(sliders, loadProgress);
+        }
     }
 }
