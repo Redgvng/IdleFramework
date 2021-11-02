@@ -21,6 +21,14 @@ namespace IdleLibrary.ProgressSlider
         private readonly Func<double> RequiredProgress = () => 0;
         private readonly Func<double> ProgressSpeedPerFrame = () => 0;
         private readonly ILevel _level;
+        private void Validate()
+        {
+            if (currentProgress >= RequiredProgress())
+            {
+                currentProgress -= RequiredProgress();
+                level++;
+            }
+        }
         public ProgressSlider(Func<double> RequiredProgress, Func<double> ProgressSpeedPerFrame, ILevel _level)
         {
             this.RequiredProgress = RequiredProgress;
@@ -30,11 +38,7 @@ namespace IdleLibrary.ProgressSlider
         public void Update()
         {
             currentProgress += ProgressSpeedPerFrame();
-            if (currentProgress >= RequiredProgress())
-            {
-                currentProgress -= RequiredProgress();
-                level++;
-            }
+            Validate();
         }
         public float CurrentProgressRatio() => (float)(currentProgress / RequiredProgress());
         public float TimeToLevelUpForSecond() => (float)((RequiredProgress() - currentProgress) / (ProgressSpeedPerFrame() / Time.fixedDeltaTime))-1;
@@ -52,6 +56,24 @@ namespace IdleLibrary.ProgressSlider
             .ToList()
             .ForEach(pair => pair.slider.ObserveEveryValueChanged(x => x.currentProgress)
             .Subscribe(_ => loadProgress[pair.index] = pair.slider.currentProgress));
+        }
+
+        private bool isOfflineBonusGot = false;
+        private long diffLevel;
+        private double totalProgress;
+        public void GetOfflineBonus(double offlineTime)
+        {
+            if (isOfflineBonusGot) return;
+            var previous = level;
+            totalProgress = ProgressSpeedPerFrame() / Time.fixedDeltaTime * offlineTime;
+            currentProgress += ProgressSpeedPerFrame() / Time.fixedDeltaTime * offlineTime;
+            Validate();
+            diffLevel = level - previous;
+            isOfflineBonusGot = true;
+        }
+        public (long diffLevel, double totalProgress) OfflineBonusInfo()
+        {
+            return (diffLevel, totalProgress);
         }
     }
 
