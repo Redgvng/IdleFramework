@@ -41,6 +41,7 @@ namespace IdleLibrary.ProgressSlider.ResourceDistribution {
         }
         public void Retrieve()
         {
+            if (CurrentProgressRatio() >= 0.99) progressSlider.currentProgress = 0;
             number.Increment(stored);
             stored = 0;
         }

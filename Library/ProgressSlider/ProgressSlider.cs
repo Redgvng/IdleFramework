@@ -17,7 +17,7 @@ namespace IdleLibrary.ProgressSlider
     {
         public long level { get => _level.level; set => _level.level = value; }
         [SerializeField] double _currentProgress;
-        public double currentProgress { get => _currentProgress; private set => _currentProgress = value; }
+        public double currentProgress { get => _currentProgress; set => _currentProgress = value; }
         private readonly Func<double> RequiredProgress = () => 0;
         private readonly Func<double> ProgressSpeedPerFrame = () => 0;
         private readonly ILevel _level;
@@ -41,7 +41,7 @@ namespace IdleLibrary.ProgressSlider
             Validate();
         }
         public float CurrentProgressRatio() => (float)(currentProgress / RequiredProgress());
-        public float TimeToLevelUpForSecond() => (float)((RequiredProgress() - currentProgress) / (ProgressSpeedPerFrame() / Time.fixedDeltaTime))-1;
+        public float TimeToLevelUpForSecond() => (float)((RequiredProgress() - currentProgress) / (ProgressSpeedPerFrame() / Time.fixedDeltaTime))+1;
         public static void Load(IEnumerable<ProgressSlider> sliders, double[] loadProgress)
         {
             sliders

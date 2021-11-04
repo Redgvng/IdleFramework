@@ -19,7 +19,7 @@ namespace IdleLibrary.ProgressSlider.ResourceDistribution
                 .Where(_ => trigger())
                 .Subscribe(_ => instantiatedUi.progressSlider.value = element.CurrentProgressRatio())
                 .AddTo(this);
-            Observable.EveryFixedUpdate().Subscribe(_ => element.Update());
+            Observable.EveryFixedUpdate().Where(_ => trigger()).Subscribe(_ => element.Update()).AddTo(this);
             return instantiatedUi;
         }
     }
