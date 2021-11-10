@@ -55,12 +55,13 @@ namespace IdleLibrary.Upgrade {
 
     public class Upgrade : IUpgrade
     {
-        public ILevel level;
+        private ILevel _level;
+        public long level => _level.level;
         public INumber number;
         public IMaxableCost cost;
         public Upgrade(ILevel level, INumber number, IMaxableCost cost)
         {
-            this.level = level;
+            this._level = level;
             this.number = number;
             this.cost = cost;
         }
@@ -75,7 +76,7 @@ namespace IdleLibrary.Upgrade {
             if (!CanBuy())
                 return;
             number.Decrement(cost.Cost);
-            level.level++;
+            _level.level++;
         }
 
         public void MaxPay()
@@ -85,7 +86,7 @@ namespace IdleLibrary.Upgrade {
 
             long tempLevel = cost.LevelAtMaxCost(number);
             number.Decrement(cost.MaxCost(number));
-            level.level = tempLevel;
+            _level.level = tempLevel;
         }
 
         public void FixedAmountPay(int fixedNum)
@@ -96,14 +97,19 @@ namespace IdleLibrary.Upgrade {
             if(cost.LevelAtMaxCost(number) > fixedNum)
             {
                 number.Decrement(cost.FixedNumCost(number,fixedNum));
-                level.level += fixedNum;
+                _level.level += fixedNum;
             }
             else
             {
                 long tempLevel = cost.LevelAtMaxCost(number);
                 number.Decrement(cost.MaxCost(number));
-                level.level = tempLevel;
+                _level.level = tempLevel;
             }
+        }
+
+        public void OnPrestige()
+        {
+            _level.level = 0;
         }
     }
 

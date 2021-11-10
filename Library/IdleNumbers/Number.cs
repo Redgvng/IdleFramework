@@ -25,15 +25,20 @@ namespace IdleLibrary
     {
         public virtual double Number { get; set; }
         public double TotalNumber;
-        private Multiplier _multiplier = new Multiplier(); public Multiplier multiplier => _multiplier;
+        public double MaxNumber;
+        public Multiplier multiplier { get; } = new Multiplier();
         public virtual void Increment(double increment = 1)
         {
             Number += multiplier.CaluculatedNumber(increment);
             TotalNumber += multiplier.CaluculatedNumber(increment);
+            if (MaxNumber <= TotalNumber) MaxNumber = TotalNumber;
         }
         public void IncrementFixNumber(double fixIncrement)
         {
-            Number += fixIncrement;
+            var increment = fixIncrement;
+            Number += increment;
+            TotalNumber += increment;
+            if (MaxNumber <= TotalNumber) MaxNumber = TotalNumber;
         }
         public virtual void Decrement(double decrement = 1)
         {
@@ -52,16 +57,7 @@ namespace IdleLibrary
         public double Number { get => GainedNumber - ConsumedNumber; }
         protected virtual double GainedNumber { get; }
         protected virtual double ConsumedNumber { get; set; }
-        public Multiplier multiplier
-        {
-            get
-            {
-                if (_multiplier == null) return new Multiplier();
-                return _multiplier;
-            }
-            set => _multiplier = value;
-        }
-        private Multiplier _multiplier;
+        public Multiplier multiplier { get; } = new Multiplier();
         public virtual void Increment(double increment = 1)
         {
             ConsumedNumber = Math.Max(0, ConsumedNumber - increment);

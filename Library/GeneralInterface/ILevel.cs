@@ -15,7 +15,16 @@ namespace IdleLibrary
     [Serializable]
     public class Level : ILevel
     {
-        public long level { get => _level; set => _level = value; }
+        public long level {
+            get => _level;
+            set {
+                _level = value;
+                if (tempMaxLevel < _level) tempMaxLevel = _level;
+            }
+        }
         [SerializeField] private long _level;
+
+        private long tempMaxLevel;
+        public long maxLevel { get; }
     }
 }
