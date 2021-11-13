@@ -9,19 +9,28 @@ namespace IdleLibrary
         Multiplier multiplier { get; }
     }
 
-    public interface IGetNumber
+    public interface INumber
     {
         double Number { get; }
     }
 
-    public interface INumber : IGetNumber
+    public interface IIncrementableNumber : INumber
     {
         void Increment(double increment);
+    }
+
+    public interface IDecrementableNumber : INumber
+    {
         void Decrement(double decrement);
     }
 
+    public interface IProducableNumber : INumber
+    {
+        void ProducePerSecond();
+    }
+
     [Serializable]
-    public class NUMBER : IMultiplier, INumber
+    public class NUMBER : IMultiplier, IIncrementableNumber, IDecrementableNumber
     {
         public virtual double Number { get; set; }
         public double TotalNumber;
@@ -52,16 +61,12 @@ namespace IdleLibrary
 
     //これを使う場合、通常GainedNumberが関数となるはず。それ以外の場合はクラスを作り直した方がいいかも
     [Serializable]
-    public class AsyncNumber : IMultiplier, INumber
+    public class AsyncNumber : IMultiplier, IDecrementableNumber
     {
         public double Number { get => GainedNumber - ConsumedNumber; }
         protected virtual double GainedNumber { get; }
         protected virtual double ConsumedNumber { get; set; }
         public Multiplier multiplier { get; } = new Multiplier();
-        public virtual void Increment(double increment = 1)
-        {
-            ConsumedNumber = Math.Max(0, ConsumedNumber - increment);
-        }
         public virtual void Decrement(double decrement = 1)
         {
             if(Number < decrement)

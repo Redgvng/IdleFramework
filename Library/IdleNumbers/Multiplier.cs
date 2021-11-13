@@ -69,6 +69,7 @@ namespace IdleLibrary
             double temp = 1.0;
             for (int i = 0; i < MulMultiplier.Count; i++)
             {
+                if (MulMultiplier[i]() == 0) Debug.LogError($"0が入っています");
                 temp *= MulMultiplier[i]();
             }
             return temp;

@@ -14,29 +14,29 @@ namespace IdleLibrary
         /// <summary>
         /// レベルは増分ではなく、最終的なレベルを表します。
         /// </summary>
-        long LevelAtMaxCost(IGetNumber number);
-        double MaxCost(IGetNumber number);
+        long LevelAtMaxCost(INumber number);
+        double MaxCost(INumber number);
         /// <summary>
         /// 現在のレベルを基準とした増分を入力します。例えば現在のレベルが10で、レベル12にするのに必要なコストであれば、引数は2を入力してください。
         /// </summary>
-        double FixedNumCost(IGetNumber number, int fixedNum);
+        double FixedNumCost(INumber number, int fixedNum);
     }
 
     public class NullCost : IMaxableCost
     {
         public double Cost => 0;
         public Multiplier multiplier { get; } = new Multiplier();
-        public double FixedNumCost(IGetNumber number, int fixedNum)
+        public double FixedNumCost(INumber number, int fixedNum)
         {
             return 0;
         }
 
-        public long LevelAtMaxCost(IGetNumber number)
+        public long LevelAtMaxCost(INumber number)
         {
             return 0;
         }
 
-        public double MaxCost(IGetNumber number)
+        public double MaxCost(INumber number)
         {
             return 0;
         }
@@ -69,7 +69,7 @@ namespace IdleLibrary
             //cost = new CalDL((l) => initialValue + l * steep, level);
         }
 
-        public long LevelAtMaxCost(IGetNumber number)
+        public long LevelAtMaxCost(INumber number)
         {
             double n = number.Number;
             double a = initialValue;
@@ -83,7 +83,7 @@ namespace IdleLibrary
             return SolveX();
         }
 
-        public double MaxCost(IGetNumber number)
+        public double MaxCost(INumber number)
         {
             double n = number.Number;
             double a = initialValue;
@@ -96,7 +96,7 @@ namespace IdleLibrary
             return TotalCost(LevelAtMaxCost(number));
         }
 
-        public double FixedNumCost(IGetNumber number, int fixedNum)
+        public double FixedNumCost(INumber number, int fixedNum)
         {
             double n = number.Number;
             double a = initialValue;
@@ -131,7 +131,7 @@ namespace IdleLibrary
             this.level = level;
             //cost = new CalDL((l) => Math.Pow(factor, l), level);
         }
-        public long LevelAtMaxCost(IGetNumber number)
+        public long LevelAtMaxCost(INumber number)
         {
             double n = number.Number;
             double a = initialValue;
@@ -143,7 +143,7 @@ namespace IdleLibrary
             return SolveX();
         }
 
-        public double MaxCost(IGetNumber number)
+        public double MaxCost(INumber number)
         {
             double n = number.Number;
             double a = initialValue;
@@ -155,7 +155,7 @@ namespace IdleLibrary
             return TotalCost(LevelAtMaxCost(number));
         }
 
-        public double FixedNumCost(IGetNumber number, int fixedNum)
+        public double FixedNumCost(INumber number, int fixedNum)
         {
             double n = number.Number;
             double a = initialValue;

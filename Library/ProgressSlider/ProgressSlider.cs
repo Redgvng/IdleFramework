@@ -84,9 +84,9 @@ namespace IdleLibrary.ProgressSlider
         [SerializeField] double numberConsumed;
         public double currentProgress { get => number.Number - numberConsumed; }
         private readonly Func<double> RequiredProgress = () => 0;
-        private readonly IGetNumber number;
+        private readonly INumber number;
         private readonly ILevel _level;
-        public AsyncProgressSlider(Func<double> RequiredProgress, IGetNumber number, ILevel _level)
+        public AsyncProgressSlider(Func<double> RequiredProgress, INumber number, ILevel _level)
         {
             this.RequiredProgress = RequiredProgress;
             this.number = number;

@@ -16,9 +16,9 @@ namespace IdleLibrary.Upgrade {
     public class OneTimeUpgrade : IUpgrade
     {
         private readonly FixedCost fixedCost;
-        private readonly INumber costNumber;
+        private readonly IDecrementableNumber costNumber;
         public bool isPurchased;
-        public OneTimeUpgrade(INumber costNumber,FixedCost fixedCost)
+        public OneTimeUpgrade(IDecrementableNumber costNumber,FixedCost fixedCost)
         {
             this.fixedCost = fixedCost;
             this.costNumber = costNumber;
@@ -57,9 +57,9 @@ namespace IdleLibrary.Upgrade {
     {
         private ILevel _level;
         public long level => _level.level;
-        public INumber number;
+        public IDecrementableNumber number;
         public IMaxableCost cost;
-        public Upgrade(ILevel level, INumber number, IMaxableCost cost)
+        public Upgrade(ILevel level, IDecrementableNumber number, IMaxableCost cost)
         {
             this._level = level;
             this.number = number;
@@ -116,9 +116,9 @@ namespace IdleLibrary.Upgrade {
     //Upgradeと同じようにふるまってほしい
     public class MultipleUpgrade : IUpgrade
     {
-        private readonly IEnumerable<(INumber number, IMaxableCost cost)> info;
+        private readonly IEnumerable<(IDecrementableNumber number, IMaxableCost cost)> info;
         private readonly ILevel level;
-        public MultipleUpgrade(ILevel level, params (INumber number, IMaxableCost cost)[] info)
+        public MultipleUpgrade(ILevel level, params (IDecrementableNumber number, IMaxableCost cost)[] info)
         {
             this.info = info;
             this.level = level;

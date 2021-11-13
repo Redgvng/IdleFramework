@@ -25,6 +25,6 @@ namespace IdleLibrary
         [SerializeField] private long _level;
 
         private long tempMaxLevel;
-        public long maxLevel { get; }
+        public long maxLevel { get => tempMaxLevel; }
     }
 }

@@ -46,7 +46,7 @@ namespace Tests
             leaf.Number = 30;
             gold.Number = 40;
             var multipleUpgrade = new MultipleUpgrade(level,
-                new (INumber, IMaxableCost)[]
+                new (IDecrementableNumber, IMaxableCost)[]
                 {
                     (stone, new LinearCost(1,2,level)),
                     (crystal, new LinearCost(3,2,level)),

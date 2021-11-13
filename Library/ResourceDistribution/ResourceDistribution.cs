@@ -25,24 +25,26 @@ namespace IdleLibrary.ProgressSlider.ResourceDistribution {
     public class Element : ILevel
     {
         public long level { get => progressSlider.level; set => progressSlider.level = value; }
-        private readonly INumber number;
+        private readonly IIncrementableNumber incrementNumber;
+        private readonly IDecrementableNumber decrementNumber;
         public double stored;
         public readonly ProgressSlider progressSlider;
-        public Element(INumber number, ILevel level, Func<double> RequiredProgress, Func<double, double> ProgressSpeedPerFrame)
+        public Element(IIncrementableNumber incrementNumber, IDecrementableNumber decrementNumber, ILevel level, Func<double> RequiredProgress, Func<double, double> ProgressSpeedPerFrame)
         {
-            this.number = number;
+            this.incrementNumber = incrementNumber;
+            this.decrementNumber = decrementNumber;
             this.progressSlider = new ProgressSlider(RequiredProgress, () => ProgressSpeedPerFrame(this.stored), level);
         }
         public void Store()
         {
-            var storing = number.Number;
+            var storing = decrementNumber.Number;
             stored += storing;
-            number.Decrement(storing);
+            decrementNumber.Decrement(storing);
         }
         public void Retrieve()
         {
             if (CurrentProgressRatio() >= 0.99) progressSlider.currentProgress = 0;
-            number.Increment(stored);
+            incrementNumber.Increment(stored);
             stored = 0;
         }
         public void Update()
