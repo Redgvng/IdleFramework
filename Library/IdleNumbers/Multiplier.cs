@@ -8,18 +8,20 @@ using TMPro;
 
 namespace IdleLibrary
 {
-    public class IMultipliable
+    public interface IMultiplierInfo
     {
-        Multiplier multiplier { get; }
+        public Func<double> multiplier { get; }
+        public Func<bool> trigger { get; }
+        public MultiplierType multiplierType { get; }
     }
-
     public enum MultiplierType
     {
         add,
         mul
     }
 
-    public class MultiplierInfo
+    //最も汎用性が高いタイプ
+    public class MultiplierInfo : IMultiplierInfo
     {
         public Func<double> multiplier { get; }
         public Func<bool> trigger { get; }
@@ -29,13 +31,41 @@ namespace IdleLibrary
             this.multiplier = multiplier;
             this.trigger = trigger == null ? () => true : trigger;
             this.multiplierType = type;
-        }     
+        }
+    }
+
+    //レベルの情報も保存する。アップグレードなどで使う
+    //任意のレベルにおけるアップグレード量を取り出すことができる。
+    public class MultiplierInfoWithLevel : IMultiplierInfo
+    {
+        private Func<long, double> multiplierWithLevel { get; } = (level) => 0;
+        private readonly ILevel level;
+        public Func<double> multiplier => () => level == null ? 0 : multiplierWithLevel(level.level);
+        public Func<bool> trigger { get; }
+        public MultiplierType multiplierType { get; }
+        public MultiplierInfoWithLevel(Func<long, double> multiplierWithLevel, MultiplierType type, ILevel level, Func<bool> trigger = null)
+        {
+            this.multiplierWithLevel = multiplierWithLevel;
+            this.trigger = trigger == null ? () => true : trigger;
+            this.multiplierType = type;
+            this.level = level;
+        }
+
+        //取り出す用の関数
+        //任意のレベルにおけるmultiplierを取り出す
+        public double GetMultiplierWithAnyLevel(long level) => multiplierWithLevel(level);
+        //現在のmultiplierと任意のレベルにおけるmultiplierを取り出す。
+        public double GetDiffOfMultiplierWithLevel(long targetLevel)
+        {
+            if (level == null) return 0;
+            return multiplierWithLevel(targetLevel) - multiplierWithLevel(level.level);
+        }
     }
 
     [Serializable]
     public class Multiplier
     {
-        public void RegisterMultiplier(MultiplierInfo multiplierInfo)
+        public void RegisterMultiplier(IMultiplierInfo multiplierInfo)
         {
             if (multiplierInfo.multiplierType == MultiplierType.add)
             {

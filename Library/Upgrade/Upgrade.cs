@@ -56,7 +56,7 @@ namespace IdleLibrary.Upgrade {
     public class Upgrade : IUpgrade
     {
         private ILevel _level;
-        public long level => _level.level;
+        public long level => _level == null ? 0 : _level.level;
         public IDecrementableNumber number;
         public IMaxableCost cost;
         public Upgrade(ILevel level, IDecrementableNumber number, IMaxableCost cost)
@@ -110,6 +110,41 @@ namespace IdleLibrary.Upgrade {
         public void OnPrestige()
         {
             _level.level = 0;
+        }
+
+        //MultiplierInfo
+        private MultiplierInfoWithLevel multiplierInfo;
+        public void ApplyEffect(Multiplier multiplied, Func<long, double> effect, MultiplierType type)
+        {
+            multiplierInfo = new MultiplierInfoWithLevel((level) => effect(level) , type, _level);
+            multiplied.RegisterMultiplier(multiplierInfo);
+        }
+        public double CurrentValue()
+        {
+            if (multiplierInfo == null)
+            {
+                Debug.LogError("Effectが実装されていません");
+                return 0;
+            }
+            return multiplierInfo.multiplier();
+        }
+        public double NextValue()
+        {
+            if (multiplierInfo == null)
+            {
+                Debug.LogError("Effectが実装されていません");
+                return 0;
+            }
+            return multiplierInfo.GetMultiplierWithAnyLevel(level + 1);
+        }
+        public double NextIncrement()
+        {
+            if (multiplierInfo == null)
+            {
+                Debug.LogError("Effectが実装されていません");
+                return 0;
+            }
+            return multiplierInfo.GetDiffOfMultiplierWithLevel(level + 1);
         }
     }
 
