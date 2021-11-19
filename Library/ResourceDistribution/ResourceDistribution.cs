@@ -28,14 +28,16 @@ namespace IdleLibrary.ProgressSlider.ResourceDistribution {
         private readonly INumber number;
         public double stored;
         public readonly ProgressSlider progressSlider;
-        public Element(INumber number, ILevel level, Func<double> RequiredProgress, Func<double, double> ProgressSpeedPerFrame)
+        private readonly Func<float> ratio = () => 1.0f;
+        public Element(INumber number, ILevel level, Func<double> RequiredProgress, Func<double, double> ProgressSpeedPerFrame, Func<float> ratio)
         {
             this.number = number;
             this.progressSlider = new ProgressSlider(RequiredProgress, () => ProgressSpeedPerFrame(this.stored), level);
+            this.ratio = ratio;
         }
         public void Store()
         {
-            var storing = number.Number;
+            var storing = number.Number * ratio();
             stored += storing;
             number.Decrement(storing);
         }
