@@ -56,7 +56,7 @@ namespace IdleLibrary.Upgrade {
     public class Upgrade : IUpgrade
     {
         private ILevel _level;
-        public long level => _level == null ? 0 : _level.level;
+        public long level { get { return _level == null ? 0 : _level.level; } set => _level.level = value; }
         public IDecrementableNumber number;
         public IMaxableCost cost;
         public Upgrade(ILevel level, IDecrementableNumber number, IMaxableCost cost)

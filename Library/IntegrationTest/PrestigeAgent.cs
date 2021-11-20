@@ -34,5 +34,4 @@ namespace IdleLibrary.IntegrationTest
             return false;
         }
     }
-
 }

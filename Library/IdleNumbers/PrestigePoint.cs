@@ -27,6 +27,7 @@ namespace IdleLibrary
             Number += TempNumber;
             TempNumber = 0;
         }
+        public void Reset() => Number = 0;
         public void ProducePerSecond() => TempNumber += _produceAmount();
         private double _produceAmount() => func();
     }
