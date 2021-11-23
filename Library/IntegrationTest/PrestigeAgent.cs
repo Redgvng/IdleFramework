@@ -28,8 +28,11 @@ namespace IdleLibrary.IntegrationTest
             var totalPoint = prestigePoint.TempNumber + prestigePoint.Number;
             //アップグレードの中で、最もコストの低いものを計算する。
             var lowest = upgrades.Min(upgrade => upgrade.cost.Cost);
+            //Debug.Log($"lowest : {lowest:F1}, totalPoint : {totalPoint:F1}");
             if (totalPoint >= lowest)
+            {
                 return true;
+            }
 
             return false;
         }

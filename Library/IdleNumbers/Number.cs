@@ -27,6 +27,7 @@ namespace IdleLibrary
     public interface IProducableNumber : INumber
     {
         void ProducePerSecond();
+        void ProducePerFrame();
     }
 
     [Serializable]

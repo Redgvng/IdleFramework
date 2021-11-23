@@ -11,8 +11,8 @@ namespace IdleLibrary
     }
     public class ProducedPrestigePoint : IProducableNumber, IDecrementableNumber, IPrestigePoint
     {
-        public double Number { get; private set; }
-        public double TempNumber { get; private set; }
+        public virtual double Number { get; protected set; }
+        public virtual double TempNumber { get; protected set; }
         private readonly Func<double> func;
         public ProducedPrestigePoint(Func<double> func)
         {
@@ -27,8 +27,13 @@ namespace IdleLibrary
             Number += TempNumber;
             TempNumber = 0;
         }
-        public void Reset() => Number = 0;
+        public void Reset()
+        {
+            Number = 0;
+            TempNumber = 0;
+        }
         public void ProducePerSecond() => TempNumber += _produceAmount();
+        public void ProducePerFrame() => TempNumber += _produceAmount() * Time.fixedDeltaTime;
         private double _produceAmount() => func();
     }
 }
