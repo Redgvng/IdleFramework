@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static IdleLibrary.UsefulMethod;
 using TMPro;
+using System.Numerics;
 
 namespace IdleLibrary
 {
@@ -62,7 +63,6 @@ namespace IdleLibrary
         }
     }
 
-    [Serializable]
     public class Multiplier
     {
         public void RegisterMultiplier(IMultiplierInfo multiplierInfo)
@@ -119,3 +119,4 @@ namespace IdleLibrary
         private readonly List<Func<double>> MulMultiplier = new List<Func<double>>();
     }
 }
+   
