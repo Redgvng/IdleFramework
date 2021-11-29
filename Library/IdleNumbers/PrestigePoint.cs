@@ -9,10 +9,12 @@ namespace IdleLibrary
     {
         double TempNumber { get; }
     }
-    public class ProducedPrestigePoint : IProducableNumber, IDecrementableNumber, IPrestigePoint
+    public class ProducedPrestigePoint : IProducableNumber, IDecrementableNumber, IPrestigePoint, IStatsNumber
     {
         public virtual double Number { get; protected set; }
         public virtual double TempNumber { get; protected set; }
+        public virtual double MaxNumber { get; protected set; }
+        public virtual double TotalNumber { get; protected set; }
         private readonly Func<double> func;
         public ProducedPrestigePoint(Func<double> func)
         {
@@ -25,6 +27,8 @@ namespace IdleLibrary
         public void OnPrestige()
         {
             Number += TempNumber;
+            TotalNumber += TempNumber;
+            if (MaxNumber < Number) MaxNumber = Number;
             TempNumber = 0;
         }
         public void Reset()

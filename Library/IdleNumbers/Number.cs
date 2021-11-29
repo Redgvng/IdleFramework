@@ -30,6 +30,12 @@ namespace IdleLibrary
         void ProducePerFrame();
     }
 
+    public interface IStatsNumber
+    {
+        double MaxNumber { get; }
+        double TotalNumber { get; }
+    }
+
     [Serializable]
     public class NUMBER : IMultiplier, IIncrementableNumber, IDecrementableNumber
     {
