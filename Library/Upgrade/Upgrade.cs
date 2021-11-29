@@ -17,7 +17,8 @@ namespace IdleLibrary.Upgrade {
     {
         private readonly FixedCost fixedCost;
         private readonly IDecrementableNumber costNumber;
-        public bool isPurchased;
+        public virtual bool isPurchased { get; protected set; }
+        public double cost => fixedCost.Cost;
         public OneTimeUpgrade(IDecrementableNumber costNumber,FixedCost fixedCost)
         {
             this.fixedCost = fixedCost;
@@ -34,23 +35,6 @@ namespace IdleLibrary.Upgrade {
             costNumber.Decrement(fixedCost.Cost);
             isPurchased = true;
         }
-
-        //save用ユーティリティ
-        public static void Load(IEnumerable<OneTimeUpgrade> upgrades, bool[] loadedBools)
-        {
-            upgrades
-            .Select((upgrade, index) => new { upgrade, index })
-            .ToList()
-            .ForEach(pair => pair.upgrade.isPurchased = loadedBools[pair.index]);
-        }
-        public static void Save(IEnumerable<OneTimeUpgrade> upgrades, bool[] loadedBools)
-        {
-            upgrades
-            .Select((upgrade, index) => new { upgrade, index })
-            .ToList()
-            .ForEach(pair => pair.upgrade.ObserveEveryValueChanged(x => x.isPurchased)
-            .Subscribe(_ => loadedBools[pair.index] = pair.upgrade.isPurchased));
-        }
     }
 
     public class Upgrade : IUpgrade
@@ -59,6 +43,7 @@ namespace IdleLibrary.Upgrade {
         public long level { get { return _level == null ? 0 : _level.level; } set => _level.level = value; }
         public IDecrementableNumber number;
         public IMaxableCost cost;
+        public double initialiCost => cost.InitialiCost;
         public Upgrade(ILevel level, IDecrementableNumber number, IMaxableCost cost)
         {
             this._level = level;

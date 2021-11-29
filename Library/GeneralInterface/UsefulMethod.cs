@@ -8,6 +8,7 @@ using System.Text;
 using UnityEngine.Events;
 //using MathNet.Numerics.Distributions;
 using static System.Math;
+using System.Linq;
 
 namespace IdleLibrary
 {
@@ -524,9 +525,24 @@ namespace IdleLibrary
         /// <summary>
         /// 配列のサイズが第二引数のものと違ったら合わせる関数
         /// </summary>
-        public static void InitializeArray<Type>(ref Type[] Obj, int Length)
+        public static void InitializeArrayWithNew<Type>(ref Type[] Obj, int Length) where Type : new()
         {
-            if (Obj == null) { Obj = new Type[0]; }
+            if (Obj == null || Obj[0] == null) {
+                Obj = new Type[Length];
+                Obj = Enumerable.Range(0, Length).Select(_ => new Type()).ToArray();
+            }
+            if (Obj.Length != Length)
+            {
+                Array.Resize(ref Obj, Length);
+            }
+        }
+
+        public static void InitializeArray<Type>(ref Type[] Obj, int Length) 
+        {
+            if (Obj == null || Obj[0] == null)
+            {
+                Obj = new Type[Length];
+            }
             if (Obj.Length != Length)
             {
                 Array.Resize(ref Obj, Length);

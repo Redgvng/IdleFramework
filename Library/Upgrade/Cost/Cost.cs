@@ -20,6 +20,7 @@ namespace IdleLibrary
         /// 現在のレベルを基準とした増分を入力します。例えば現在のレベルが10で、レベル12にするのに必要なコストであれば、引数は2を入力してください。
         /// </summary>
         double FixedNumCost(INumber number, int fixedNum);
+        double InitialiCost { get; }
     }
 
     public class NullCost : IMaxableCost
@@ -40,6 +41,7 @@ namespace IdleLibrary
         {
             return 0;
         }
+        public double InitialiCost => 0;
     }
 
     public class FixedCost : ICost
@@ -61,6 +63,7 @@ namespace IdleLibrary
         readonly ILevel level;
         public Multiplier multiplier { get; } = new Multiplier();
         public double Cost => multiplier.CaluculatedNumber(initialValue + level.level * steep);
+        public double InitialiCost => initialValue;
         public LinearCost(double initialValue, double steep, ILevel level)
         {
             this.initialValue = initialValue;
@@ -112,6 +115,7 @@ namespace IdleLibrary
     public class ExponentialCost : IMaxableCost
     {
         readonly double initialValue;
+        public double InitialiCost => initialValue;
         readonly double factor;
         readonly ILevel level;
         public Multiplier multiplier { get; } = new Multiplier();
