@@ -54,17 +54,36 @@ namespace IdleLibrary
 
         //取り出す用の関数
         //任意のレベルにおけるmultiplierを取り出す
-        public double GetMultiplierWithAnyLevel(long level) => multiplierWithLevel(level);
+        private double GetMultiplierWithAnyLevel(long level) => multiplierWithLevel(level);
         //現在のmultiplierと任意のレベルにおけるmultiplierを取り出す。
         public double GetDiffOfMultiplierWithLevel(long targetLevel)
         {
             if (level == null) return 0;
             return multiplierWithLevel(targetLevel) - multiplierWithLevel(level.level);
         }
+        public double CurrentValue()
+        {
+            return multiplier();
+        }
+        public double NextValue()
+        {
+            return GetMultiplierWithAnyLevel(level.level + 1);
+        }
+        public double NextIncrement()
+        {
+            return GetDiffOfMultiplierWithLevel(level.level + 1);
+        }
     }
 
     public class Multiplier
     {
+        public static void RegisterMultiplierAll(IMultiplierInfo multiplierInfo, params Multiplier[] multipliers)
+        {
+            foreach (var multiplier in multipliers)
+            {
+                multiplier.RegisterMultiplier(multiplierInfo);
+            }
+        }
         public void RegisterMultiplier(IMultiplierInfo multiplierInfo)
         {
             if (multiplierInfo.multiplierType == MultiplierType.add)

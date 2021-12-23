@@ -26,10 +26,10 @@ namespace IdleLibrary
         {
             Produced += ProduceAmountPerSecond() * Time.fixedDeltaTime;
         }
+        public void ProduceBySecond(long second) => Produced += ProduceAmountPerSecond() * second;
         public void ProducePerFrame(float delta) => Produced += ProduceAmountPerSecond() * delta;
         public double ProduceAmountPerSecond() => produceMultiplier.CaluculatedNumber(0);
         public double ExponentialAmount() => exponentialMultiplier.CaluculatedNumber(1);
         public double BaseAmount() => multiplier.CaluculatedNumber(initialValue) + Produced;
     }
-
 }

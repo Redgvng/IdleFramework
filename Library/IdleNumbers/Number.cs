@@ -28,6 +28,7 @@ namespace IdleLibrary
     {
         void ProducePerSecond();
         void ProducePerFrame();
+        void ProduceBySecond(long second);
     }
 
     public interface IStatsNumber
@@ -36,8 +37,9 @@ namespace IdleLibrary
         double TotalNumber { get; }
     }
 
+    //サンプル
     [Serializable]
-    public class NUMBER : IMultiplier, IIncrementableNumber, IDecrementableNumber
+    public class NUMBER : IMultiplier, IIncrementableNumber, IDecrementableNumber, IProducableNumber
     {
         public virtual double Number { get; set; }
         public double TotalNumber;
@@ -60,6 +62,18 @@ namespace IdleLibrary
         {
             Number = Math.Max(Number - decrement, 0);
         }
+        public void ProducePerSecond()
+        {
+            Number += ProduceAmountPerSecond();
+        }
+        public void ProducePerFrame()
+        {
+            Number += ProduceAmountPerSecond() * Time.fixedDeltaTime;
+        }
+        public void ProduceBySecond(long second) => Number += ProduceAmountPerSecond() * second;
+        public void ProducePerFrame(float delta) => Number += ProduceAmountPerSecond() * delta;
+        public double ProduceAmountPerSecond() => produceMultiplier.CaluculatedNumber(0);
+        public Multiplier produceMultiplier { get; } = new Multiplier();
         public void ResetNumberToZero()
         {
             Number = 0;

@@ -37,13 +37,14 @@ namespace IdleLibrary.Upgrade {
         }
     }
 
-    public class Upgrade : IUpgrade
+    public class Upgrade : IUpgrade, IResettable
     {
         private ILevel _level;
         public long level { get { return _level == null ? 0 : _level.level; } set => _level.level = value; }
         public IDecrementableNumber number;
         public IMaxableCost cost;
         public double initialiCost => cost.InitialiCost;
+        public Action OnUpgraded = () => { };
         public Upgrade(ILevel level, IDecrementableNumber number, IMaxableCost cost)
         {
             this._level = level;
@@ -61,6 +62,7 @@ namespace IdleLibrary.Upgrade {
             if (!CanBuy())
                 return;
             number.Decrement(cost.Cost);
+            OnUpgraded();
             _level.level++;
         }
 
@@ -92,7 +94,7 @@ namespace IdleLibrary.Upgrade {
             }
         }
 
-        public void OnPrestige()
+        public void OnReset()
         {
             _level.level = 0;
         }
@@ -111,7 +113,7 @@ namespace IdleLibrary.Upgrade {
                 Debug.LogError("Effectが実装されていません");
                 return 0;
             }
-            return multiplierInfo.multiplier();
+            return multiplierInfo.CurrentValue();
         }
         public double NextValue()
         {
@@ -120,7 +122,7 @@ namespace IdleLibrary.Upgrade {
                 Debug.LogError("Effectが実装されていません");
                 return 0;
             }
-            return multiplierInfo.GetMultiplierWithAnyLevel(level + 1);
+            return multiplierInfo.NextValue();
         }
         public double NextIncrement()
         {
@@ -129,7 +131,7 @@ namespace IdleLibrary.Upgrade {
                 Debug.LogError("Effectが実装されていません");
                 return 0;
             }
-            return multiplierInfo.GetDiffOfMultiplierWithLevel(level + 1);
+            return multiplierInfo.NextIncrement();
         }
     }
 

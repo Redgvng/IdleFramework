@@ -171,7 +171,54 @@ namespace IdleLibrary
         }
     }
 
+    /*
+     * Animatter Costでは、MaxCostは次のtierまでの必要コストとして定義されます。
+     * つまり、ゲーム内での仕様と全く同じ挙動をします。
+     */
+    public class AntimatterCost : IMaxableCost
+    {
+        readonly double initialValue;
+        readonly int step;
+        private readonly double costMultiplier;
+        readonly ILevel level;
+        public long currentTier => level.level / step;
+        public Multiplier multiplier { get; } = new Multiplier();
+        public double Cost => multiplier.CaluculatedNumber(initialValue * Math.Pow(costMultiplier, level.level / step));
+        public double InitialiCost => initialValue;
+        public AntimatterCost(double initialValue, int step, double costMultiplier, ILevel level)
+        {
+            this.initialValue = initialValue;
+            this.step = step;
+            this.costMultiplier = costMultiplier;
+            this.level = level;
+        }
+
+        public long LevelAtMaxCost(INumber number)
+        {
+            var rank = level.level / step;
+            var maxLevel = (rank + 1) * step;
+            var cost = (maxLevel - level.level) * Cost;
+            if (number.Number >= cost) return maxLevel;
+            var extraLevel = (long)(number.Number / Cost) + level.level;
+            return extraLevel;
+        }
+
+        public double MaxCost(INumber number)
+        {
+            var rank = level.level / step;
+            var maxLevel = (rank + 1) * step;
+            return (maxLevel - level.level) * Cost;
+        }
+
+        public double FixedNumCost(INumber number, int fixedNum)
+        {
+            Debug.LogError("実装していません");
+            return 0;
+        }
+    }
+
 }
+
 
 /*
 public class CostInMax : ICost

@@ -15,7 +15,7 @@ namespace IdleLibrary
         public virtual double TempNumber { get; protected set; }
         public virtual double MaxNumber { get; protected set; }
         public virtual double TotalNumber { get; protected set; }
-        private readonly Func<double> func;
+        protected Func<double> func;
         public ProducedPrestigePoint(Func<double> func)
         {
             this.func = func;
@@ -31,6 +31,7 @@ namespace IdleLibrary
             if (MaxNumber < Number) MaxNumber = Number;
             TempNumber = 0;
         }
+        public void ProduceBySecond(long second) => TempNumber += _produceAmount() * second;
         public void Reset()
         {
             Number = 0;
