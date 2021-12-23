@@ -101,6 +101,7 @@ namespace IdleLibrary.Upgrade {
 
         //MultiplierInfo
         private MultiplierInfoWithLevel multiplierInfo;
+        public bool isMultiplied => multiplierInfo.multiplierType == MultiplierType.mul;
         public void ApplyEffect(Multiplier multiplied, Func<long, double> effect, MultiplierType type)
         {
             multiplierInfo = new MultiplierInfoWithLevel((level) => effect(level) , type, _level);
