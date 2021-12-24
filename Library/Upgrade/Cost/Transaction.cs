@@ -12,7 +12,7 @@ namespace IdleLibrary{
     {
         //コストの処理を委譲する。
         public ICost cost { get; }
-        public NUMBER resource { get; }
+        public IDecrementableNumber resource { get; }
         public bool CanBuy()
         {
             return resource.Number >= cost.Cost;
@@ -21,7 +21,7 @@ namespace IdleLibrary{
         {
             resource.Decrement(cost.Cost);
         }
-        public Transaction(NUMBER resource, ICost cost)
+        public Transaction(IDecrementableNumber resource, ICost cost)
         {
             this.resource = resource;
             this.cost = cost;

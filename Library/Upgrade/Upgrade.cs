@@ -45,6 +45,9 @@ namespace IdleLibrary.Upgrade {
         public IMaxableCost cost;
         public double initialiCost => cost.InitialiCost;
         public Action OnUpgraded = () => { };
+        public long MaxLevel;
+        public bool isMaxLevel => level >= MaxLevel && hasMaxLevel;
+        public bool hasMaxLevel => MaxLevel != 0;
         public Upgrade(ILevel level, IDecrementableNumber number, IMaxableCost cost)
         {
             this._level = level;
@@ -54,13 +57,20 @@ namespace IdleLibrary.Upgrade {
 
         public bool CanBuy()
         {
-            return number.Number >= cost.Cost;
+            if (!hasMaxLevel)
+                return number.Number >= cost.Cost;
+
+            return number.Number >= cost.Cost && !isMaxLevel;
         }
 
         public void Pay()
         {
             if (!CanBuy())
                 return;
+
+            if (isMaxLevel)
+                return;
+
             number.Decrement(cost.Cost);
             OnUpgraded();
             _level.level++;
@@ -72,19 +82,30 @@ namespace IdleLibrary.Upgrade {
                 return;
 
             long tempLevel = cost.LevelAtMaxCost(number);
+            if(hasMaxLevel && tempLevel >= MaxLevel)
+            {
+                tempLevel = MaxLevel;
+                number.Decrement(cost.FixedNumCost(number, MaxLevel - level));
+                _level.level = MaxLevel;
+                return;
+            }
             number.Decrement(cost.MaxCost(number));
             _level.level = tempLevel;
         }
 
-        public void FixedAmountPay(int fixedNum)
+        public void FixedAmountPay(long fixedNum)
         {
+            var num = fixedNum;
             if (!CanBuy())
                 return;
 
-            if(cost.LevelAtMaxCost(number) > fixedNum)
+            if(level + fixedNum >= MaxLevel)
+                num = MaxLevel - level;
+
+            if(cost.LevelAtMaxCost(number) > num)
             {
-                number.Decrement(cost.FixedNumCost(number,fixedNum));
-                _level.level += fixedNum;
+                number.Decrement(cost.FixedNumCost(number, num));
+                _level.level += num;
             }
             else
             {

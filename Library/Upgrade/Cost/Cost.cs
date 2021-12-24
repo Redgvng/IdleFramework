@@ -19,7 +19,7 @@ namespace IdleLibrary
         /// <summary>
         /// 現在のレベルを基準とした増分を入力します。例えば現在のレベルが10で、レベル12にするのに必要なコストであれば、引数は2を入力してください。
         /// </summary>
-        double FixedNumCost(INumber number, int fixedNum);
+        double FixedNumCost(INumber number, long fixedNum);
         double InitialiCost { get; }
     }
 
@@ -27,7 +27,7 @@ namespace IdleLibrary
     {
         public double Cost => 0;
         public Multiplier multiplier { get; } = new Multiplier();
-        public double FixedNumCost(INumber number, int fixedNum)
+        public double FixedNumCost(INumber number, long fixedNum)
         {
             return 0;
         }
@@ -99,7 +99,7 @@ namespace IdleLibrary
             return TotalCost(LevelAtMaxCost(number));
         }
 
-        public double FixedNumCost(INumber number, int fixedNum)
+        public double FixedNumCost(INumber number, long fixedNum)
         {
             double n = number.Number;
             double a = initialValue;
@@ -159,7 +159,7 @@ namespace IdleLibrary
             return TotalCost(LevelAtMaxCost(number));
         }
 
-        public double FixedNumCost(INumber number, int fixedNum)
+        public double FixedNumCost(INumber number, long fixedNum)
         {
             double n = number.Number;
             double a = initialValue;
@@ -210,7 +210,7 @@ namespace IdleLibrary
             return (maxLevel - level.level) * Cost;
         }
 
-        public double FixedNumCost(INumber number, int fixedNum)
+        public double FixedNumCost(INumber number, long fixedNum)
         {
             Debug.LogError("実装していません");
             return 0;
