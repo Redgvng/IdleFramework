@@ -123,16 +123,16 @@ namespace IdleLibrary.Upgrade {
         //MultiplierInfo
         private MultiplierInfoWithLevel multiplierInfo;
         public bool isMultiplied => multiplierInfo.multiplierType == MultiplierType.mul;
-        public void ApplyEffect(Multiplier multiplied, Func<long, double> effect, MultiplierType type)
+        public void ApplyEffect(Multiplier multiplied, Func<long, double> effect, MultiplierType type, string key)
         {
             multiplierInfo = new MultiplierInfoWithLevel((level) => effect(level) , type, _level);
-            multiplied.RegisterMultiplier(multiplierInfo);
+            multiplied.RegisterMultiplier(multiplierInfo, key);
         }
         public double CurrentValue()
         {
             if (multiplierInfo == null)
             {
-                Debug.LogError("Effectが実装されていません");
+                Debug.LogError($"Effectが実装されていません. ");
                 return 0;
             }
             return multiplierInfo.CurrentValue();
@@ -141,7 +141,7 @@ namespace IdleLibrary.Upgrade {
         {
             if (multiplierInfo == null)
             {
-                Debug.LogError("Effectが実装されていません");
+                Debug.LogError($"Effectが実装されていません. ");
                 return 0;
             }
             return multiplierInfo.NextValue();
@@ -150,7 +150,7 @@ namespace IdleLibrary.Upgrade {
         {
             if (multiplierInfo == null)
             {
-                Debug.LogError("Effectが実装されていません");
+                Debug.LogError($"Effectが実装されていません.");
                 return 0;
             }
             return multiplierInfo.NextIncrement();

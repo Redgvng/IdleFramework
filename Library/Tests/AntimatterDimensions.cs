@@ -10,6 +10,7 @@ using System;
 using System.IO;
 using static IdleLibrary.IntegrationTest.IntegrationUtiliity;
 
+/*
 public class AntimatterDimensionsTest : MonoBehaviour
 {
     NUMBER antimatter = new NUMBER();
@@ -156,3 +157,4 @@ public class AntimatterDimensionsTest : MonoBehaviour
         Assert.AreEqual(20, upgrade.level);
     }
 }
+*/

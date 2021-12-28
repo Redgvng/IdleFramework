@@ -77,34 +77,34 @@ namespace IdleLibrary
 
     public class Multiplier
     {
-        public static void RegisterMultiplierAll(IMultiplierInfo multiplierInfo, params Multiplier[] multipliers)
+        public static void RegisterMultiplierAll(IMultiplierInfo multiplierInfo, string key, params Multiplier[] multipliers)
         {
             foreach (var multiplier in multipliers)
             {
-                multiplier.RegisterMultiplier(multiplierInfo);
+                multiplier.RegisterMultiplier(multiplierInfo, key);
             }
         }
-        public void RegisterMultiplier(IMultiplierInfo multiplierInfo)
+        public void RegisterMultiplier(IMultiplierInfo multiplierInfo, string key)
         {
             if (multiplierInfo.multiplierType == MultiplierType.add)
             {
-                AddMultiplier.Add(() =>
+                AddMultiplier[key] = () =>
                 {
                     if (!multiplierInfo.trigger())
                         return 0;
 
                     return multiplierInfo.multiplier();
-                });
+                };
             }
             if (multiplierInfo.multiplierType == MultiplierType.mul)
             {
-                MulMultiplier.Add(() =>
+                MulMultiplier[key] = () =>
                 {
                     if (!multiplierInfo.trigger())
                         return 1.0;
 
                     return multiplierInfo.multiplier();
-                });
+                };
             }
         }
 
@@ -116,10 +116,10 @@ namespace IdleLibrary
         double mul()
         {
             double temp = 1.0;
-            for (int i = 0; i < MulMultiplier.Count; i++)
+            foreach (var multiplier in MulMultiplier)
             {
-                if (MulMultiplier[i]() == 0) Debug.LogError($"0が入っています");
-                temp *= MulMultiplier[i]();
+                if (multiplier.Value() == 0) Debug.LogError($"0が入っています. key: {multiplier.Key}");
+                temp *= multiplier.Value();
             }
             return temp;
         }
@@ -127,15 +127,15 @@ namespace IdleLibrary
         double add()
         {
             double temp = 0;
-            for (int i = 0; i < AddMultiplier.Count; i++)
+            foreach (var multiplier in AddMultiplier)
             {
-                temp += AddMultiplier[i]();
+                temp += multiplier.Value();
             }
             return temp;
         }
 
-        private readonly List<Func<double>> AddMultiplier = new List<Func<double>>();
-        private readonly List<Func<double>> MulMultiplier = new List<Func<double>>();
+        private readonly Dictionary<string, Func<double>> AddMultiplier = new Dictionary<string, Func<double>>();
+        private readonly Dictionary<string, Func<double>> MulMultiplier = new Dictionary<string, Func<double>>();
     }
 }
    
