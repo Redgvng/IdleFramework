@@ -16,6 +16,7 @@ namespace IdleLibrary.ProgressSlider
     public class ProgressSlider : ILevel, IProgressSlider
     {
         public long level { get => _level.level; set => _level.level = value; }
+        public void LevelUp(long level) => _level.level += level;
         [SerializeField] double _currentProgress;
         public double currentProgress { get => _currentProgress; set => _currentProgress = value; }
         private readonly Func<double> RequiredProgress = () => 0;
@@ -81,6 +82,7 @@ namespace IdleLibrary.ProgressSlider
     public class AsyncProgressSlider : ILevel, IProgressSlider
     {
         public long level { get => _level.level; set => _level.level = value; }
+        public void LevelUp(long level) => _level.level += level;
         [SerializeField] double numberConsumed;
         public double currentProgress { get => number.Number - numberConsumed; }
         private readonly Func<double> RequiredProgress = () => 0;
@@ -97,7 +99,7 @@ namespace IdleLibrary.ProgressSlider
             if (currentProgress >= RequiredProgress())
             {
                 numberConsumed += RequiredProgress();
-                level++;
+                LevelUp(1);
             }
         }
         public float CurrentProgressRatio() => (float)(currentProgress / RequiredProgress());

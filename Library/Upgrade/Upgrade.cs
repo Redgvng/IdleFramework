@@ -73,7 +73,7 @@ namespace IdleLibrary.Upgrade {
 
             number.Decrement(cost.Cost);
             OnUpgraded();
-            _level.level++;
+            _level.LevelUp(1);
         }
 
         public void MaxPay()
@@ -86,11 +86,12 @@ namespace IdleLibrary.Upgrade {
             {
                 tempLevel = MaxLevel;
                 number.Decrement(cost.FixedNumCost(number, MaxLevel - level));
-                _level.level = MaxLevel;
+                //_level.level = MaxLevel;
+                _level.LevelUp(MaxLevel - _level.level);
                 return;
             }
             number.Decrement(cost.MaxCost(number));
-            _level.level = tempLevel;
+            _level.LevelUp(tempLevel - _level.level);
         }
 
         public void FixedAmountPay(long fixedNum)
@@ -105,13 +106,14 @@ namespace IdleLibrary.Upgrade {
             if(cost.LevelAtMaxCost(number) > num)
             {
                 number.Decrement(cost.FixedNumCost(number, num));
-                _level.level += num;
+                _level.LevelUp(num);
             }
             else
             {
                 long tempLevel = cost.LevelAtMaxCost(number);
                 number.Decrement(cost.MaxCost(number));
-                _level.level = tempLevel;
+                //_level.level = tempLevel;
+                _level.LevelUp(tempLevel - _level.level);
             }
         }
 
@@ -123,10 +125,11 @@ namespace IdleLibrary.Upgrade {
         //MultiplierInfo
         private MultiplierInfoWithLevel multiplierInfo;
         public bool isMultiplied => multiplierInfo.multiplierType == MultiplierType.mul;
-        public void ApplyEffect(Multiplier multiplied, Func<long, double> effect, MultiplierType type, string key)
+        public void ApplyEffect(Multiplier multiplied, Func<long, double> effect, MultiplierType type, string key = "")
         {
             multiplierInfo = new MultiplierInfoWithLevel((level) => effect(level) , type, _level);
-            multiplied.RegisterMultiplier(multiplierInfo, key);
+            if (key == "") multiplied.RegisterMultiplier(multiplierInfo);
+            else multiplied.RegisterMultiplier(multiplierInfo, key);
         }
         public double CurrentValue()
         {

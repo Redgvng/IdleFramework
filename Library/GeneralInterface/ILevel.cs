@@ -6,10 +6,12 @@ namespace IdleLibrary
     public interface ILevel
     {
         long level { get; set; }
+        void LevelUp(long level);
     }
     public class MockLevel : ILevel
     {
         public long level { get; set; }
+        public void LevelUp(long level) { this.level += level; }
     }
     //Value Object
     [Serializable]
@@ -26,5 +28,6 @@ namespace IdleLibrary
 
         private long tempMaxLevel;
         public long maxLevel { get => tempMaxLevel; }
+        public void LevelUp(long level) => this.level += level;
     }
 }

@@ -539,7 +539,7 @@ namespace IdleLibrary
 
         public static void InitializeArray<Type>(ref Type[] Obj, int Length) 
         {
-            if (Obj == null || Obj[0] == null)
+            if (Obj == null || Obj.Length == 0 || Obj[0] == null)
             {
                 Obj = new Type[Length];
             }

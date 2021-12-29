@@ -84,6 +84,13 @@ namespace IdleLibrary
                 multiplier.RegisterMultiplier(multiplierInfo, key);
             }
         }
+        public void RegisterMultiplier(IMultiplierInfo multiplierInfo)
+        {
+            var tempText = multiplierInfo.multiplierType == MultiplierType.add ?
+                $"Key is not set yet so please be careful : id{AddMultiplier.Count}" :
+                $"Key is not set yet so please be careful : id{MulMultiplier.Count}";
+            RegisterMultiplier(multiplierInfo, tempText);
+        }
         public void RegisterMultiplier(IMultiplierInfo multiplierInfo, string key)
         {
             if (multiplierInfo.multiplierType == MultiplierType.add)
@@ -136,6 +143,24 @@ namespace IdleLibrary
 
         private readonly Dictionary<string, Func<double>> AddMultiplier = new Dictionary<string, Func<double>>();
         private readonly Dictionary<string, Func<double>> MulMultiplier = new Dictionary<string, Func<double>>();
+
+        public void DebugCurrentMultiplier(MultiplierType type)
+        {
+            if(type == MultiplierType.add)
+            {
+                foreach (var multiplier in AddMultiplier)
+                {
+                    Debug.Log($"{multiplier.Key} : {multiplier.Value():F2}");
+                }
+            }
+            if (type == MultiplierType.mul)
+            {
+                foreach (var multiplier in MulMultiplier)
+                {
+                    Debug.Log($"{multiplier.Key} : {multiplier.Value():F3}");
+                }
+            }
+        }
     }
 }
    
