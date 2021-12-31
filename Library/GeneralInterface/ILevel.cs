@@ -30,4 +30,31 @@ namespace IdleLibrary
         public long maxLevel { get => tempMaxLevel; }
         public void LevelUp(long level) => this.level += level;
     }
+
+    /*
+     * ある条件のときに、他のレベルをあげるようなレベル。
+     * 主に、チャレンジなどの特殊な制約を想定しています。
+     */
+    public class LevelWithOthers : ILevel
+    {
+        public virtual long level { get; set; }
+        public void LevelUp(long level)
+        {
+            if (condition() && others != null)
+            {
+                others.LevelUp(level);
+            }
+            else
+            {
+                this.level += level;
+            }
+        }
+        protected readonly ILevel others;
+        protected Func<bool> condition;
+        public LevelWithOthers(ILevel others, Func<bool> condition)
+        {
+            this.others = others;
+            this.condition = condition;
+        }
+    }
 }
