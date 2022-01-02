@@ -15,7 +15,7 @@ public class OpenClose : MonoBehaviour
     public bool IsOpen => isOpen;
     public bool isOpenFirst;
     public Action openAction;
-    void Open()
+    public void Open()
     {
         if (isOpen)
             return;
@@ -23,7 +23,7 @@ public class OpenClose : MonoBehaviour
         isOpen = true;
         if (openAction != null) openAction();
     }
-    void Close()
+    public void Close()
     {
         if (!isOpen)
             return;
