@@ -125,7 +125,7 @@ namespace IdleLibrary
             double temp = 1.0;
             foreach (var multiplier in MulMultiplier)
             {
-                if (multiplier.Value() == 0) Debug.LogError($"0が入っています. key: {multiplier.Key}");
+                if (multiplier.Value() == 0) Debug.Log($"0が入っています. key: {multiplier.Key}");
                 temp *= multiplier.Value();
             }
             return temp;
