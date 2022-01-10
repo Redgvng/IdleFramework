@@ -17,7 +17,7 @@ namespace IdleLibrary
     [Serializable]
     public class Level : ILevel
     {
-        public long level {
+        public virtual long level {
             get => _level;
             set {
                 _level = value;
@@ -29,16 +29,6 @@ namespace IdleLibrary
         private long tempMaxLevel;
         public long maxLevel { get => tempMaxLevel; }
         public void LevelUp(long level) => this.level += level;
-
-        public static Level[] MakeLevels(int length)
-        {
-            Level[] levels = new Level[length];
-            for (int i = 0; i < length; i++)
-            {
-                levels[i] = new Level();
-            }
-            return levels;
-        }
     }
 
     /*

@@ -37,9 +37,10 @@ namespace IdleLibrary.Upgrade {
         }
     }
 
-    public class Upgrade : IUpgrade, IResettable
+    public class Upgrade : IUpgrade, IResettable, ILevel
     {
         private ILevel _level;
+        public void LevelUp(long level) => _level.LevelUp(level);
         public long level { get { return _level == null ? 0 : _level.level; } set => _level.level = value; }
         public IDecrementableNumber number;
         public IMaxableCost cost;
