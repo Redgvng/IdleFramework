@@ -144,21 +144,17 @@ namespace IdleLibrary
         private readonly Dictionary<string, Func<double>> AddMultiplier = new Dictionary<string, Func<double>>();
         private readonly Dictionary<string, Func<double>> MulMultiplier = new Dictionary<string, Func<double>>();
 
-        public void DebugCurrentMultiplier(MultiplierType type)
+        public void DebugCurrentMultiplier()
         {
-            if(type == MultiplierType.add)
+            Debug.Log("----Additive----");
+            foreach (var multiplier in AddMultiplier)
             {
-                foreach (var multiplier in AddMultiplier)
-                {
-                    Debug.Log($"{multiplier.Key} : {multiplier.Value():F2}");
-                }
+                Debug.Log($"{multiplier.Key} : {multiplier.Value():F2}");
             }
-            if (type == MultiplierType.mul)
+            Debug.Log("----Multiplicative----");
+            foreach (var multiplier in MulMultiplier)
             {
-                foreach (var multiplier in MulMultiplier)
-                {
-                    Debug.Log($"{multiplier.Key} : {multiplier.Value():F3}");
-                }
+                Debug.Log($"{multiplier.Key} : {multiplier.Value():F3}");
             }
         }
     }

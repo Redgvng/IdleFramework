@@ -51,6 +51,21 @@ namespace IdleLibrary
         }
     }
 
+    //汎用Achievement
+    public class NormalAchievement : IAchievementCondition
+    {
+        private Func<bool> unlockCondition;
+        public NormalAchievement(Func<bool> unlockCondition)
+        {
+            this.unlockCondition = unlockCondition;
+        }
+        public bool UnlockCondition()
+        {
+            return unlockCondition();
+        }
+        public float CurrentProgressRatio() => unlockCondition() ? 1.0f : 0f;
+    }
+
     //ある量に達したかどうか
     public class NumberAchievement : IAchievementCondition
     {
