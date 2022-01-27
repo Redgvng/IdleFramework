@@ -6,6 +6,11 @@ using System.Linq;
 
 namespace IdleLibrary
 {
+    public interface IGetAchievement
+    {
+        IEnumerable<Achievement> achievements { get; }
+    }
+
     public interface IAchievementCondition
     {
         bool UnlockCondition();
@@ -14,7 +19,7 @@ namespace IdleLibrary
 
     public abstract class Achievement
     {
-        private readonly IAchievementCondition unlockCondition;
+        public IAchievementCondition unlockCondition { get; private set; }
         public Achievement(IAchievementCondition unlockCondition)
         {
             this.unlockCondition = unlockCondition;
@@ -27,7 +32,6 @@ namespace IdleLibrary
         public float CurrentProgressRatio() => unlockCondition.CurrentProgressRatio();
         public abstract bool isUnlocked { get; set; }
         public bool CanCalim() => unlockCondition.UnlockCondition() && !isUnlocked;
-
     }
 
     public class MultipleAchievementCondition : IAchievementCondition
@@ -64,6 +68,34 @@ namespace IdleLibrary
             return unlockCondition();
         }
         public float CurrentProgressRatio() => unlockCondition() ? 1.0f : 0f;
+    }
+
+    //Monoで処理する必要のあるAchievement
+    //一度でもクリアしたら常にクリアの状態にする。
+    public class NoClickAchievement : IAchievementCondition
+    {
+        public double progress { get; set; }
+        public double required;
+        private bool isClearedOnce;
+        public NoClickAchievement(double required)
+        {
+            this.required = required;
+        }
+        public bool UnlockCondition()
+        {
+            return progress >= required;
+        }
+        public float CurrentProgressRatio()
+        {
+            if (required == 0) return 0;
+            return (float)(progress / required);
+        }
+        public void Notify(double progress)
+        {
+            if (isClearedOnce) return;
+            this.progress = progress;
+            if (UnlockCondition()) isClearedOnce = true;
+        }
     }
 
     //ある量に達したかどうか
