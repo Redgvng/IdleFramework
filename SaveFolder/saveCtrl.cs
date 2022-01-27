@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using static IdleLibrary.Main;
+using Zenject;
 
 namespace IdleLibrary
 {
     //[DefaultExecutionOrder(-2)]
     public class saveCtrl : MonoBehaviour
     {
+        [Inject] ITime time;
         //ロードの処理
         void getSaveKey()
         {
@@ -71,7 +73,7 @@ namespace IdleLibrary
             while (true)
             {
                 yield return new WaitForSeconds(1.0f);
-                main.lastTime = DateTime.Now;
+                main.lastTime = time.currentTime;
                 setSaveKey();
             }
         }

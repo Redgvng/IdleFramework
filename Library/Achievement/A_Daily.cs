@@ -11,18 +11,15 @@ namespace IdleLibrary
     public class A_Daily : MonoBehaviour
     {
         [Inject] IGetAchievement getAchievement;
-        private double timeLapse;
-        // Start is called before the first frame update
-        void Start()
+        [Inject] IRegisterDailyAction registerDailyAction;
+        private void Awake()
         {
-            this.ObserveEveryValueChanged(_ => _.timeLapse).Subscribe(_ =>
+            getAchievement.achievements.Where(_ => _.unlockCondition is DAILY_ACHIEVEMENT).ToList().ForEach(_ =>
             {
-                getAchievement.achievements.Where(_ => _.unlockCondition is NoClickAchievement).ToList().ForEach(_ =>
-                {
-                    var condition = _.unlockCondition as NoClickAchievement;
-                    condition.Notify(timeLapse);
-                });
+                var condition = _.unlockCondition as DAILY_ACHIEVEMENT;
+                registerDailyAction.AddDailyAction(() => condition.OnDayPassed());
+                registerDailyAction.AddDailyAction(() => condition.CreateNewAchievement());
             });
-        }1
+        }
     }
 }

@@ -34,6 +34,13 @@ namespace IdleLibrary
         public bool CanCalim() => unlockCondition.UnlockCondition() && !isUnlocked;
     }
 
+    //Daily
+    public abstract class DAILY_ACHIEVEMENT
+    {
+        public abstract void CreateNewAchievement();
+        public abstract void OnDayPassed();
+    }
+
     public class MultipleAchievementCondition : IAchievementCondition
     {
         private readonly IAchievementCondition[] achievementConditions;
@@ -97,6 +104,8 @@ namespace IdleLibrary
             if (UnlockCondition()) isClearedOnce = true;
         }
     }
+
+
 
     //ある量に達したかどうか
     public class NumberAchievement : IAchievementCondition

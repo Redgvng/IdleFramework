@@ -6,11 +6,14 @@ using UnityEngine.UI;
 using TMPro;
 using static IdleLibrary.UsefulMethod;
 using UniRx;
+using Zenject;
 
 namespace IdleLibrary
 {
     public class Main : MonoBehaviour
     {
+        [Inject] ITime _currentTime;
+        private DateTime currentTime => _currentTime.currentTime;
         public double allTime { get => S.allTime; set => S.allTime = value; }
         public DateTime birthTime
         {
@@ -51,14 +54,14 @@ namespace IdleLibrary
             //初めてのプレイだったら現在の値を代入
             if (!S.isContinuePlay)
             {
-                birthTime = DateTime.Now;
-                lastTime = DateTime.Now;
+                birthTime = currentTime;
+                lastTime = currentTime;
                 S.isContinuePlay = true;
             }
             //不正な時間が入っていたら現在の値を代入
-            if (lastTime < ReleaseTime || lastTime > DateTime.Now)
+            if (lastTime < ReleaseTime || lastTime > currentTime)
             {
-                lastTime = DateTime.Now;
+                lastTime = currentTime;
             }
             StartCoroutine(plusTime());
             //this.ObserveEveryValueChanged(_ => tick).Subscribe(_ => Time.fixedDeltaTime = 1f /tick / 10);
@@ -67,10 +70,11 @@ namespace IdleLibrary
 
         IEnumerator plusTime()
         {
+            var wait = new WaitForSeconds(1.0f);
             while (true)
             {
                 allTime++;
-                yield return new WaitForSeconds(1.0f);
+                yield return wait;
             }
         }
 
