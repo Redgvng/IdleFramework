@@ -146,16 +146,18 @@ namespace IdleLibrary
 
         public void DebugCurrentMultiplier()
         {
-            Debug.Log("----Additive----");
+            var unko = "";
+            unko += "----Additive----\n";
             foreach (var multiplier in AddMultiplier)
             {
-                Debug.Log($"{multiplier.Key} : {multiplier.Value():F2}");
+                unko += $"{multiplier.Key} : {multiplier.Value():F2}\n";
             }
-            Debug.Log("----Multiplicative----");
+            unko += "----Multiplicative----\n";
             foreach (var multiplier in MulMultiplier)
             {
-                Debug.Log($"{multiplier.Key} : {multiplier.Value():F3}");
+                unko += $"{multiplier.Key} : {multiplier.Value():F3}\n";
             }
+            Debug.Log(unko);
         }
     }
 }

@@ -28,6 +28,7 @@ namespace IdleLibrary
         {
             var fileContent = string.Empty;
             var filePath = UnityEngine.Application.persistentDataPath + FILENAME;
+            Debug.Log(filePath);
             //サーバーから取ってくる処理になります。
             if (File.Exists(filePath))
             {
