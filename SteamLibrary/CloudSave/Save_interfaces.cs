@@ -155,11 +155,13 @@ namespace IdleLibrary
             }
 
             //リリース日よりも前にロードした場合は読み込めないようにする。
+            /*
             if (Main.main.ReleaseTime >= Main.main.birthTime)
             {
                 Debug.Log("リリース前のセーブデータなのでロードできません");
                 return;
             }
+            */
 
             // ゲーム内のセーブデータに代入
             for (int i = 0; i < dataStrList.Length; i++)

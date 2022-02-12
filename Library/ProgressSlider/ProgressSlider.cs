@@ -88,6 +88,7 @@ namespace IdleLibrary.ProgressSlider
         private readonly Func<double> RequiredProgress = () => 0;
         private readonly INumber number;
         private readonly ILevel _level;
+        public Action OnLevelUp = () => { }; 
         public AsyncProgressSlider(Func<double> RequiredProgress, INumber number, ILevel _level)
         {
             this.RequiredProgress = RequiredProgress;
@@ -100,6 +101,7 @@ namespace IdleLibrary.ProgressSlider
             {
                 numberConsumed += RequiredProgress();
                 LevelUp(1);
+                OnLevelUp();
             }
         }
         public float CurrentProgressRatio() => (float)(currentProgress / RequiredProgress());
