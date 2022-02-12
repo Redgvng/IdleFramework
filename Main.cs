@@ -21,7 +21,7 @@ namespace IdleLibrary
             set { S.birthDate = value.ToBinary().ToString(); }
         }
         [NonSerialized]
-        public DateTime ReleaseTime = DateTime.Parse("8/21/2019 7:00:00 AM");
+        public DateTime ReleaseTime = DateTime.Parse("04/01/2022 7:00:00 AM");
         public DateTime lastTime//最後にプレイした時間。
         {
             get { return DateTime.FromBinary(Convert.ToInt64(S.lastTime)); }
