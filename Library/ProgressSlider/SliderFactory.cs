@@ -13,7 +13,7 @@ namespace IdleLibrary.ProgressSlider
             this.slider = slider;
             var instantiatedUi = Instantiate(ui, canvas);
             this.ObserveEveryValueChanged(_ => slider.CurrentProgressRatio()).Subscribe(_ => instantiatedUi.GetSlider.value = this.slider.CurrentProgressRatio());
-            Observable.EveryFixedUpdate().Subscribe(_ => slider.Update());
+            Observable.EveryFixedUpdate().Subscribe(_ => slider.Update()).AddTo(this);
             return instantiatedUi;
         }
     }

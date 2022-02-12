@@ -96,7 +96,7 @@ namespace IdleLibrary
             b * level / 2 + b * Math.Pow(maxLevel, 2) / 2 - b * maxLevel / 2;
             if (LevelAtMaxCost(number) == level) return Cost;
 
-            return TotalCost(LevelAtMaxCost(number));
+            return multiplier.CaluculatedNumber(TotalCost(LevelAtMaxCost(number)));
         }
 
         public double FixedNumCost(INumber number, long fixedNum)
@@ -108,7 +108,7 @@ namespace IdleLibrary
             double TotalCost(long maxLevel) => -a * level + a * maxLevel - b * Math.Pow(level, 2) / 2 +
             b * level / 2 + b * Math.Pow(maxLevel, 2) / 2 - b * maxLevel / 2;
 
-            return TotalCost(this.level.level + fixedNum);
+            return multiplier.CaluculatedNumber(TotalCost(this.level.level + fixedNum));
         }
     }
 
@@ -156,7 +156,7 @@ namespace IdleLibrary
             double TotalCost(long maxLevel) => a * (Math.Pow(b, maxLevel) - Math.Pow(b, level)) / (b - 1);
             if (LevelAtMaxCost(number) == level) return Cost;
 
-            return TotalCost(LevelAtMaxCost(number));
+            return multiplier.CaluculatedNumber(TotalCost(LevelAtMaxCost(number)));
         }
 
         public double FixedNumCost(INumber number, long fixedNum)
@@ -167,7 +167,7 @@ namespace IdleLibrary
             long level = this.level.level;
             double TotalCost(long maxLevel) => a * (Math.Pow(b, maxLevel) - Math.Pow(b, level)) / (b - 1);
 
-            return TotalCost(this.level.level + fixedNum);
+            return multiplier.CaluculatedNumber(TotalCost(this.level.level + fixedNum));
         }
     }
 
@@ -207,7 +207,7 @@ namespace IdleLibrary
         {
             var rank = level.level / step;
             var maxLevel = (rank + 1) * step;
-            return (maxLevel - level.level) * Cost;
+            return multiplier.CaluculatedNumber((maxLevel - level.level) * Cost);
         }
 
         public double FixedNumCost(INumber number, long fixedNum)
