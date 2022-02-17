@@ -29,16 +29,19 @@ namespace IdleLibrary
             if (!CanCalim()) return;
                 isUnlocked = true;
         }
-        public float CurrentProgressRatio() => unlockCondition.CurrentProgressRatio();
+        public float CurrentProgressRatio()
+        {
+            if (isConditionMetOnce) return 1.0f;
+            return Mathf.Min(1.0f, unlockCondition.CurrentProgressRatio());
+        }
         public abstract bool isUnlocked { get; set; }
-        public bool CanCalim() => unlockCondition.UnlockCondition() && !isUnlocked;
-    }
-
-    //Daily
-    public abstract class DAILY_ACHIEVEMENT
-    {
-        public abstract void CreateNewAchievement();
-        public abstract void OnDayPassed();
+        public abstract bool isConditionMetOnce { get; set; }
+        public bool CanCalim()
+        {
+            if (unlockCondition.UnlockCondition()) isConditionMetOnce = true;
+            if (isConditionMetOnce&&!isUnlocked) return true;
+            return unlockCondition.UnlockCondition() && !isUnlocked;
+        }
     }
 
     public class MultipleAchievementCondition : IAchievementCondition
