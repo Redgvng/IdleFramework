@@ -12,6 +12,7 @@ namespace IdleLibrary
         public Multiplier multiplier { get; } = new Multiplier();
         public Multiplier exponentialMultiplier { get; } = new Multiplier();
         public Multiplier produceMultiplier { get; } = new Multiplier();
+        public Multiplier independentMultiplier { get; } = new Multiplier();
         public double initialValue { get; }
         public Parameter(double initialValue)
         {
@@ -30,6 +31,6 @@ namespace IdleLibrary
         public void ProducePerFrame(float delta) => Produced += ProduceAmountPerSecond() * delta;
         public double ProduceAmountPerSecond() => produceMultiplier.CaluculatedNumber(0);
         public double ExponentialAmount() => exponentialMultiplier.CaluculatedNumber(1);
-        public double BaseAmount() => multiplier.CaluculatedNumber(initialValue) + Produced;
+        public double BaseAmount() => multiplier.CaluculatedNumber(initialValue) + Produced + independentMultiplier.CaluculatedNumber(0);
     }
 }
