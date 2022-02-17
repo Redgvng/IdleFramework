@@ -105,5 +105,6 @@ namespace IdleLibrary.ProgressSlider
             }
         }
         public float CurrentProgressRatio() => (float)(currentProgress / RequiredProgress());
-    }
+        public double ValueToLevelUp() => RequiredProgress() - currentProgress;
+     }
 }

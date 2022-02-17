@@ -27,6 +27,7 @@ namespace IdleLibrary {
             {
                 DoDailyAction();
             }
+            JudgeDailyWhilePlaying();
         }
 
         //ゲーム中に日を跨いだ場合
@@ -37,6 +38,8 @@ namespace IdleLibrary {
                 DateTime now = currentTime.currentTime;
                 var todayDate = now.Year * 10000 + now.Month * 100 + now.Day;
                 var lastTime = this.lastTime.Year * 10000 + this.lastTime.Month * 100 + this.lastTime.Day;
+                _todayDate = todayDate;
+                _lastTime = lastTime;
                 if (lastTime < todayDate)
                 {
                     this.lastTime = Main.main.lastTime;
@@ -48,6 +51,15 @@ namespace IdleLibrary {
         public void AddDailyAction(Action action)
         {
             DailyActions.Add(action);
+        }
+        private double _todayDate;
+        private double _lastTime;
+
+        private string[] formats = {"c", "g", "G", @"hh\:mm\:ss" };
+        public string TimeToNextAction()
+        {
+            var span = currentTime.currentTime.AddDays(1).Date - currentTime.currentTime;
+            return span.ToString("c");
         }
     }
 }
