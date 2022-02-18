@@ -171,6 +171,7 @@ namespace IdleLibrary.Upgrade {
             this.info = info;
             this.level = level;
         }
+       
         public bool CanBuy()
         {
             return info.All((info) => info.number.Number >= info.cost.Cost);
