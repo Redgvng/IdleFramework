@@ -18,17 +18,13 @@ using IdleLibrary;
 
 namespace IdleLibrary
 {
-	public partial class SaveDeclare : MonoBehaviour
+	public class SaveDeclare : MonoBehaviour
 	{
 		// Use this for initialization
 		void Awake()
 		{
-			//NUMBER
-			/*
-            */
-			Initialize();
+			InitializeArray(ref Main.main.SR.isSelected, Enum.GetValues(typeof(UpgradeContainer.UpgradeKind)).Length);
+			InitializeArray(ref Main.main.SR.isUnlockCanvasLocked, Enum.GetValues(typeof(EquationKind)).Length);
 		}
-
-		partial void Initialize();
 	}
 }

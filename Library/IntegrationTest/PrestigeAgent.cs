@@ -28,6 +28,7 @@ namespace IdleLibrary.IntegrationTest
             var totalPoint = prestigePoint.TempNumber + prestigePoint.Number;
             //アップグレードの中で、最もコストの低いものを計算する。
             //最大レベルに到達しているものは除く
+            if (upgrades.Where(upgrade => !upgrade.isMaxLevel) == null || upgrades.Where(upgrade => !upgrade.isMaxLevel).Count() == 0) return false;
             var lowest = upgrades.Where(upgrade => !upgrade.isMaxLevel).Min(upgrade => upgrade.cost.Cost);
             //Debug.Log($"lowest : {lowest:F1}, totalPoint : {totalPoint:F1}");
             if (totalPoint >= lowest)
