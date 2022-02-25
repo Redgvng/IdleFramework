@@ -23,7 +23,8 @@ namespace IdleLibrary
 		// Use this for initialization
 		void Awake()
 		{
-			InitializeArray(ref Main.main.SR.isSelected, Enum.GetValues(typeof(UpgradeContainer.UpgradeKind)).Length);
+			InitializeArray(ref
+                Main.main.SR.isSelected, Enum.GetValues(typeof(UpgradeContainer.UpgradeKind)).Length);
 			InitializeArray(ref Main.main.SR.isUnlockCanvasLocked, Enum.GetValues(typeof(EquationKind)).Length);
 		}
 	}
