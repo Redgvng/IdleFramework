@@ -33,6 +33,7 @@ namespace IdleLibrary
             if (MaxNumber < Number) MaxNumber = Number;
             TempNumber = 0;
         }
+        public Multiplier multiplier { get; } = new Multiplier();
         public void ProduceBySecond(long second) => TempNumber += _produceAmount() * second;
         public void Reset()
         {
@@ -41,7 +42,7 @@ namespace IdleLibrary
         }
         public void ProducePerSecond() => TempNumber += _produceAmount();
         public void ProducePerFrame() => TempNumber += _produceAmount() * Time.fixedDeltaTime;
-        private double _produceAmount() => func();
+        private double _produceAmount() => multiplier.CaluculatedNumber(func());
     }
 
     public class NormalPrestigePoint : IIncrementableNumber, IDecrementableNumber, IPrestigePoint, IStatsNumber

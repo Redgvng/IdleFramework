@@ -44,14 +44,30 @@ namespace IdleLibrary
         public double InitialiCost => 0;
     }
 
-    public class FixedCost : ICost
+    public class FixedCost : ICost, IMaxableCost
     {
         public double Cost => multiplier.CaluculatedNumber(cost);
         public Multiplier multiplier { get; } = new Multiplier();
+        public double InitialiCost => cost;
         private readonly double cost;
         public FixedCost(double cost)
         {
             this.cost = cost;
+        }
+
+        public long LevelAtMaxCost(INumber number)
+        {
+            return 0;
+        }
+
+        public double MaxCost(INumber number)
+        {
+            return 0;
+        }
+
+        public double FixedNumCost(INumber number, long fixedNum)
+        {
+            return fixedNum * Cost;
         }
     }
 

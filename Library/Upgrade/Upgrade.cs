@@ -11,6 +11,7 @@ namespace IdleLibrary.Upgrade {
     {
         void Pay();
         bool CanBuy();
+        double Cost { get; }
     }
 
     public class OneTimeUpgrade : IUpgrade
@@ -18,7 +19,7 @@ namespace IdleLibrary.Upgrade {
         private readonly FixedCost fixedCost;
         private readonly IDecrementableNumber costNumber;
         public virtual bool isPurchased { get; protected set; }
-        public double cost => fixedCost.Cost;
+        public double Cost => fixedCost.Cost;
         public OneTimeUpgrade(IDecrementableNumber costNumber,FixedCost fixedCost)
         {
             this.fixedCost = fixedCost;
@@ -44,6 +45,7 @@ namespace IdleLibrary.Upgrade {
         public long level { get { return _level == null ? 0 : _level.level; } set => _level.level = value; }
         public IDecrementableNumber number;
         public IMaxableCost cost;
+        public double Cost => cost.Cost;
         public double initialiCost => cost.InitialiCost;
         public Action OnUpgraded = () => { };
         public long MaxLevel;
@@ -166,6 +168,7 @@ namespace IdleLibrary.Upgrade {
     {
         private readonly IEnumerable<(IDecrementableNumber number, IMaxableCost cost)> info;
         private readonly ILevel level;
+        public double Cost => 0;
         public MultipleUpgrade(ILevel level, params (IDecrementableNumber number, IMaxableCost cost)[] info)
         {
             this.info = info;
