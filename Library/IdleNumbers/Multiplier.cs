@@ -144,6 +144,20 @@ namespace IdleLibrary
         private readonly Dictionary<string, Func<double>> AddMultiplier = new Dictionary<string, Func<double>>();
         private readonly Dictionary<string, Func<double>> MulMultiplier = new Dictionary<string, Func<double>>();
 
+        public (double added, double multiplied) GetMultipliersFromKey(string startWith)
+        {
+            var _added = 0d;
+            var _multiplied = 1.0d;
+            foreach (var multiplier in AddMultiplier)
+            {
+                if (multiplier.Key.StartsWith(startWith)) _added += multiplier.Value();
+            }
+            foreach (var multiplier in MulMultiplier)
+            {
+                if (multiplier.Key.StartsWith(startWith)) _multiplied *= multiplier.Value();
+            }
+            return (_added, _multiplied);
+        }
         public void DebugCurrentMultiplier()
         {
             var unko = "";
