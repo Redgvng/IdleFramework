@@ -8,6 +8,7 @@ using static IdleLibrary.UsefulMethod;
 using static IdleLibrary.UsefulStatic;
 using static IdleLibrary.Main;
 using IdleLibrary;
+using Zenject;
 
 /// <summary>
 /// 主にsaveしたい配列の初期化を行うクラス
@@ -20,9 +21,12 @@ namespace IdleLibrary
 {
 	public class SaveDeclare : MonoBehaviour
 	{
+		[Inject] GameSystem system;
 		// Use this for initialization
 		void Awake()
 		{
+			Debug.Log("Declareよばれてる");
+			Main.main.dto.Initialize();
 			InitializeArray(ref
                 Main.main.SR.isSelected, Enum.GetValues(typeof(UpgradeContainer.UpgradeKind)).Length);
 			InitializeArray(ref Main.main.SR.isUnlockCanvasLocked, Enum.GetValues(typeof(EquationKind)).Length);

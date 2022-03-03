@@ -33,6 +33,7 @@ namespace IdleLibrary
         [SerializeField]
         public SaveR SR;
         [SerializeField] public Save S;
+        [SerializeField] public DTO dto;
         public SaveDeclare SD;
         public saveCtrl saveCtrl;
 

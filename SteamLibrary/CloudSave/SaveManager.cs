@@ -70,14 +70,13 @@ namespace IdleLibrary
 
         void BeforeLoadAction()
         {
-            Debug.Log("よばれてるよ");
-            //StopAllCoroutines();
-            //Time.timeScale = 0;
+
         }
 
         // オブジェクトに代入した後に呼ぶ関数
         void AfterOverload()
         {
+            //DTOも必ずセーブしなければいけない
             Main.main.saveCtrl.setSaveKey(); //NOTE:saveCtrlに依存させないようにする
             SceneManager.LoadScene(sceneName);
         }

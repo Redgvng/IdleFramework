@@ -12,7 +12,7 @@ namespace IdleLibrary
     public class SteamSave : ISaveLocation<string>
     {
         //Macは別にする必要あり？
-        private const string FILENAME = "/SteamCloud_IncrementalCubes.txt";
+        private const string FILENAME = "/SteamCloud_IdleSpiral.txt";
         public async UniTask<bool?> SetUserData(string save_str)
         {
             //ファイルをセーブする。

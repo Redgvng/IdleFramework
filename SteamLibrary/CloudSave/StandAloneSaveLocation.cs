@@ -28,7 +28,6 @@ namespace IdleLibrary
 
         //オープンファイルダイアログを表示する    
         DialogResult result = sa.ShowDialog();
-
         if (result == DialogResult.OK)
         {
             //「保存」ボタンが押された時の処理
@@ -41,8 +40,7 @@ namespace IdleLibrary
         }
         else if (result == DialogResult.Cancel)
         {
-            //「キャンセル」ボタンまたは「×」ボタンが選択された時の処理
-            return null;
+                return null;
         }
         await UniTask.DelayFrame(1);
 #endif

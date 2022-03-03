@@ -12,6 +12,7 @@ namespace IdleLibrary
     public class saveCtrl : MonoBehaviour
     {
         [Inject] ITime time;
+        [Inject] GameSystem gameSystem;
         //ロードの処理
         void getSaveKey()
         {
@@ -34,19 +35,15 @@ namespace IdleLibrary
             {
                 main.S = saveClass.GetObject<Save>(keyList.permanentSaveKey);
             }
-
-            //SaveOのロード
-            /*
-            if(Save_Odin.Load<SaveO>() == null)
+            //DTOのロード
+            if(saveClass.GetObject<DTO>("dto") == null)
             {
-                main.SO = new SaveO();
+                main.dto = new DTO();
             }
             else
             {
-                main.SO = Save_Odin.Load<SaveO>();
+                main.dto = saveClass.GetObject<DTO>("dto");
             }
-            */
-
         }
 
         //セーブの処理
@@ -54,6 +51,7 @@ namespace IdleLibrary
         {
             saveClass.SetObject(keyList.resetSaveKey, main.SR);
             saveClass.SetObject(keyList.permanentSaveKey, main.S);
+            saveClass.SetObject("dto", gameSystem.idleSystem.dto);
         }
 
 
@@ -70,9 +68,10 @@ namespace IdleLibrary
 
         IEnumerator doSave()
         {
+            var wait = new WaitForSeconds(1.0f);
             while (true)
             {
-                yield return new WaitForSeconds(1.0f);
+                yield return wait;
                 main.lastTime = time.currentTime;
                 setSaveKey();
             }
