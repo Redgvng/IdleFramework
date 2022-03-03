@@ -13,7 +13,7 @@ namespace IdleLibrary
     public class Main : MonoBehaviour
     {
         [Inject] ITime _currentTime;
-        private DateTime currentTime => _currentTime.currentTime;
+        public DateTime currentTime => _currentTime.currentTime;
         public double allTime { get => S.allTime; set => S.allTime = value; }
         public DateTime birthTime
         {

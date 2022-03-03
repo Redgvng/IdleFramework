@@ -92,6 +92,14 @@ namespace IdleLibrary
                 go.SetActive(false);
             }
         }
+        private static int GetPrecision(double value)
+        {
+            return (value - (int)value).ToString()
+                .TrimEnd('0')
+                .Replace("0.", string.Empty)
+                .Replace("-", string.Empty)
+                .Length;
+        }
         /// <summary>
         /// 桁数が大きいものを，アルファベット表記に変える関数
         /// </summary>
@@ -109,7 +117,7 @@ namespace IdleLibrary
         static double head_value_tdigit;
         static string argument_ToString_tdigit = "";
         static bool isMinus_tdigit;
-        public static string tDigit(double value, int decimal_point = 0, bool removeZero = false, string argument_toString = null, bool toShowSign = false, bool toRoundDown = false)
+        public static string tDigit(double value, int decimal_point = 0, bool removeZero = true, string argument_toString = null, bool toShowSign = false, bool toRoundDown = false)
         {
             //ToStringとして使う場合そのまま返す
             if (argument_toString != null) { return value.ToString(argument_toString); }
@@ -134,6 +142,7 @@ namespace IdleLibrary
             }
             else
             {
+                decimal_point = Math.Min(3,GetPrecision(head_value_tdigit));
                 if (toRoundDown) head_value_tdigit = RoundDown(head_value_tdigit, decimal_point); //切り捨ての処理
                 switch (decimal_point)
                 {
