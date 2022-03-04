@@ -14,7 +14,21 @@ namespace IdleLibrary
 {
     public class UsefulMethod : MonoBehaviour
     {
+        public static string ShowStatsBreakdown(Multiplier multiplier, string title, string key)
+        {
+            var text = "";
+            var value = multiplier.GetMultipliersFromKey(key);
+            if (value.added != 0)
+            {
+                text += $"- {title} \\qquad +{tDigit(value.added)} \\\\";
+            }
+            if (value.multiplied > 1.0)
+            {
 
+                text += $"- {title} \\qquad +{tDigit((value.multiplied - 1) * 100)} \\% \\\\";
+            }
+            return text;
+        }
         /// <summary>
         /// テキストを指定するだけで，マウスオーバーでテキストを表示させる関数．
         /// </summary>
@@ -142,7 +156,7 @@ namespace IdleLibrary
             }
             else
             {
-                decimal_point = Math.Min(3,GetPrecision(head_value_tdigit));
+                //decimal_point = Math.Min(3,GetPrecision(head_value_tdigit));
                 if (toRoundDown) head_value_tdigit = RoundDown(head_value_tdigit, decimal_point); //切り捨ての処理
                 switch (decimal_point)
                 {

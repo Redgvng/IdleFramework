@@ -14,6 +14,7 @@ namespace IdleLibrary
         string FILENAME = "/" + filename;
         public async UniTask<bool?> SetUserData(string save_str)
         {
+            Debug.Log(UnityEngine.Application.persistentDataPath + FILENAME);
             //ファイルをセーブする。
             using (StreamWriter sw = new StreamWriter(UnityEngine.Application.persistentDataPath + FILENAME))
             {
