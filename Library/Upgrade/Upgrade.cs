@@ -100,13 +100,16 @@ namespace IdleLibrary.Upgrade {
         public void FixedAmountPay(long fixedNum)
         {
             var num = fixedNum;
+
             if (!CanBuy())
                 return;
 
-            if(level + fixedNum >= MaxLevel)
+            if(hasMaxLevel && level + fixedNum >= MaxLevel)
                 num = MaxLevel - level;
 
-            if(cost.LevelAtMaxCost(number) > num)
+            Debug.Log(cost.LevelAtMaxCost(number));
+            Debug.Log(num);
+            if(cost.LevelAtMaxCost(number) > level + num)
             {
                 number.Decrement(cost.FixedNumCost(number, num));
                 _level.LevelUp(num);
@@ -115,8 +118,8 @@ namespace IdleLibrary.Upgrade {
             {
                 long tempLevel = cost.LevelAtMaxCost(number);
                 number.Decrement(cost.MaxCost(number));
-                //_level.level = tempLevel;
-                _level.LevelUp(tempLevel - _level.level);
+                _level.level = tempLevel;
+                //_level.LevelUp(tempLevel - _level.level);
             }
         }
 
@@ -210,7 +213,7 @@ namespace IdleLibrary.Upgrade {
                 return;
 
             var minLevel = info.Select((x) => x.cost.LevelAtMaxCost(x.number)).Min();
-            if (minLevel > fixedNum)
+            if (minLevel > fixedNum + level.level)
             {
                 foreach (var item in info)
                 {
