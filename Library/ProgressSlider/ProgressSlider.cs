@@ -67,7 +67,14 @@ namespace IdleLibrary.ProgressSlider
             var previous = level;
             totalProgress = ProgressSpeedPerFrame() / Time.fixedDeltaTime * offlineTime;
             currentProgress += ProgressSpeedPerFrame() / Time.fixedDeltaTime * offlineTime;
-            Validate();
+            //Validate();
+
+            while(currentProgress >= RequiredProgress())
+            {
+                currentProgress -= RequiredProgress();
+                level++;
+            }
+
             diffLevel = level - previous;
             isOfflineBonusGot = true;
         }
