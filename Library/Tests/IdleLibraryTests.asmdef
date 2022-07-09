@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "IdleLibrary",
         "Zenject",
-        "Zenject-Editor"
+        "Zenject-Editor",
+        "Better"
     ],
     "includePlatforms": [
         "Editor"

@@ -9,6 +9,8 @@ using IdleLibrary.IntegrationTest;
 using System;
 using System.IO;
 using static IdleLibrary.IntegrationTest.IntegrationUtiliity;
+using Pickers.Domain;
+using Pickers.Domain.Test;
 
 
 public class SpaceDebriTest : MonoBehaviour
@@ -65,5 +67,16 @@ public class SpaceDebriTest : MonoBehaviour
         }
     }
 
+    [Test]
+    public void StageTest()
+    {
+        var stage = new Stage();
+        stage.Initialize();
+
+        for (int i = 0; i < 600; i++)
+        {
+            stage.UpdateStage();
+        }
+    }
 }
 
