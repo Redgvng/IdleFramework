@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static IdleLibrary.Main;
 using static IdleLibrary.UsefulMethod;
-using Zenject;
-
 namespace IdleLibrary
 {
     /// <summary>
@@ -22,13 +20,12 @@ namespace IdleLibrary
         [SerializeField] Button steam_loadButton;
         [SerializeField] Button steam_saveButton;
         [SerializeField] TextAsset editorSaveData;
-        [Inject] GameSystem gameSystem;
 
         //SaveData
         public List<ISaveElement> saveDataList = new List<ISaveElement>();
 
         //SaveExecutor
-        ISaveExecutor local_executor;
+        SaveExecutor local_executor;
 
         private void Start()
         {
@@ -36,7 +33,7 @@ namespace IdleLibrary
             //セーブデータの設定
             saveDataList.Add(new SaveElement<SaveR>(main.SR, (x) => LoadFunc(ref main.SR, x)));
             saveDataList.Add(new SaveElement<Save>(main.S, (x) => LoadFunc(ref main.S, x)));
-            saveDataList.Add(new SaveElement<DTO>(gameSystem.idleSystem.dto, (x) => LoadFunc(ref gameSystem.idleSystem.dto, x)));
+            //saveDataList.Add(new SaveElement<DTO>(gameSystem.idleSystem.dto, (x) => LoadFunc(ref gameSystem.idleSystem.dto, x)));
 
             // Local
             ISaveLocation<string> local_location = new LocalAndEditorLocation("Idle Spiral", gameObject.name, editorSaveData);

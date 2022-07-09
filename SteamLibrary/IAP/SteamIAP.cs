@@ -1,9 +1,10 @@
-#if UNITY_ANDROID || UNITY_IOS || UNITY_TIZEN || UNITY_TVOS || UNITY_WEBGL || UNITY_WSA || UNITY_PS4 || UNITY_WII || UNITY_XBOXONE || UNITY_SWITCH
+#if UNITY_ANDROID || UNITY_IOS || UNITY_TIZEN || UNITY_TVOS || UNITY_WEBGL || UNITY_WSA || UNITY_PS4 || UNITY_WII || UNITY_XBOXONE || UNITY_SWITCH||!DEBUG
 #define DISABLESTEAMWORKS
 #endif
 
 #if !DISABLESTEAMWORKS
 using Steamworks;
+using Newtonsoft.Json.Linq;
 #endif
 using System.Net.Http;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 
 public class SteamIAP : MonoBehaviour
 {

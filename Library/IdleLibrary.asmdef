@@ -4,7 +4,9 @@
     "references": [
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:560b04d1a97f54a4e82edc0cbbb69285"
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:b5d57032169a24a039c2f3e29035426d",
+        "GUID:f759e797a4d584da2a0a6627924d4262"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

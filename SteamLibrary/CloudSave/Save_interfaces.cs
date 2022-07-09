@@ -148,20 +148,11 @@ namespace IdleLibrary
             {
                 if (saveData[i].CanLoad(dataStrList[i]) == false)
                 {
-                    Debug.Log("ロードできないファイルです");
+                    OnLoadFailedDueToEarlyData();
                     LoadFailureAction?.Invoke();
                     return;
                 }
             }
-
-            //リリース日よりも前にロードした場合は読み込めないようにする。
-            /*
-            if (Main.main.ReleaseTime >= Main.main.birthTime)
-            {
-                Debug.Log("リリース前のセーブデータなのでロードできません");
-                return;
-            }
-            */
 
             // ゲーム内のセーブデータに代入
             for (int i = 0; i < dataStrList.Length; i++)
@@ -171,6 +162,8 @@ namespace IdleLibrary
 
             LoadAction?.Invoke();
         }
+
+        public Action OnLoadFailedDueToEarlyData { get; set; }
 
         string ToJson(object obj)
         {

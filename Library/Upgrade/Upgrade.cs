@@ -36,6 +36,10 @@ namespace IdleLibrary.Upgrade {
             costNumber.Decrement(fixedCost.Cost);
             isPurchased = true;
         }
+        public void Refund()
+        {
+            isPurchased = false;
+        }
     }
 
     public class Upgrade : IUpgrade, IResettable, ILevel
@@ -48,7 +52,8 @@ namespace IdleLibrary.Upgrade {
         public double Cost => cost.Cost;
         public double initialiCost => cost.InitialiCost;
         public Action OnUpgraded = () => { };
-        public long MaxLevel;
+        public Multiplier maxLevelMultiplier { get; } = new Multiplier();
+        public long MaxLevel => (long)maxLevelMultiplier.CaluculatedNumber(0);
         public bool isMaxLevel => level >= MaxLevel && hasMaxLevel;
         public bool hasMaxLevel => MaxLevel != 0;
         public Upgrade(ILevel level, IDecrementableNumber number, IMaxableCost cost)

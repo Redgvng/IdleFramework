@@ -25,6 +25,7 @@ namespace IdleLibrary
         sa.FileName = gameTitle;
         sa.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
         sa.FilterIndex = 1;
+            sa.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
         //オープンファイルダイアログを表示する    
         DialogResult result = sa.ShowDialog();

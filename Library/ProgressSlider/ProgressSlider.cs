@@ -50,6 +50,7 @@ namespace IdleLibrary.ProgressSlider
             .ToList()
             .ForEach(pair => pair.slider.currentProgress = loadProgress[pair.index]);
         }
+        /*
         public static void Save(IEnumerable<ProgressSlider> sliders, double[] loadProgress)
         {
             sliders
@@ -58,6 +59,7 @@ namespace IdleLibrary.ProgressSlider
             .ForEach(pair => pair.slider.ObserveEveryValueChanged(x => x.currentProgress)
             .Subscribe(_ => loadProgress[pair.index] = pair.slider.currentProgress));
         }
+        */
 
         private bool isOfflineBonusGot = false;
         private long diffLevel;

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -10,7 +9,6 @@ namespace IdleLibrary {
 
     public class DailyAction : MonoBehaviour, IRegisterDailyAction
     {
-        [Inject] ITime currentTime;
         private List<Action> DailyActions = new List<Action>();
         private DateTime lastTime;
 
@@ -18,7 +16,7 @@ namespace IdleLibrary {
         void DoDailyAction() => DailyActions.ForEach(_ => _());
         void Start()
         {
-            DateTime now = currentTime.currentTime;//端末の現在時刻の取得
+            DateTime now = DateTime.Now;
             var todayDate = now.Year * 10000 + now.Month * 100 + now.Day;//日付を数値化　2020年9月1日だと20200901になる
             this.lastTime = Main.main.lastTime;
             var lastTime = Main.main.lastTime.Year * 10000 + Main.main.lastTime.Month * 100 + Main.main.lastTime.Day;
@@ -35,7 +33,7 @@ namespace IdleLibrary {
         {
             while (true)
             {
-                DateTime now = currentTime.currentTime;
+                DateTime now = DateTime.Now;
                 var todayDate = now.Year * 10000 + now.Month * 100 + now.Day;
                 var lastTime = this.lastTime.Year * 10000 + this.lastTime.Month * 100 + this.lastTime.Day;
                 _todayDate = todayDate;
@@ -58,8 +56,8 @@ namespace IdleLibrary {
         private string[] formats = {"c", "g", "G", @"hh\:mm\:ss" };
         public string TimeToNextAction()
         {
-            var span = currentTime.currentTime.AddDays(1).Date - currentTime.currentTime;
-            return span.ToString("c");
+            var span = DateTime.Now.AddDays(1).Date - DateTime.Now;
+            return span.ToString(@"hh\:mm\:ss");
         }
     }
 }

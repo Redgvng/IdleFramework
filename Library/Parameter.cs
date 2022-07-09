@@ -23,11 +23,13 @@ namespace IdleLibrary
         {
             Produced += ProduceAmountPerSecond();
         }
+        //ここでキャッシュしたらどうだろうか？
+        private double _number { get; set; }
         public void ProducePerFrame()
         {
             Produced += ProduceAmountPerSecond() * Time.fixedDeltaTime;
         }
-        public void ProduceBySecond(long second) => Produced += ProduceAmountPerSecond() * second;
+        public void ProduceBySecond(double second) => Produced += ProduceAmountPerSecond() * second;
         public void ProducePerFrame(float delta) => Produced += ProduceAmountPerSecond() * delta;
         public double ProduceAmountPerSecond() => produceMultiplier.CaluculatedNumber(0);
         public double ExponentialAmount() => exponentialMultiplier.CaluculatedNumber(1);

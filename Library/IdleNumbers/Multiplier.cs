@@ -41,7 +41,7 @@ namespace IdleLibrary
     {
         private Func<long, double> multiplierWithLevel { get; } = (level) => 0;
         private readonly ILevel level;
-        public Func<double> multiplier => () => level == null ? 0 : multiplierWithLevel(level.level);
+        public Func<double> multiplier { get; }
         public Func<bool> trigger { get; }
         public MultiplierType multiplierType { get; }
         public MultiplierInfoWithLevel(Func<long, double> multiplierWithLevel, MultiplierType type, ILevel level, Func<bool> trigger = null)
@@ -50,6 +50,7 @@ namespace IdleLibrary
             this.trigger = trigger == null ? () => true : trigger;
             this.multiplierType = type;
             this.level = level;
+            this.multiplier = () => level == null ? 0 : multiplierWithLevel(level.level);
         }
 
         //取り出す用の関数
@@ -123,10 +124,9 @@ namespace IdleLibrary
         double mul()
         {
             double temp = 1.0;
-            foreach (var multiplier in MulMultiplier)
+            foreach (var multiplier in MulMultiplier.Values)
             {
-                if (multiplier.Value() == 0) Debug.Log($"0が入っています. key: {multiplier.Key}");
-                temp *= multiplier.Value();
+                temp *= multiplier();
             }
             return temp;
         }
@@ -134,15 +134,15 @@ namespace IdleLibrary
         double add()
         {
             double temp = 0;
-            foreach (var multiplier in AddMultiplier)
+            foreach (var multiplier in AddMultiplier.Values)
             {
-                temp += multiplier.Value();
+                temp += multiplier();
             }
             return temp;
         }
 
-        private readonly Dictionary<string, Func<double>> AddMultiplier = new Dictionary<string, Func<double>>();
-        private readonly Dictionary<string, Func<double>> MulMultiplier = new Dictionary<string, Func<double>>();
+        private readonly Dictionary<string, Func<double>> AddMultiplier = new Better.Dictionary<string, Func<double>>();
+        private readonly Dictionary<string, Func<double>> MulMultiplier = new Better.Dictionary<string, Func<double>>();
 
         public (double added, double multiplied) GetMultipliersFromKey(string startWith)
         {
@@ -158,20 +158,21 @@ namespace IdleLibrary
             }
             return (_added, _multiplied);
         }
-        public void DebugCurrentMultiplier()
+        public string DebugCurrentMultiplier()
         {
             var unko = "";
-            unko += "----Additive----\n";
+            unko += "----Additive---- \n";
             foreach (var multiplier in AddMultiplier)
             {
                 unko += $"{multiplier.Key} : {multiplier.Value():F2}\n";
             }
-            unko += "----Multiplicative----\n";
+            unko += "----Multiplicative---- \n";
             foreach (var multiplier in MulMultiplier)
             {
-                unko += $"{multiplier.Key} : {multiplier.Value():F3}\n";
+                unko += $"{multiplier.Key} : {multiplier.Value():F3} \n";
             }
-            Debug.Log(unko);
+            //Debug.Log(unko);
+            return unko;
         }
     }
 }

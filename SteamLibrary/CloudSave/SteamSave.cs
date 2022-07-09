@@ -15,6 +15,19 @@ namespace IdleLibrary
         private const string FILENAME = "/SteamCloud_IdleSpiral.txt";
         public async UniTask<bool?> SetUserData(string save_str)
         {
+            var filePath = UnityEngine.Application.persistentDataPath + FILENAME;
+            var isNoSavedata = false;
+            var time = new DateTime();
+            //すでにセーブファイルがあるか？
+            if (File.Exists(filePath))
+            {
+                var file = new System.IO.FileInfo(filePath);
+                time = file.CreationTime;
+            }
+            else
+            {
+                isNoSavedata = true;
+            }
             //ファイルをセーブする。
             using (StreamWriter sw = new StreamWriter(UnityEngine.Application.persistentDataPath + FILENAME))
             {
@@ -23,7 +36,13 @@ namespace IdleLibrary
                 sw.Close();
             }
             await UniTask.DelayFrame(1);
-            return null; //結果を受け取っていないため判定できない。ユーザーは見ればわかるはずだから問題ない
+            if (isNoSavedata && !File.Exists(filePath)) return false;
+            //更新日時が上書きされていたら
+            var newFile = new System.IO.FileInfo(filePath);
+            var newTime = newFile.CreationTime;
+            if (!isNoSavedata && newTime <= time) return false;
+
+            return true;
         }
 
         public async UniTask<string> GetUserData()

@@ -50,19 +50,25 @@ namespace IdleLibrary
         public Multiplier multiplier { get; } = new Multiplier();
         public double InitialiCost => cost;
         private readonly double cost;
-        public FixedCost(double cost)
+        private readonly ILevel level;
+        public FixedCost(double cost, ILevel level = null)
         {
             this.cost = cost;
+            this.level = level;
         }
 
         public long LevelAtMaxCost(INumber number)
         {
-            return 0;
+            if (level == null) return 0;
+            var increment = number.Number / Cost;
+            return level.level + (long)increment;
         }
 
         public double MaxCost(INumber number)
         {
-            return 0;
+            if (level == null) return 0;
+            var increment = number.Number / Cost;
+            return (long)increment * Cost;
         }
 
         public double FixedNumCost(INumber number, long fixedNum)

@@ -4,18 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using static IdleLibrary.Main;
-using Zenject;
+using UnityEngine.SceneManagement;
 
 namespace IdleLibrary
 {
     //[DefaultExecutionOrder(-2)]
     public class saveCtrl : MonoBehaviour
     {
-        [Inject] ITime time;
-        [Inject] GameSystem gameSystem;
         //ロードの処理
         void getSaveKey()
         {
+            //Save
+            if (saveClass.GetObject<Save>(keyList.permanentSaveKey) == null)
+            {
+                main.S = new Save();
+            }
+            else
+            {
+                main.S = saveClass.GetObject<Save>(keyList.permanentSaveKey);
+            }
+
             //SaveR
             if (saveClass.GetObject<SaveR>(keyList.resetSaveKey) == null)
             {
@@ -26,16 +34,8 @@ namespace IdleLibrary
                 main.SR = saveClass.GetObject<SaveR>(keyList.resetSaveKey);
             }
 
-            //Save
-            if (saveClass.GetObject<Save>(keyList.permanentSaveKey) == null)
-            {
-                main.S = new Save();
-            }
-            else
-            {
-                main.S = saveClass.GetObject<Save>(keyList.permanentSaveKey);
-            }
             //DTOのロード
+            /*
             if(saveClass.GetObject<DTO>("dto") == null)
             {
                 main.dto = new DTO();
@@ -44,6 +44,7 @@ namespace IdleLibrary
             {
                 main.dto = saveClass.GetObject<DTO>("dto");
             }
+            */
         }
 
         //セーブの処理
@@ -51,7 +52,7 @@ namespace IdleLibrary
         {
             saveClass.SetObject(keyList.resetSaveKey, main.SR);
             saveClass.SetObject(keyList.permanentSaveKey, main.S);
-            saveClass.SetObject("dto", gameSystem.idleSystem.dto);
+            //saveClass.SetObject("dto", gameSystem.idleSystem.dto);
         }
 
 
@@ -72,7 +73,7 @@ namespace IdleLibrary
             while (true)
             {
                 yield return wait;
-                main.lastTime = time.currentTime;
+                main.lastTime = DateTime.Now;
                 setSaveKey();
             }
         }

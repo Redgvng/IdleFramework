@@ -28,7 +28,7 @@ namespace IdleLibrary
     {
         void ProducePerSecond();
         void ProducePerFrame();
-        void ProduceBySecond(long second);
+        void ProduceBySecond(double second);
     }
 
     public interface IStatsNumber
@@ -70,7 +70,7 @@ namespace IdleLibrary
         {
             Number += ProduceAmountPerSecond() * Time.fixedDeltaTime;
         }
-        public void ProduceBySecond(long second) => Number += ProduceAmountPerSecond() * second;
+        public void ProduceBySecond(double second) => Number += ProduceAmountPerSecond() * second;
         public void ProducePerFrame(float delta) => Number += ProduceAmountPerSecond() * delta;
         public double ProduceAmountPerSecond() => produceMultiplier.CaluculatedNumber(0);
         public Multiplier produceMultiplier { get; } = new Multiplier();

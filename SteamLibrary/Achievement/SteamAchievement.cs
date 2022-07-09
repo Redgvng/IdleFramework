@@ -1,4 +1,4 @@
-#if UNITY_ANDROID || UNITY_IOS || UNITY_TIZEN || UNITY_TVOS || UNITY_WEBGL || UNITY_WSA || UNITY_PS4 || UNITY_WII || UNITY_XBOXONE || UNITY_SWITCH
+#if UNITY_ANDROID || UNITY_IOS || UNITY_TIZEN || UNITY_TVOS || UNITY_WEBGL || UNITY_WSA || UNITY_PS4 || UNITY_WII || UNITY_XBOXONE || UNITY_SWITCH || !DEBUG
 #define DISABLESTEAMWORKS
 #endif
 
@@ -16,12 +16,12 @@ public class SteamAchievement : MonoBehaviour
 {
 	public enum Achievement : int
 	{
-
+		//ACHIEVEMENT_0,
 	};
 
 	private Achievement_t[] m_Achievements = new Achievement_t[] {
-
-	};
+       // new Achievement_t(Achievement.ACHIEVEMENT_0, "　Now it starts to swirl!", "r reaches 1K"),
+    };
 
 	// Our GameID
 	private CGameID m_GameID;
@@ -234,9 +234,20 @@ public class SteamAchievement : MonoBehaviour
 			m_strName = name;
 			m_strDescription = desc;
 			m_bAchieved = false;
-			//var manager = new AchievementManager();
-			//ThisCondition = manager.GetConditionById(achievementID);
+			var manager = new GetAchievementManager();
+			ThisCondition = manager.GetConditionById(achievementID);
 		}
 	}
+}
+
+public class GetAchievementManager
+{
+    public Func<bool> GetConditionById(SteamAchievement.Achievement type)
+    {
+		return type switch
+		{
+			//SteamAchievement.Achievement.ACHIEVEMENT_0 => () => main.dto.r >= 1000,
+		};
+    }
 }
 #endif

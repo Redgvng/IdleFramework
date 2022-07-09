@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class NewOpenClose : MonoBehaviour
+public class NewOpenClose : MonoBehaviour, IUIRenderer
 {
-
+    public bool IsOutsideOfScreen() => !isOpen;
     RectTransform thisRect;
     public Button[] CloseButton;
     public Button[] OpenButton;

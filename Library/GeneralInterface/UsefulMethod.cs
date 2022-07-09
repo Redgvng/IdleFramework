@@ -8,103 +8,41 @@ using System.Text;
 using UnityEngine.Events;
 //using MathNet.Numerics.Distributions;
 using static System.Math;
+using StrOpe = StringOperationUtil.OptimizedStringOperation;
 using System.Linq;
 
 namespace IdleLibrary
 {
     public class UsefulMethod : MonoBehaviour
     {
-        public static string ShowStatsBreakdown(Multiplier multiplier, string title, string key)
+        public static string ShowStatsBreakdown(Multiplier multiplier, string title, string key, bool isHyphen = true
+            , bool isIndent = true, bool isShowZero = false, bool isAddPercent = false, bool isTitle = true)
         {
+            var _title = isTitle ? title : "";
             var text = "";
             var value = multiplier.GetMultipliersFromKey(key);
+            var indent = isIndent ? "\\\\" : "";
+            var hyphen = isHyphen ? "- " : "";
             if (value.added != 0)
-            {
-                text += $"- {title} \\qquad +{tDigit(value.added)} \\\\";
+            {        
+                text += isAddPercent ?
+                $"{hyphen} {_title} \\qquad +{tDigit(value.added * 100, 3)} \\% {indent}" : 
+                $"{hyphen} {_title} \\qquad +{tDigit(value.added,3)} {indent}";
             }
             if (value.multiplied > 1.0)
             {
 
-                text += $"- {title} \\qquad +{tDigit((value.multiplied - 1) * 100)} \\% \\\\";
+                text += $"{hyphen} {_title} \\qquad +{tDigit((value.multiplied - 1) * 100,3)} \\% {indent}";
+            }else if(value.multiplied < 1.0)
+            {
+                text += $"{hyphen} {_title} \\qquad -{tDigit((value.multiplied - 1) * 100, 3)} \\% {indent}";
+
+            }
+            if (isShowZero && value.added == 0 && value.multiplied == 1.0)
+            {
+                return $"{hyphen} {_title} \\qquad +0 {indent}";
             }
             return text;
-        }
-        /// <summary>
-        /// テキストを指定するだけで，マウスオーバーでテキストを表示させる関数．
-        /// </summary>
-        public GameObject windowPre;
-        public Transform windowTransform;
-        public static GameObject window;
-
-        public delegate void usefuleDelegate();
-
-        public static void addWindow(string text, ref GameObject game)
-        {
-            game.AddComponent<EventTrigger>().triggers = new List<EventTrigger.Entry>();
-
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            EventTrigger.Entry entry2 = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerEnter;
-            entry2.eventID = EventTriggerType.PointerExit;
-            entry.callback.AddListener((x) => setActive(window, text));
-            entry2.callback.AddListener((x) => setFalse(window)); //ラムダ式の右側は追加するメソッドです。
-
-            game.AddComponent<EventTrigger>().triggers.Add(entry);
-            game.AddComponent<EventTrigger>().triggers.Add(entry2);
-
-            //window.transform.GetChild(0).GetComponent<Text>().text = text;
-        }
-        public static void addWindowOver(string text, ref Button game)
-        {
-            game.gameObject.AddComponent<EventTrigger>().triggers = new List<EventTrigger.Entry>();
-
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            EventTrigger.Entry entry2 = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerEnter;
-            entry2.eventID = EventTriggerType.PointerExit;
-            entry.callback.AddListener((x) => setActive(window, text));
-            entry2.callback.AddListener((x) => setFalse(window)); //ラムダ式の右側は追加するメソッドです。
-
-            game.gameObject.AddComponent<EventTrigger>().triggers.Add(entry);
-            game.gameObject.AddComponent<EventTrigger>().triggers.Add(entry2);
-
-            //window.transform.GetChild(0).GetComponent<Text>().text = text;
-        }
-        public static void setOnPointerClick(ref GameObject game)
-        {
-            game.AddComponent<EventTrigger>().triggers = new List<EventTrigger.Entry>();
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerDown;
-            game.GetComponent<EventTrigger>().triggers.Add(entry);
-        }
-
-        public static void setActive(GameObject go, string text)
-        {
-            go.SetActive(true);
-            go.transform.GetChild(0).GetComponent<Text>().text = text;
-        }
-        public static void setActive(GameObject go)
-        {
-            if (!go.activeSelf)
-            {
-                go.SetActive(true);
-            }
-        }
-
-        public static void setActive(GameObject go, bool bo)
-        {
-            if (!go.activeSelf && bo)
-            {
-                go.SetActive(true);
-            }
-        }
-
-        public static void setFalse(GameObject go)
-        {
-            if (go.activeSelf)
-            {
-                go.SetActive(false);
-            }
         }
         private static int GetPrecision(double value)
         {
@@ -114,13 +52,14 @@ namespace IdleLibrary
                 .Replace("-", string.Empty)
                 .Length;
         }
+        public static StrOpe optStr { get => StrOpe.i; }
         /// <summary>
         /// 桁数が大きいものを，アルファベット表記に変える関数
         /// </summary>
         static string[] digit = new string[]
     {
        "", "K","M","B","T","Qa","Qi","Sx","Sp","Oc","No","Dc",
-        "Ud","Dd","Td","Qad","Qid","Sxd","Spd","Ods","Nod","Vg","Uvg","Dvg","Tvg","Qavg","Qivg","Sxvg","Spvg","Ocvs","Novg",
+        "Ud","Dd","Td","Qad","Qid","Sxd","Spd","Ods","Nod","Vg","Uvg","Dvg","Tvg","Qavg","Qivg","Sxvg","Spvg","Ocvg","Novg",
        "Tg","Utg","Dtg","Ttg","Qatg","Qitg","Sxts","Sptg","Octg","Notg","Qag", "Uqag", "Dqag", "Tqag", "Qaqag", "Qiqag", "Sxqag", "Spqag", "Ocqag", "Noqag",
         "Qig", "UQig, DQig", "TQig", "QaQig", "QiQig", "SxQig", "SpQig", "OcQig", "NoQig", "Sxg", "USxg", "DSxg", "TSxg", "QaSxg", "QiSxg", "SxSxg", "SpSxg", "OcSxg", "NoSxg",
        "Spg", "USpg", "DSpg", "TSpg", "QaSpg", "QiSpg", "SxSpg", "SpSpg", "OcSpg", "NoSpg", "Ocg", "UOcg", "DOcg", "TOcg", "QaOcg", "QiOcg", "SxOcg", "SpOcg", "OcOcg", "NoOcg",
@@ -131,8 +70,37 @@ namespace IdleLibrary
         static double head_value_tdigit;
         static string argument_ToString_tdigit = "";
         static bool isMinus_tdigit;
+
+
+        public static bool IsScentific;
+        public static int EffectiveDigit;
+        public static bool isEffect;
         public static string tDigit(double value, int decimal_point = 0, bool removeZero = true, string argument_toString = null, bool toShowSign = false, bool toRoundDown = false)
         {
+            var point = decimal_point;
+            var isZero = removeZero;
+            if (isEffect)
+            {
+                point = EffectiveDigit;
+                isZero = false;
+            }
+            if (IsScentific)
+            {
+                if(value <= 1000)
+                {
+                    switch (point)
+                    {
+                        case 1: return value.ToString("F1"); 
+                        case 2: return value.ToString("F2");
+                        case 3: return value.ToString("F3");
+                        case 4: return value.ToString("F4");
+                        case 5: return value.ToString("F5");
+                        case 6: return value.ToString("F6");
+                        default: return value.ToString("F0"); 
+                    }
+                }
+                return value.ToString($"0.00e00");
+            }
             //ToStringとして使う場合そのまま返す
             if (argument_toString != null) { return value.ToString(argument_toString); }
             if (double.IsInfinity(value))
@@ -158,7 +126,7 @@ namespace IdleLibrary
             {
                 //decimal_point = Math.Min(3,GetPrecision(head_value_tdigit));
                 if (toRoundDown) head_value_tdigit = RoundDown(head_value_tdigit, decimal_point); //切り捨ての処理
-                switch (decimal_point)
+                switch (point)
                 {
                     case 1: argument_ToString_tdigit = "F1"; break;
                     case 2: argument_ToString_tdigit = "F2"; break;
@@ -169,7 +137,7 @@ namespace IdleLibrary
                     default: argument_ToString_tdigit = "F0"; break;
                 }
             }
-            if (removeZero) digit_builder.Append(RemoveZero(head_value_tdigit.ToString(argument_ToString_tdigit)));
+            if (isZero) digit_builder.Append(RemoveZero(head_value_tdigit.ToString(argument_ToString_tdigit)));
             else digit_builder.Append(head_value_tdigit.ToString(argument_ToString_tdigit));
             digit_builder.Append(digit[log_1000_tdigit]);
             //マイナスの処理
@@ -212,7 +180,6 @@ namespace IdleLibrary
             }
             return FastFloor(number * factor_roundDown) / factor_roundDown;
         }
-
         public static double FastFloor(double num)
         {
             if ((num >= long.MinValue) && (num <= long.MaxValue))
@@ -224,95 +191,9 @@ namespace IdleLibrary
                 return Math.Floor(num);
             }
         }
-        public static void writeGyoretsu(int[,] ary)
-        {
-            string str = "";
-            int FEcount = 0;
-            foreach (int expInt in ary)
-            {
-                str = str + "," + expInt.ToString();
-                FEcount++;
-                if (FEcount % ary.GetLength(1) == 0)
-                {
-                    str = str + "\n";
-                }
-
-            }
-            Debug.Log(str);
-        }
-        public static void writeList(List<int> list)
-        {
-            string str = "";
-            foreach (int num in list)
-            {
-                str = str + "," + num.ToString();
-            }
-            Debug.Log(str);
-        }
-
-        public static void writeList(List<double> list)
-        {
-            string str = "";
-            foreach (double num in list)
-            {
-                str = str + "," + num.ToString("F1");
-            }
-            Debug.Log(str);
-        }
-
-        public static void writeArray(int[] Array)
-        {
-            string str = "";
-            foreach (int num in Array)
-            {
-                str = str + "," + num.ToString("F1");
-            }
-            Debug.Log(str);
-        }
-        public static Vector2 normalize(Vector2 vector)
-        {
-            float x = vector.x;
-            float y = vector.y;
-            float normalizeFactor = 1.0f / Mathf.Sqrt(Mathf.Pow(x, 2) + Mathf.Pow(y, 2));
-            if (float.IsNaN(normalizeFactor))
-            {
-                return new Vector2(0, 0);
-            }
-            Vector2 vector2 = new Vector2(x * normalizeFactor, y * normalizeFactor);
-            return vector2;
-        }
-
-        public static float vectorAbs(Vector2 vector)
-        {
-            float x = vector.x;
-            float y = vector.y;
-            return Mathf.Sqrt(Mathf.Pow(x, 2) + Mathf.Pow(y, 2));
-        }
-
-        public static IEnumerator NewInvokeCor(usefuleDelegate Dele, float Time)
-        {
-            yield return new WaitForSeconds(Time);
-            Dele();
-        }
-
-        //減算の処理
-        public static bool IfCanSubSub(ref double Target, double Value)
-        {
-            if (Target >= Value)
-            {
-                Target -= Value;
-                return true;
-            }
-            else
-            {
-                Debug.Log("値が大きすぎます");
-                return false;
-            }
-        }
 
 
-
-        //windowを出すコルーチン
+       　//windowを出すコルーチン
         public static IEnumerator bigAndBig(GameObject targetUI)
         {
             targetUI.GetComponent<RectTransform>().localScale = new Vector3(0.5f, 0.5f, 0.5f);
@@ -351,24 +232,6 @@ namespace IdleLibrary
             targetUI.GetComponent<RectTransform>().localScale = Vector3.zero;
         }
 
-        //
-        /*
-        public static Main GetMain()
-        {
-            GameObject mainCtrl = GameObject.FindGameObjectWithTag("mainCtrl");
-            return mainCtrl.GetComponent<Main>();
-        }
-        */
-
-        //
-        public static IEnumerator EasyForCor(usefuleDelegate dele, int num, float interval)
-        {
-            for (int i = 0; i < num; i++)
-            {
-                dele();
-                yield return new WaitForSeconds(interval);
-            }
-        }
 
         //the difference of Datetime to float
         public static float DeltaTimeFloat(DateTime DT)
@@ -446,23 +309,11 @@ namespace IdleLibrary
         public static double Domain(double Value, double Max, double Min)
         {
             double tempDouble = 0;
-            //tempDouble = Math.Max(Value, Min);
-            //tempDouble = Math.Min(Value, Max);
             tempDouble = Value <= Min ? Min : Value;
             tempDouble = Value >= Max ? Max : Value;
             return tempDouble;
         }
 
-        //public static double LogNormalDistribution(double Mode,double Mean)
-        //{
-        //    return (LogNormal.Sample(1d / 3d * Math.Log(Mean * Mean * Mode), Math.Sqrt(2d / 3d * Math.Log(Mean / Mode))));
-        //}
-
-
-        /// <summary>
-        /// Componentを全探索するので重い。
-        /// 指定されたインターフェイスを実装したコンポーネントのリストを返す
-        /// </summary>
         public static List<Component> FindObjectsOfInterface<T>() where T : class
         {
             var list = new List<Component>();
@@ -475,74 +326,6 @@ namespace IdleLibrary
                 }
             }
             return list;
-        }
-
-
-        public static bool isRange(float range, GameObject targetObject, GameObject homeObject)
-        {
-            if (homeObject.GetComponent<RectTransform>().anchoredPosition.x > targetObject.GetComponent<RectTransform>().anchoredPosition.x - range
-                        && homeObject.GetComponent<RectTransform>().anchoredPosition.x < targetObject.GetComponent<RectTransform>().anchoredPosition.x + range
-                         && homeObject.GetComponent<RectTransform>().anchoredPosition.y > targetObject.GetComponent<RectTransform>().anchoredPosition.y - range
-                        && homeObject.GetComponent<RectTransform>().anchoredPosition.y < targetObject.GetComponent<RectTransform>().anchoredPosition.y + range)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static bool isRange(float range, Vector2 targetObject, GameObject homeObject)
-        {
-            if (homeObject.GetComponent<RectTransform>().anchoredPosition.x > targetObject.x - range
-                        && homeObject.GetComponent<RectTransform>().anchoredPosition.x < targetObject.x + range
-                         && homeObject.GetComponent<RectTransform>().anchoredPosition.y > targetObject.y - range
-                        && homeObject.GetComponent<RectTransform>().anchoredPosition.y < targetObject.y + range)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-
-            }
-        }
-
-
-
-        public static bool isRange(float range, Vector2 targetObject, Vector2 homeObject)
-        {
-            if (homeObject.x > targetObject.x - range
-                        && homeObject.x < targetObject.x + range
-                         && homeObject.y > targetObject.y - range
-                        && homeObject.y < targetObject.y + range)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-
-            }
-        }
-
-
-        /// <summary>
-        /// delegateに代入して使うと、引数なしで第一引数の値がそのまま出力され、引数ありで第二引数が第一引数に代入される。
-        /// </summary>
-        public static Type Sync<Type>(ref Type Value, Type? Sub = null)
-            where Type : struct
-        {
-            if (Sub == null)
-            {
-                return Value;
-            }
-            else
-            {
-                Value = (Type)Sub;
-                return Value;
-            }
         }
 
         /// <summary>
@@ -569,36 +352,6 @@ namespace IdleLibrary
             if (Obj.Length != Length)
             {
                 Array.Resize(ref Obj, Length);
-            }
-        }
-
-        // Use this for initialization
-        void Start()
-        {
-            window = Instantiate(windowPre, windowTransform);
-            window.name = "debaggudayo";
-        }
-        // Update is called once per frame
-        void Update()
-        {
-            if (window != null)
-            {
-                if (Input.mousePosition.y >= 360 && Input.mousePosition.x >= 540)
-                {
-                    window.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition + new Vector3(-250.0f, -50.0f);
-                }
-                else if (Input.mousePosition.y >= 360 && Input.mousePosition.x < 540)
-                {
-                    window.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition + new Vector3(50.0f, -50.0f);
-                }
-                else if (Input.mousePosition.y < 360 && Input.mousePosition.x > 540)
-                {
-                    window.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition + new Vector3(-250.0f, -50.0f);
-                }
-                else if (Input.mousePosition.y < 360 && Input.mousePosition.x < 540)
-                {
-                    window.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition + new Vector3(50.0f, 50.0f);
-                }
             }
         }
     }

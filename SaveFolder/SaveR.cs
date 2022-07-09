@@ -11,5 +11,8 @@ namespace IdleLibrary
     {
         public string ascendTime;
         public float currentTime;
+
+        //Load系
+        public bool isEarlyAccess;
     }
 }

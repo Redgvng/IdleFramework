@@ -11,6 +11,13 @@ namespace IdleLibrary
         void OnPrestige();
         void Reset();
     }
+    public class NullPrestigePoint: IPrestigePoint
+    {
+        public double Number => 0;
+        public double TempNumber => 0;
+        public void OnPrestige() { }
+        public void Reset() { }
+    }
     public class ProducedPrestigePoint : IProducableNumber, IDecrementableNumber, IPrestigePoint, IStatsNumber
     {
         public virtual double Number { get; protected set; }
@@ -34,7 +41,7 @@ namespace IdleLibrary
             TempNumber = 0;
         }
         public Multiplier multiplier { get; } = new Multiplier();
-        public void ProduceBySecond(long second) => TempNumber += _produceAmount() * second;
+        public void ProduceBySecond(double second) => TempNumber += _produceAmount() * second;
         public void Reset()
         {
             Number = 0;

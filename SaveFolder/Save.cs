@@ -19,5 +19,10 @@ namespace IdleLibrary
         public long ascendPoint;
         //NUMBER
         public double[] numbers;
+
+        public bool isEarlyAccess;
+        public bool DEBUG_FORCED_REWARDED;
+        public bool isScentific;
+        public long refundedNum;
     }
 }

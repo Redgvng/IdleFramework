@@ -19,13 +19,13 @@ namespace IdleLibrary
             return allChildren;
         }
 
-        public static List<IObserver> GetAllByObservers(this GameObject obj)
+        public static List<IUpdateText> GetAllUpdateText(this GameObject obj)
         {
             List<GameObject> allChildren = new List<GameObject>();
             GetChildren(obj, ref allChildren);
 
-            List<IObserver> unko = new List<IObserver>();
-            allChildren.ForEach((x) => { if (x.GetComponent<IObserver>() != null) unko.Add(x.GetComponent<IObserver>()); });
+            List<IUpdateText> unko = new List<IUpdateText>();
+            allChildren.ForEach((x) => { if (x.GetComponent<IUpdateText>() != null) unko.Add(x.GetComponent<IUpdateText>()); });
             return unko;
         }
 
@@ -44,8 +44,6 @@ namespace IdleLibrary
                 GetChildren(ob.gameObject, ref allChildren);
             }
         }
-
-
     }
 
 

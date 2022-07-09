@@ -6,14 +6,14 @@ using UnityEngine.UI;
 using TMPro;
 using static IdleLibrary.UsefulMethod;
 using UniRx;
-using Zenject;
+using Cysharp.Threading.Tasks;
 
 namespace IdleLibrary
 {
     public class Main : MonoBehaviour
     {
-        [Inject] ITime _currentTime;
-        public DateTime currentTime => _currentTime.currentTime;
+        //[Inject] ITime _currentTime;
+        public DateTime currentTime => DateTime.Now;
         public double allTime { get => S.allTime; set => S.allTime = value; }
         public DateTime birthTime
         {
@@ -21,10 +21,17 @@ namespace IdleLibrary
             set { S.birthDate = value.ToBinary().ToString(); }
         }
         [NonSerialized]
-        public DateTime ReleaseTime = DateTime.Parse("04/01/2022 7:00:00 AM");
+        public DateTime ReleaseTime = DateTime.Parse("04/29/2022 7:00:00 AM");
+        public DateTime lowerTime = DateTime.Parse("01/01/2020 7:00:00 AM");
         public DateTime lastTime//最後にプレイした時間。
         {
-            get { return DateTime.FromBinary(Convert.ToInt64(S.lastTime)); }
+            get 
+            {
+                if (S.lastTime == "0" || S.lastTime == "") return DateTime.Now;
+                var result = DateTime.FromBinary(Convert.ToInt64(S.lastTime));
+                if (result < ReleaseTime) return DateTime.Now;
+                return DateTime.FromBinary(Convert.ToInt64(S.lastTime));
+            }
             set { S.lastTime = value.ToBinary().ToString(); }
         }
         [Range(0.05f, 20.0f)]
@@ -33,7 +40,7 @@ namespace IdleLibrary
         [SerializeField]
         public SaveR SR;
         [SerializeField] public Save S;
-        [SerializeField] public DTO dto;
+        //[SerializeField] public DTO dto;
         public SaveDeclare SD;
         public saveCtrl saveCtrl;
 
@@ -45,37 +52,34 @@ namespace IdleLibrary
         public static Main main;
         private void Awake()
         {
+            System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo("en-us");
             main = this;
             SoundEffectSource = gameObject.GetOrAddComponent<AudioSource>();
+            Initialize();
         }
 
-        // Start is called before the first frame update
-        void Start()
+        private void Initialize()
         {
-            //初めてのプレイだったら現在の値を代入
             if (!S.isContinuePlay)
             {
                 birthTime = currentTime;
                 lastTime = currentTime;
                 S.isContinuePlay = true;
             }
-            //不正な時間が入っていたら現在の値を代入
             if (lastTime < ReleaseTime || lastTime > currentTime)
             {
                 lastTime = currentTime;
             }
-            StartCoroutine(plusTime());
+            plusTime();
             //this.ObserveEveryValueChanged(_ => tick).Subscribe(_ => Time.fixedDeltaTime = 1f /tick / 10);
         }
 
-
-        IEnumerator plusTime()
+        private async void  plusTime()
         {
-            var wait = new WaitForSeconds(1.0f);
             while (true)
             {
                 allTime++;
-                yield return wait;
+                await UniTask.Delay(1000);
             }
         }
 

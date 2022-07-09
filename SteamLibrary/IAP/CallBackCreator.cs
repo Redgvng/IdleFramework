@@ -28,7 +28,7 @@ public class CallBackCreator : MonoBehaviour
             {"orderid", txn_callback.m_ulOrderID.ToString() },
             {"appid", SteamIAP.appId },
               };
-            var result_purchaseComplete = await SteamIAP.httpClient.PostAsync($"https://partner.steam-api.com/ISteamMicroTxn/FinalizeTxn/v2/"
+            var result_purchaseComplete = await SteamIAP.httpClient.PostAsync($"https://partner.steam-api.com/ISteamMicroTxnSandbox/FinalizeTxn/v2/"
                 , new FormUrlEncodedContent(parameters_purshaceComplete));
             //result = OK�ł���΍w�������������̂ŁA�A�C�e����t�^���܂��B
             string str_purshaceComplete = await result_purchaseComplete.Content.ReadAsStringAsync();

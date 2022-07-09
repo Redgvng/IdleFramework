@@ -10,7 +10,6 @@ using TMPro;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using static IdleLibrary.Main;
-using Zenject;
 
 namespace IdleLibrary
 {
@@ -29,7 +28,6 @@ namespace IdleLibrary
 
         string[] saveStrArray = new string[2];
         string[] jsonArray = new string[2];
-        [Inject] GameSystem system;
 
         void Start()
         {
