@@ -12,9 +12,12 @@ namespace IdleLibrary.ProgressSlider
         void Update();
         float CurrentProgressRatio();
     }
+
+    /*
     [Serializable]
     public class ProgressSlider : ILevel, IProgressSlider
     {
+
         public long level { get => _level.level; set => _level.level = value; }
         public void LevelUp(long level) => _level.level += level;
         [SerializeField] double _currentProgress;
@@ -50,17 +53,6 @@ namespace IdleLibrary.ProgressSlider
             .ToList()
             .ForEach(pair => pair.slider.currentProgress = loadProgress[pair.index]);
         }
-        /*
-        public static void Save(IEnumerable<ProgressSlider> sliders, double[] loadProgress)
-        {
-            sliders
-            .Select((slider, index) => new { slider, index })
-            .ToList()
-            .ForEach(pair => pair.slider.ObserveEveryValueChanged(x => x.currentProgress)
-            .Subscribe(_ => loadProgress[pair.index] = pair.slider.currentProgress));
-        }
-        */
-
         private bool isOfflineBonusGot = false;
         private long diffLevel;
         private double totalProgress;
@@ -79,12 +71,13 @@ namespace IdleLibrary.ProgressSlider
             return (diffLevel, totalProgress);
         }
     }
+    */
 
     [Serializable]
     public class AsyncProgressSlider : ILevel, IProgressSlider
     {
         public long level { get => _level.level; set => _level.level = value; }
-        public void LevelUp(long level) => _level.level += level;
+        public long maxLevel => long.MaxValue;
         [SerializeField] double numberConsumed;
         public double currentProgress { get => number.Number - numberConsumed; }
         private readonly Func<double> RequiredProgress = () => 0;
@@ -102,7 +95,7 @@ namespace IdleLibrary.ProgressSlider
             if (currentProgress >= RequiredProgress())
             {
                 numberConsumed += RequiredProgress();
-                LevelUp(1);
+                level++;
                 OnLevelUp();
             }
         }

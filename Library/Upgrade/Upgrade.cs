@@ -42,10 +42,10 @@ namespace IdleLibrary.Upgrade {
         }
     }
 
-    public class MultiplierInfo
+    public class EffectInfo
     {
         private readonly MultiplierInfoWithLevel info;
-        public MultiplierInfo(MultiplierInfoWithLevel info)
+        public EffectInfo(MultiplierInfoWithLevel info)
         {
             this.info = info;
         }
