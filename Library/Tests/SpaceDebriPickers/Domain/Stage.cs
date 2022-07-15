@@ -47,6 +47,7 @@ namespace Pickers.Domain.Test
                 if (_ is null) return;
                 _.OnCollide(picker, debriCollection, debriInfo);
             });
+            if (picker.currentPosition >= 60000) picker.currentPosition = 0;
         }
     }
 
@@ -95,12 +96,12 @@ namespace Pickers.Domain.Test
                     }
                     for (int i = 0; i < 250; i++)
                     {
-                        debriInfo.AddDebri(new Debri(UnityEngine.Random.Range(10, 100), UnityEngine.Random.Range(0f, 1f), 2,count));
+                        debriInfo.AddDebri(new Debri(UnityEngine.Random.Range(10, 30), UnityEngine.Random.Range(0f, 1f), 1,count));
                         count++;
                     }
                     for (int i = 0; i < 50; i++)
                     {
-                        debriInfo.AddDebri(new Debri(UnityEngine.Random.Range(100, 1000), UnityEngine.Random.Range(0f, 1f),3,count));
+                        debriInfo.AddDebri(new Debri(UnityEngine.Random.Range(30, 50), UnityEngine.Random.Range(0f, 1f),1,count));
                         count++;
                     }
                 }

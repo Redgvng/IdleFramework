@@ -42,10 +42,49 @@ namespace IdleLibrary.Upgrade {
         }
     }
 
+    public class MultiplierInfo
+    {
+        private readonly MultiplierInfoWithLevel info;
+        public MultiplierInfo(MultiplierInfoWithLevel info)
+        {
+            this.info = info;
+        }
+        public bool isMultiplied => info.multiplierType == MultiplierType.mul;
+        public double CurrentValue()
+        {
+            if (info == null)
+            {
+                Debug.LogError($"Effectが実装されていません. ");
+                return 0;
+            }
+            return info.CurrentValue();
+        }
+        public double NextValue()
+        {
+            if (info == null)
+            {
+                Debug.LogError($"Effectが実装されていません. ");
+                return 0;
+            }
+            return info.NextValue();
+        }
+        public double NextIncrement()
+        {
+            if (info == null)
+            {
+                Debug.LogError($"Effectが実装されていません.");
+                return 0;
+            }
+            return info.NextIncrement();
+        }
+    }
+
+    //MaxLevelを持っているときの処理
+
+
     public class Upgrade : IUpgrade, IResettable, ILevel
     {
         private ILevel _level;
-        public void LevelUp(long level) => _level.LevelUp(level);
         public long level { get { return _level == null ? 0 : _level.level; } set => _level.level = value; }
         public IDecrementableNumber number;
         public IMaxableCost cost;
@@ -53,9 +92,10 @@ namespace IdleLibrary.Upgrade {
         public double initialiCost => cost.InitialiCost;
         public Action OnUpgraded = () => { };
         public Multiplier maxLevelMultiplier { get; } = new Multiplier();
-        public long MaxLevel => (long)maxLevelMultiplier.CaluculatedNumber(0);
-        public bool isMaxLevel => level >= MaxLevel && hasMaxLevel;
-        public bool hasMaxLevel => MaxLevel != 0;
+
+        public long maxLevel => _level.maxLevel;
+        public bool isMaxLevel => _level.isMaxLevel;
+
         public Upgrade(ILevel level, IDecrementableNumber number, IMaxableCost cost)
         {
             this._level = level;
@@ -65,9 +105,6 @@ namespace IdleLibrary.Upgrade {
 
         public bool CanBuy()
         {
-            if (!hasMaxLevel)
-                return number.Number >= cost.Cost;
-
             return number.Number >= cost.Cost && !isMaxLevel;
         }
 
@@ -81,7 +118,7 @@ namespace IdleLibrary.Upgrade {
 
             number.Decrement(cost.Cost);
             OnUpgraded();
-            _level.LevelUp(1);
+            _level.level++;
         }
 
         public void MaxPay()
@@ -90,16 +127,16 @@ namespace IdleLibrary.Upgrade {
                 return;
 
             long tempLevel = cost.LevelAtMaxCost(number);
-            if(hasMaxLevel && tempLevel >= MaxLevel)
+            if(tempLevel >= maxLevel)
             {
-                tempLevel = MaxLevel;
-                number.Decrement(cost.FixedNumCost(number, MaxLevel - level));
+                tempLevel = maxLevel;
+                number.Decrement(cost.FixedNumCost(number, maxLevel - level));
                 //_level.level = MaxLevel;
-                _level.LevelUp(MaxLevel - _level.level);
+                _level.level += maxLevel - _level.level;
                 return;
             }
             number.Decrement(cost.MaxCost(number));
-            _level.LevelUp(tempLevel - _level.level);
+            _level.level += tempLevel - _level.level;
         }
 
         public void FixedAmountPay(long fixedNum)
@@ -109,65 +146,25 @@ namespace IdleLibrary.Upgrade {
             if (!CanBuy())
                 return;
 
-            if(hasMaxLevel && level + fixedNum >= MaxLevel)
-                num = MaxLevel - level;
+            if(level + fixedNum >= maxLevel)
+                num = maxLevel - level;
 
-            Debug.Log(cost.LevelAtMaxCost(number));
-            Debug.Log(num);
             if(cost.LevelAtMaxCost(number) > level + num)
             {
                 number.Decrement(cost.FixedNumCost(number, num));
-                _level.LevelUp(num);
+                _level.level += num;
             }
             else
             {
                 long tempLevel = cost.LevelAtMaxCost(number);
                 number.Decrement(cost.MaxCost(number));
                 _level.level = tempLevel;
-                //_level.LevelUp(tempLevel - _level.level);
             }
         }
 
         public void OnReset()
         {
             _level.level = 0;
-        }
-
-        //MultiplierInfo
-        private MultiplierInfoWithLevel multiplierInfo;
-        public bool isMultiplied => multiplierInfo.multiplierType == MultiplierType.mul;
-        public void ApplyEffect(Multiplier multiplied, Func<long, double> effect, MultiplierType type, string key = "")
-        {
-            multiplierInfo = new MultiplierInfoWithLevel((level) => effect(level) , type, _level);
-            if (key == "") multiplied.RegisterMultiplier(multiplierInfo);
-            else multiplied.RegisterMultiplier(multiplierInfo, key);
-        }
-        public double CurrentValue()
-        {
-            if (multiplierInfo == null)
-            {
-                Debug.LogError($"Effectが実装されていません. ");
-                return 0;
-            }
-            return multiplierInfo.CurrentValue();
-        }
-        public double NextValue()
-        {
-            if (multiplierInfo == null)
-            {
-                Debug.LogError($"Effectが実装されていません. ");
-                return 0;
-            }
-            return multiplierInfo.NextValue();
-        }
-        public double NextIncrement()
-        {
-            if (multiplierInfo == null)
-            {
-                Debug.LogError($"Effectが実装されていません.");
-                return 0;
-            }
-            return multiplierInfo.NextIncrement();
         }
     }
 
@@ -177,6 +174,9 @@ namespace IdleLibrary.Upgrade {
         private readonly IEnumerable<(IDecrementableNumber number, IMaxableCost cost)> info;
         private readonly ILevel level;
         public double Cost => 0;
+        public long maxLevel => level.maxLevel;
+        public bool isMaxLevel => level.isMaxLevel;
+
         public MultipleUpgrade(ILevel level, params (IDecrementableNumber number, IMaxableCost cost)[] info)
         {
             this.info = info;
@@ -205,6 +205,15 @@ namespace IdleLibrary.Upgrade {
                 return;
 
             var minLevel = info.Select((x) => x.cost.LevelAtMaxCost(x.number)).Min();
+            if (minLevel >= maxLevel)
+            {
+                foreach (var item in info)
+                {
+                    item.number.Decrement(item.cost.FixedNumCost(item.number, maxLevel - level.level));
+                }
+                level.level += maxLevel - level.level;
+                return;
+            }
             foreach (var item in info)
             {
                 item.number.Decrement(item.cost.MaxCost(item.number));
@@ -212,19 +221,23 @@ namespace IdleLibrary.Upgrade {
             level.level = minLevel;
         }
 
-        public void FixedAmountPay(int fixedNum)
+        public void FixedAmountPay(long fixedNum)
         {
+            var num = fixedNum;
             if (!CanBuy())
                 return;
 
+            if (level.level + fixedNum >= maxLevel)
+                num = maxLevel - level.level;
+
             var minLevel = info.Select((x) => x.cost.LevelAtMaxCost(x.number)).Min();
-            if (minLevel > fixedNum + level.level)
+            if (minLevel > num + level.level)
             {
                 foreach (var item in info)
                 {
-                    item.number.Decrement(item.cost.FixedNumCost(item.number, fixedNum));
+                    item.number.Decrement(item.cost.FixedNumCost(item.number, num));
                 }
-                level.level += fixedNum;
+                level.level += num;
             }
             else
             {

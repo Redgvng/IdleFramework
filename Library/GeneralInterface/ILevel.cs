@@ -6,35 +6,46 @@ namespace IdleLibrary
     public interface ILevel
     {
         long level { get; set; }
-        void LevelUp(long level);
+        long maxLevel { get; }
+
+        bool isMaxLevel => level >= maxLevel;
     }
+
     public class MockLevel : ILevel
     {
         public long level { get; set; }
-        public void LevelUp(long level) { this.level += level; }
+        public long maxLevel => long.MaxValue;
     }
     //Value Object
     [Serializable]
     public class Level : ILevel
     {
+        private long _level;
+
+        public long maxLevel { get; private set; }
+        public Level(long maxLevel = long.MaxValue)
+        {
+            this.maxLevel = maxLevel;
+        }
+
         public virtual long level {
-            get => _level;
-            set {
+            get
+            {
+                return Math.Min(maxLevel, _level);
+            }
+            set
+            {
                 _level = value;
-                if (tempMaxLevel < _level) tempMaxLevel = _level;
+                if (maxLevel < _level) maxLevel = _level;
             }
         }
-        [SerializeField] private long _level;
-
-        private long tempMaxLevel;
-        public long maxLevel { get => tempMaxLevel; }
-        public void LevelUp(long level) => this.level += level;
     }
 
     /*
      * ある条件のときに、他のレベルをあげるようなレベル。
      * 主に、チャレンジなどの特殊な制約を想定しています。
      */
+    /*
     public class LevelWithOthers : ILevel
     {
         public virtual long level { get; set; }
@@ -57,4 +68,5 @@ namespace IdleLibrary
             this.condition = condition;
         }
     }
+    */
 }

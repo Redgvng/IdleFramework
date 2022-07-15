@@ -17,6 +17,6 @@ namespace Pickers.Domain
         public double Speed() => speed.Number;
         public double InhalePower() => inhalePower.Number;
         public void MovePerSecond(float time = 1.0f) => currentPosition += Speed() * time;
-        public double currentPosition { get; private set; }
+        public double currentPosition { get; set; }
     }
 }
