@@ -26,9 +26,7 @@ namespace IdleLibrary
 
     public interface IProducableNumber : INumber
     {
-        void ProducePerSecond();
-        void ProducePerFrame();
-        void ProduceBySecond(double second);
+        void ProducePerTime(float time);
     }
 
     public interface IStatsNumber
@@ -62,16 +60,10 @@ namespace IdleLibrary
         {
             Number = Math.Max(Number - decrement, 0);
         }
-        public void ProducePerSecond()
+        public void ProducePerTime(float time)
         {
-            Number += ProduceAmountPerSecond();
+            Number += ProduceAmountPerSecond() * time;
         }
-        public void ProducePerFrame()
-        {
-            Number += ProduceAmountPerSecond() * Time.fixedDeltaTime;
-        }
-        public void ProduceBySecond(double second) => Number += ProduceAmountPerSecond() * second;
-        public void ProducePerFrame(float delta) => Number += ProduceAmountPerSecond() * delta;
         public double ProduceAmountPerSecond() => produceMultiplier.CaluculatedNumber(0);
         public Multiplier produceMultiplier { get; } = new Multiplier();
         public void ResetNumberToZero()

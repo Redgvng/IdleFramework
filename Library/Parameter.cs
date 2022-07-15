@@ -19,18 +19,7 @@ namespace IdleLibrary
             this.initialValue = initialValue;
         }
         public double Produced { get; private set; }
-        public void ProducePerSecond()
-        {
-            Produced += ProduceAmountPerSecond();
-        }
-        //ここでキャッシュしたらどうだろうか？
-        private double _number { get; set; }
-        public void ProducePerFrame()
-        {
-            Produced += ProduceAmountPerSecond() * Time.fixedDeltaTime;
-        }
-        public void ProduceBySecond(double second) => Produced += ProduceAmountPerSecond() * second;
-        public void ProducePerFrame(float delta) => Produced += ProduceAmountPerSecond() * delta;
+        public void ProducePerTime(float time) => Produced += ProduceAmountPerSecond() * time;
         public double ProduceAmountPerSecond() => produceMultiplier.CaluculatedNumber(0);
         public double ExponentialAmount() => exponentialMultiplier.CaluculatedNumber(1);
         public double BaseAmount() => multiplier.CaluculatedNumber(initialValue) + Produced + independentMultiplier.CaluculatedNumber(0);

@@ -24,10 +24,10 @@ public class AntimatterDimensionsTest : MonoBehaviour
 
     private void UpdatePerSecond()
     {
-        antimatter.ProducePerSecond();
+        antimatter.ProducePerTime(1);
         foreach (var dimension in dimensions)
         {
-            dimension.ProducePerSecond();
+            dimension.ProducePerTime(1);
         }
         AutoBuy(unlockedUpgrades);
         AutoBuy(new Upgrade[] { tickUpgrade});

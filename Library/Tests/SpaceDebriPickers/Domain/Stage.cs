@@ -49,6 +49,8 @@ namespace Pickers.Domain.Test
             });
             if (picker.currentPosition >= 60000) picker.currentPosition = 0;
         }
+
+        public double GetDebriNum(int tier) { return debriCollection.GetCollectedDebri(tier); }
     }
 
     internal class StageManager

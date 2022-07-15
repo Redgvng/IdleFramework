@@ -192,6 +192,9 @@ namespace IdleLibrary.Upgrade {
             if (!CanBuy())
                 return;
 
+            if (isMaxLevel)
+                return;
+
             foreach (var item in info)
             {
                 item.number.Decrement(item.cost.Cost);

@@ -46,9 +46,18 @@ public class SpaceDebriTest : MonoBehaviour
         private readonly CurrencyKind kind;
     }
 
+    InitializeGame initializeGame;
+    [SetUp]
+    public void SetUpTest()
+    {
+        initializeGame = new InitializeGame();
+        initializeGame.Initialize();
+        initializeGame.StartGame();
+    }
+
     private void UpdatePerSecond()
     {
-        
+        initializeGame.UpdateGame(1);
     }
 
 

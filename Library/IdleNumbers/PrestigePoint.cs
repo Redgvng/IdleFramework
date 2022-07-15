@@ -41,14 +41,12 @@ namespace IdleLibrary
             TempNumber = 0;
         }
         public Multiplier multiplier { get; } = new Multiplier();
-        public void ProduceBySecond(double second) => TempNumber += _produceAmount() * second;
         public void Reset()
         {
             Number = 0;
             TempNumber = 0;
         }
-        public void ProducePerSecond() => TempNumber += _produceAmount();
-        public void ProducePerFrame() => TempNumber += _produceAmount() * Time.fixedDeltaTime;
+        public void ProducePerTime(float time) => TempNumber += _produceAmount() * time;
         private double _produceAmount() => multiplier.CaluculatedNumber(func());
     }
 
