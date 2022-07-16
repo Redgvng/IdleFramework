@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Pickers.Domain {
-    //唯一のエントリーポイントである
     public class InitializeGame
     {
-        Test.Stage stage;
+        private Test.Stage stage { get; set; } = new Test.Stage();
+        private Test.DebriCollection debriCollection { get; set; } = new Test.DebriCollection();
+        public CurrencyManager currencyManager { get; private set; } =  new CurrencyManager();
+
         public void Initialize()
         {
-            stage = new Test.Stage();
+            var debriMultiplier = new ApplyDebriMultiplier(currencyManager, debriCollection);
+            debriMultiplier.ApplyMultiplier();
         }
 
         public void StartGame()
@@ -20,6 +23,7 @@ namespace Pickers.Domain {
         public void UpdateGame(float time = 1.0f)
         {
             stage.UpdateStage(time);
+            currencyManager.UpdatePerTime(time);
         }
     }
 }

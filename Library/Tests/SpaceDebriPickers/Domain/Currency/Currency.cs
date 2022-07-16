@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using IdleLibrary;
+using System.Linq;
 
 namespace Pickers.Domain
 {
@@ -35,7 +36,11 @@ namespace Pickers.Domain
         private Better.Dictionary<CurrencyKind, Currency> currencies = new Better.Dictionary<CurrencyKind, Currency>();
         public CurrencyManager()
         {
-
+            MakeCurrency();
+        }
+        public void UpdatePerTime(float time = 1.0f)
+        {
+            currencies.Select(_ => _.Value).ToList().ForEach(_ => _.ProducePerTime(time));
         }
         private void MakeCurrency()
         {
@@ -44,6 +49,24 @@ namespace Pickers.Domain
         }
 
         public Currency GetCurrency(CurrencyKind kind) => currencies[kind];
+    }
+
+    public class ApplyDebriMultiplier
+    {
+        private readonly CurrencyManager currencyManager;
+        private readonly IDebliCollection debriCollecition;
+        public ApplyDebriMultiplier(CurrencyManager currencyManager, IDebliCollection collection)
+        {
+            this.currencyManager = currencyManager;
+            this.debriCollecition = collection;
+        }
+        public void ApplyMultiplier()
+        {
+            currencyManager.GetCurrency(CurrencyKind.r).producePerSecondMultiplier.RegisterMultiplier(new MultiplierInfo(() =>
+            debriCollecition.GetCollectedDebri(1) * (1 + debriCollecition.GetCollectedDebri(2)) * (1 + debriCollecition.GetCollectedDebri(3)),
+            MultiplierType.add
+            ), "Base_debriMultiplier");
+        }
     }
 }
 

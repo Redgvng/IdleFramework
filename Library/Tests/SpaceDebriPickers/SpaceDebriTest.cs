@@ -9,6 +9,7 @@ using IdleLibrary.IntegrationTest;
 using System;
 using System.IO;
 using static IdleLibrary.IntegrationTest.IntegrationUtiliity;
+using static IdleLibrary.UsefulMethod;
 using Pickers.Domain;
 using Pickers.Domain.Test;
 
@@ -33,45 +34,34 @@ public class SpaceDebriTest : MonoBehaviour
         private double initialValue { get; }
     }
 
-    public class Currency : IDecrementableNumber
-    {
-        public enum CurrencyKind { debri, exp}
-        public Currency(CurrencyKind kind) { this.kind = kind; }
-        public double Number { get; private set; }
-        public void Decrement(double decrement)
-        {
-            Number -= decrement;
-        }
 
-        private readonly CurrencyKind kind;
-    }
-
-    InitializeGame initializeGame;
+    InitializeGame game;
     [SetUp]
     public void SetUpTest()
     {
-        initializeGame = new InitializeGame();
-        initializeGame.Initialize();
-        initializeGame.StartGame();
+        game = new InitializeGame();
+        game.Initialize();
+        game.StartGame();
     }
 
     private void UpdatePerSecond()
     {
-        initializeGame.UpdateGame(1);
+        game.UpdateGame(1);
     }
 
 
+    private readonly static string title = "Space Debri Pickers";
     [Test]
     public void Integration()
     {
-        ExportExcel.OutPutHeader("Space Debri Pickers", new string[] { "Time"});
+        ExportExcel.OutPutHeader(title, new string[] { "Time", "R"});
         for (int i = 0; i < 3600 * 6; i++)
         {
             UpdatePerSecond();
             if ((i + 60) % 60 == 0)
             {
-                ExportExcel.OutPutData("Time", new string[] {
-                    i.ToString()});
+                ExportExcel.OutPutData(title, new string[] {
+                    i.ToString(), tDigit(game.currencyManager.GetCurrency(CurrencyKind.r).Number)});
             }
         }
     }
